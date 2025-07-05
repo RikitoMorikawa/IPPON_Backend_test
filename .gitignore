@@ -1,0 +1,13 @@
+.env
+!.env.sample
+node_modules
+npm-debug.log
+app.log
+docker/docker-compose.yml
+package-lock.json
+src/uploads/*
+.DS_Store
+dist/
+src/.DS_Store
+line_diagram.txt
+tsconfig.build.tsbuildinfo

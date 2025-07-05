@@ -1,0 +1,95 @@
+name: ECS Deploy to Prod
+on:
+# TODO: Will be changed after deploying triggers are determined.
+#  push:
+#    branches:
+#      - main
+  workflow_dispatch:
+
+env:
+  AWS_ROLE_ARN: arn:aws:iam::040433403151:role/prod-ippon-deploy-role
+  AWS_REGION: ap-northeast-1
+  ECR_REPOSITORY: prod-ippon-ecr-web-server
+  ECS_CLUSTER: prod-ippon-ecs-cluster-00001
+  ECS_SERVICE: prod-ippon-ecs-service-web-server-00001
+  ECS_TASK_DEF_FILE: prod-task-definition.json
+  CONTAINER_NAME: web-server-00001
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  build-and-push-to-ecr:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    outputs:
+      image_tag: ${{ steps.set_image_tag.outputs.IMAGE_TAG }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+          role-session-name: deploy-session
+
+      - name: Login to ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Set IMAGE_TAG
+        id: set_image_tag
+        run: echo "IMAGE_TAG=$(date +%Y%m%d)-$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
+      - name: Build and push
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        run: | 
+          docker buildx build \
+              -f docker/Dockerfile \
+              -t $ECR_REGISTRY/$ECR_REPOSITORY:${{ steps.set_image_tag.outputs.IMAGE_TAG }} \
+              --push --provenance=false \
+              .
+
+  deploy-to-ecs:
+    needs: build-and-push-to-ecr
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ env.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+          role-session-name: deploy-session
+
+      - uses: aws-actions/amazon-ecr-login@v2
+        id: login-ecr
+
+      - name: Fill in the new image ID in the Amazon ECS task definition
+        id: task-def
+        uses: aws-actions/amazon-ecs-render-task-definition@v1
+        with:
+          task-definition: ./aws/${{ env.ECS_TASK_DEF_FILE }}
+          container-name: ${{ env.CONTAINER_NAME }}
+          image: ${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{needs.build-and-push-to-ecr.outputs.image_tag}}
+
+      - name: Registers ECS task definition and deploys ECS service
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+        with:
+          task-definition: ${{ steps.task-def.outputs.task-definition }}
+          service: ${{ env.ECS_SERVICE }}
+          cluster: ${{ env.ECS_CLUSTER }}
+          wait-for-service-stability: true

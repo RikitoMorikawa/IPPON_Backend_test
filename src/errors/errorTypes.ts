@@ -1,0 +1,31 @@
+export enum ErrorCode {
+    // HTTP-related errors
+    BAD_REQUEST = 'BAD_REQUEST',
+    UNAUTHORIZED = 'UNAUTHORIZED',
+    FORBIDDEN = 'FORBIDDEN',
+    NOT_FOUND = 'NOT_FOUND',
+    CONFLICT = 'CONFLICT',
+    INTERNAL_SERVER = 'INTERNAL_SERVER',
+    
+    // Cross-functional error types
+    VALIDATION_ERROR = 'VALIDATION_ERROR',
+    DATABASE_ERROR = 'DATABASE_ERROR',
+    EXTERNAL_SERVICE_ERROR = 'EXTERNAL_SERVICE_ERROR',
+    
+    // Unknown error
+    UNKNOWN_ERROR = 'UNKNOWN_ERROR'
+  }
+  
+  // Mapping between HTTP status codes and error codes
+  export const ErrorCodeStatusMap: Record<ErrorCode, number> = {
+    BAD_REQUEST: 400,
+    UNAUTHORIZED: 401,
+    FORBIDDEN: 403,
+    NOT_FOUND: 404,
+    CONFLICT: 409,
+    INTERNAL_SERVER: 500,
+    VALIDATION_ERROR: 422,
+    DATABASE_ERROR: 500,
+    EXTERNAL_SERVICE_ERROR: 502,
+    UNKNOWN_ERROR: 500
+  };

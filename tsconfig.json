@@ -1,0 +1,52 @@
+{
+    "compilerOptions": {
+      "target": "ESNext",
+      "module": "commonjs",
+      "rootDir": "./src",
+      "outDir": "./dist",
+      "moduleResolution": "node",
+      "esModuleInterop": true,
+      "forceConsistentCasingInFileNames": true,
+      "strict": true,
+      "skipLibCheck": true,
+      "resolveJsonModule": true,
+      "types": [
+        "node",
+        "vitest/globals"
+      ],
+      "typeRoots": [
+        "./node_modules/@types",
+        "./src/types"
+      ],
+      "lib": [
+        "ESNext"
+      ],
+      "sourceMap": true,
+      "declaration": true,
+      "removeComments": true,
+      "allowSyntheticDefaultImports": true,
+      "incremental": true,
+      "baseUrl": ".",
+      "paths": {
+        "@src/*": ["src/*"],
+        "@tests/*": ["tests/*"],
+      },
+      "emitDecoratorMetadata": true,
+      "experimentalDecorators": true,
+      "noImplicitAny": true,
+      "strictNullChecks": true,
+      "strictBindCallApply": true,
+      "noFallthroughCasesInSwitch": true
+    },
+    "include": [
+      "src/**/*.ts",
+      "./src/types/types.d.ts",
+      "src/templates/**/*",
+      "src/createTables.ts",
+      "tests/**/*.ts"
+    ],
+    "exclude": [
+      "node_modules",
+      "dist"
+    ]
+  }

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        h1 {
+            color: #4CAF50;
+        }
+
+        .message {
+            font-size: 1.1em;
+            margin-top: 10px;
+            color: #555;
+        }
+
+        .footer {
+            font-size: 0.9em;
+            color: #777;
+            margin-top: 20px;
+        }
+
+        .button {
+            padding: 10px 20px;
+            background-color: #00C300;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div>
+        <h1>Welcome, User!</h1>
+        <p class="message">Thank you for signing up. We're excited to have you on board.</p>
+
+        <p class="message">
+            We're setting up your LINE integration with <strong>IPPON Cloud</strong>. This integration will help you
+            streamline your communication, improve customer engagement, and automate your processes. Follow the steps
+            below to complete the setup:
+        </p>
+
+        <p class="message">
+            <strong>Step 1:</strong> Click the button below to begin the setup process for LINE Integration.
+        </p>
+
+        <a href="https://ippon-cloud.com/connect?client_id={{CLIENT_ID}}&customer_id={{CUSTOMER_ID}}&customer_type={{CUSTOMER_TYPE}}"
+            class="button">
+            Setup LINE Integration
+        </a>
+
+        <p class="message">
+            Once you complete the setup, you'll be able to connect and manage your LINE account directly from our
+            platform.
+        </p>
+
+        <p class="footer">Best regards,<br>IPPON CLOUD Team</p>
+    </div>
+</body>
+
+</html>
