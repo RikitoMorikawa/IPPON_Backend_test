@@ -2,16 +2,9 @@ import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { getApp } from '@src/app';
 import { FastifyInstance } from 'fastify';
 
-
-// test scenarios
-/*
-  1. Success Cases
-    1.1 Get health check endpoint
-*/
-
-let fastify: FastifyInstance;
-
 describe('Health Check Endpoint', () => {
+  let fastify: FastifyInstance;
+
   beforeAll(async () => {
     fastify = await getApp();
     await fastify.ready();
@@ -24,7 +17,7 @@ describe('Health Check Endpoint', () => {
   it('should return 200 and status ok', async () => {
     const response = await fastify.inject({
       method: 'GET',
-      url: '/health'
+      url: '/health',
     });
 
     expect(response.statusCode).toBe(200);

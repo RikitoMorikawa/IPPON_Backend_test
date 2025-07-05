@@ -8,7 +8,7 @@ import { hasZodFastifySchemaValidationErrors } from 'fastify-type-provider-zod';
 export function errorHandler(
   error: Error | FastifyError | AppError | ZodError,
   request: FastifyRequest,
-  reply: FastifyReply
+  reply: FastifyReply,
 ): void {
   // log error
   logger.error({
@@ -23,11 +23,11 @@ export function errorHandler(
 
   // handle fastify-zod schema validation errors
   if (hasZodFastifySchemaValidationErrors(error)) {
-    const details = error.validation.map(err => ({
+    const details = error.validation.map((err) => ({
       path: err.instancePath || err.keyword,
-      message: err.message || 'Validation error'
+      message: err.message || 'Validation error',
     }));
-    
+
     const validationError = new ValidationError('Validation failed', details);
     reply.status(400).send(validationError.toResponse());
     return;
@@ -35,11 +35,11 @@ export function errorHandler(
 
   // handle zod validation error
   if (error instanceof ZodError) {
-    const details = error.errors.map(err => ({
+    const details = error.errors.map((err) => ({
       path: err.path.join('.'),
-      message: err.message
+      message: err.message,
     }));
-    
+
     const validationError = new ValidationError('Validation failed', details);
     reply.status(validationError.statusCode).send(validationError.toResponse());
     return;
@@ -53,9 +53,7 @@ export function errorHandler(
 
   // handle other unprocessed errors as InternalServerError
   const internalError = new InternalServerError(
-    process.env.NODE_ENV === 'production'
-      ? 'Internal server error'
-      : error.message
+    process.env.NODE_ENV === 'production' ? 'Internal server error' : error.message,
   );
 
   reply.status(internalError.statusCode).send(internalError.toResponse());

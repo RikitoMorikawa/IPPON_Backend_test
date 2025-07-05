@@ -1,0 +1,323 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+
+model MstAdminMembers {
+  id                    String    @id @default(uuid())
+  registring_member_id  String
+  is_admin              Boolean
+  last_name             String    @db.VarChar(64)
+  first_name            String    @db.VarChar(64)
+  middle_name           String?   @db.VarChar(64)
+  last_name_kana        String    @db.VarChar(64)
+  first_name_kana       String    @db.VarChar(64)
+  middle_name_kana      String?   @db.VarChar(64)
+  mail_address          String    @db.VarChar(255)
+  icon_image_path       String?   @db.VarChar(1000)
+  is_active             Boolean   @default(true)
+  created_at            DateTime  @default(now())
+  updated_at            DateTime? @updatedAt
+  deleted_at            DateTime?
+
+  // Relations
+  created_clients       MstClients[] @relation("ClientCreatedBy")
+  updated_clients       MstClients[] @relation("ClientUpdatedBy")
+  registered_employees  MstClientEmployees[] @relation("EmployeeRegisteredByMember")
+  registered_services   ClientEmployeeServices[] @relation("ServiceRegisteredByMember")
+  registered_options    ClientEmployeeOptions[] @relation("OptionRegisteredByMember")
+
+  @@map("mst_admin_members")
+}
+
+model MstClients {
+  id                        String    @id @default(uuid())
+  created_by_member_id      String
+  updated_by_member_id      String?
+  name                      String    @db.VarChar(255)
+  name_kana                 String?   @db.VarChar(255)
+  real_estate_number        String?   @db.VarChar(100)
+  phone_number              String    @db.VarChar(15)
+  mail_address              String    @db.VarChar(255)
+  hp_address                String?   @db.VarChar(255)
+  postcode                  String?   @db.Char(7)
+  prefecture                String?   @db.VarChar(50)
+  city                      String?   @db.VarChar(100)
+  street_address            String?   @db.VarChar(255)
+  building_and_room_number  String?   @db.VarChar(255)
+  is_active                 Boolean?
+  created_at                DateTime  @default(now())
+  updated_at                DateTime? @updatedAt
+  deleted_at                DateTime?
+
+  // Relations
+  created_by                MstAdminMembers  @relation("ClientCreatedBy", fields: [created_by_member_id], references: [id])
+  updated_by                MstAdminMembers? @relation("ClientUpdatedBy", fields: [updated_by_member_id], references: [id])
+  client_options            MstClientOptions[]
+  client_services           MstClientServices[]
+  employees                 MstClientEmployees[]
+
+  @@map("mst_clients")
+}
+
+model MstClientOptions {
+  id          String    @id @default(uuid())
+  client_id   String
+  option_id   String
+  created_at  DateTime  @default(now())
+  updated_at  DateTime? @updatedAt
+  deleted_at  DateTime?
+
+  // Relations
+  client      MstClients @relation(fields: [client_id], references: [id])
+  option      MstOptions @relation(fields: [option_id], references: [id])
+
+  @@map("mst_client_options")
+}
+
+model MstClientServices {
+  id          String    @id @default(uuid())
+  client_id   String
+  service_id  String
+  created_at  DateTime  @default(now())
+  updated_at  DateTime? @updatedAt
+  deleted_at  DateTime?
+
+  // Relations
+  client      MstClients @relation(fields: [client_id], references: [id])
+  service     MstServices @relation(fields: [service_id], references: [id])
+
+  @@map("mst_client_services")
+}
+
+model MstOptions {
+  id              String    @id @default(uuid())
+  name            String    @db.VarChar(255)
+  is_active       Boolean?
+  created_at      DateTime  @default(now())
+  updated_at      DateTime? @updatedAt
+  deleted_at      DateTime?
+
+  // Relations
+  client_options  MstClientOptions[]
+  employee_options ClientEmployeeOptions[]
+
+  @@map("mst_options")
+}
+
+model MstServices {
+  id              String    @id @default(uuid())
+  name            String    @db.VarChar(255)
+  is_active       Boolean?
+  created_at      DateTime  @default(now())
+  updated_at      DateTime? @updatedAt
+  deleted_at      DateTime?
+
+  // Relations
+  client_services MstClientServices[]
+  employee_services ClientEmployeeServices[]
+
+  @@map("mst_services")
+}
+
+model MstClientEmployees {
+  id                           String    @id @default(uuid())
+  client_id                    String
+  registring_admin_employee_id String?
+  registring_admin_member_id   String?
+  payment_user_id              String?
+  is_active                    Boolean
+  is_admin                     Boolean   @default(false)
+  last_name                    String    @db.VarChar(64)
+  first_name                   String    @db.VarChar(64)
+  last_name_kana               String?   @db.VarChar(64)
+  first_name_kana              String?   @db.VarChar(64)
+  mail_address                 String    @db.VarChar(255)
+  created_at                   DateTime  @default(now())
+  updated_at                   DateTime? @updatedAt
+  deleted_at                   DateTime?
+
+  // Relations
+  client                       MstClients           @relation(fields: [client_id], references: [id])
+  registring_admin_employee    MstClientEmployees?  @relation("EmployeeRegisteredByEmployee", fields: [registring_admin_employee_id], references: [id])
+  registring_admin_member      MstAdminMembers?     @relation("EmployeeRegisteredByMember", fields: [registring_admin_member_id], references: [id])
+  
+  // Self-reference for employees registered by this employee
+  registered_employees         MstClientEmployees[] @relation("EmployeeRegisteredByEmployee")
+  
+  // Payment relations
+  payment_user_logs            PaymentUserLogs[]
+  payments                     Payments[]
+  payment_checkout_logs        PaymentCheckoutLogs[]
+  payment_webhook_logs         PaymentWebhookLogs[]
+  payment_user_cards           PaymentUserCards[]
+  
+  // Service and Option assignment relations
+  assigned_services            ClientEmployeeServices[] @relation("EmployeeServiceAssignment")
+  assigned_options             ClientEmployeeOptions[] @relation("EmployeeOptionAssignment")
+  registered_services          ClientEmployeeServices[] @relation("ServiceRegisteredByEmployee")
+  registered_options           ClientEmployeeOptions[] @relation("OptionRegisteredByEmployee")
+
+  @@map("mst_client_employees")
+}
+
+model PaymentUserLogs {
+  id                 String    @id @default(uuid())
+  client_employee_id String
+  payment_user_id    String
+  created_at         DateTime  @default(now())
+  updated_at         DateTime? @updatedAt
+  deleted_at         DateTime?
+
+  // Relations
+  client_employee    MstClientEmployees @relation(fields: [client_employee_id], references: [id])
+
+  @@map("payment_user_logs")
+}
+
+model Payments {
+  id                        String    @id @default(uuid())
+  payment_type              Int
+  client_employee_id        String
+  payment_user_id           String
+  payment_subscription_id   String
+  payment_method_id         String
+  price_id                  Int
+  plan_price                Int
+  total_price               Int
+  tax                       Int       @default(10)
+  total_tax_price           Int
+  created_at                DateTime  @default(now())
+  updated_at                DateTime? @updatedAt
+  deleted_at                DateTime?
+
+  // Relations
+  client_employee           MstClientEmployees @relation(fields: [client_employee_id], references: [id])
+  payment_options           PaymentOptions[]
+  employee_services         ClientEmployeeServices[]
+  employee_options          ClientEmployeeOptions[]
+
+  @@map("payments")
+}
+
+model PaymentOptions {
+  id              String    @id @default(uuid())
+  payment_id      String
+  price_id        Int
+  price           Int
+  tax             Int       @default(10)
+  total_tax_price Int
+  is_cancel       Boolean   @default(false)
+  created_at      DateTime  @default(now())
+  updated_at      DateTime? @updatedAt
+  deleted_at      DateTime?
+
+  // Relations
+  payment         Payments @relation(fields: [payment_id], references: [id])
+
+  @@map("payment_options")
+}
+
+model PaymentCheckoutLogs {
+  id                 String    @id @default(uuid())
+  client_employee_id String
+  payment_user_id    String
+  status             Int
+  response           String    @db.Text
+  executed_at        DateTime
+  created_at         DateTime  @default(now())
+  updated_at         DateTime? @updatedAt
+  deleted_at         DateTime?
+
+  // Relations
+  client_employee    MstClientEmployees @relation(fields: [client_employee_id], references: [id])
+
+  @@map("payment_checkout_logs")
+}
+
+model PaymentWebhookLogs {
+  id                        String    @id @default(uuid())
+  client_employee_id        String
+  payment_user_id           String
+  payment_subscription_id   String
+  webhook_path              String    @db.VarChar(255)
+  event_id                  String    @db.VarChar(255)
+  event_type                String    @db.VarChar(255)
+  status                    Int
+  response                  Json
+  executed_at               DateTime
+  created_at                DateTime  @default(now())
+  updated_at                DateTime? @updatedAt
+  deleted_at                DateTime?
+
+  // Relations
+  client_employee           MstClientEmployees @relation(fields: [client_employee_id], references: [id])
+
+  @@map("payment_webhook_logs")
+}
+
+model PaymentUserCards {
+  id                 String    @id @default(uuid())
+  client_employee_id String
+  payment_user_id    String
+  payment_method_id  String
+  is_selected        Boolean
+  created_at         DateTime  @default(now())
+  updated_at         DateTime? @updatedAt
+  deleted_at         DateTime?
+
+  // Relations
+  client_employee    MstClientEmployees @relation(fields: [client_employee_id], references: [id])
+
+  @@map("payment_user_cards")
+}
+
+model ClientEmployeeServices {
+  id                           String    @id @default(uuid())
+  service_id                   String
+  payment_id                   String
+  assignment_id                String
+  employee_id                  String?
+  registring_admin_employee_id String?
+  registring_admin_member_id   String?
+  created_at                   DateTime  @default(now())
+  updated_at                   DateTime? @updatedAt
+  deleted_at                   DateTime?
+
+  // Relations
+  service                      MstServices         @relation(fields: [service_id], references: [id])
+  payment                      Payments            @relation(fields: [payment_id], references: [id])
+  employee                     MstClientEmployees? @relation("EmployeeServiceAssignment", fields: [employee_id], references: [id])
+  registring_admin_employee    MstClientEmployees? @relation("ServiceRegisteredByEmployee", fields: [registring_admin_employee_id], references: [id])
+  registring_admin_member      MstAdminMembers?    @relation("ServiceRegisteredByMember", fields: [registring_admin_member_id], references: [id])
+
+  @@map("client_employee_services")
+}
+
+model ClientEmployeeOptions {
+  id                           String    @id @default(uuid())
+  option_id                    String
+  payment_id                   String
+  assignment_id                String
+  employee_id                  String?
+  registring_admin_employee_id String?
+  registring_admin_member_id   String?
+  created_at                   DateTime  @default(now())
+  updated_at                   DateTime? @updatedAt
+  deleted_at                   DateTime?
+
+  // Relations
+  option                       MstOptions          @relation(fields: [option_id], references: [id])
+  payment                      Payments            @relation(fields: [payment_id], references: [id])
+  employee                     MstClientEmployees? @relation("EmployeeOptionAssignment", fields: [employee_id], references: [id])
+  registring_admin_employee    MstClientEmployees? @relation("OptionRegisteredByEmployee", fields: [registring_admin_employee_id], references: [id])
+  registring_admin_member      MstAdminMembers?    @relation("OptionRegisteredByMember", fields: [registring_admin_member_id], references: [id])
+
+  @@map("client_employee_options")
+}

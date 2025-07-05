@@ -7,17 +7,16 @@ export interface TokenData {
   [key: string]: any; // Allow additional custom data
 }
 
-
 // Example of actual Redis implementation:
-// 
+//
 // import { createClient } from 'redis';
-// 
+//
 // const redisClient = createClient({
 //   url: process.env.REDIS_URL || 'redis://localhost:6379'
 // });
-// 
+//
 // redisClient.on('error', (err) => console.error('Redis Client Error', err));
-// 
+//
 // (async () => {
 //   await redisClient.connect();
 // })();
@@ -53,21 +52,21 @@ export const decodeToken = (token: string): TokenData => {
 export const paginationUtils = {
   generateToken,
   decodeToken,
-  
+
   // Function to save token (Redis would be used in actual implementation)
   saveToken: (tokenId: string, data: any, ttlSeconds = 3600): void => {
     tokenStore[tokenId] = data;
     // In actual Redis implementation:
     // await saveTokenToRedis(tokenId, data, ttlSeconds);
   },
-  
+
   // Function to retrieve token
   getToken: (tokenId: string): any | null => {
     return tokenStore[tokenId] || null;
     // In actual Redis implementation:
     // return await getTokenFromRedis(tokenId);
   },
-  
+
   // Generate new token and store it
   createAndStoreToken: (data: TokenData, ttlSeconds = 3600): string => {
     const token = generateToken(data);
@@ -77,12 +76,12 @@ export const paginationUtils = {
     // await saveTokenToRedis(tokenId, data, ttlSeconds);
     return token;
   },
-  
+
   // Function to delete token (for Redis implementation)
   // deleteToken: async (tokenId: string): Promise<void> => {
   //   await redisClient.del(`token:${tokenId}`);
   // },
-  
+
   // Function to cleanup expired tokens
   // While Redis TTL handles expiration automatically, this cleanup function is provided as an example
   // cleanupExpiredTokens: async (): Promise<void> => {
@@ -111,22 +110,17 @@ export interface PaginationResult<T> {
 export function paginateCollection<T>(
   collection: T[],
   options: PaginationOptions,
-  resourceId: string
+  resourceId: string,
 ): PaginationResult<T> {
-  const {
-    limit = 5,
-    next_token,
-    prev_token,
-    allowedLimits = [5, 10, 15, 20]
-  } = options;
-  
+  const { limit = 5, next_token, prev_token, allowedLimits = [5, 10, 15, 20] } = options;
+
   // Check if limit is valid
   if (!allowedLimits.includes(limit)) {
     throw new Error('Invalid limit parameter');
   }
-  
+
   let startIndex = 0;
-  
+
   // Process next_token
   if (next_token) {
     try {
@@ -139,7 +133,7 @@ export function paginateCollection<T>(
       throw new Error('Invalid pagination token');
     }
   }
-  
+
   // Process prev_token
   if (prev_token) {
     try {
@@ -153,38 +147,38 @@ export function paginateCollection<T>(
       throw new Error('Invalid pagination token');
     }
   }
-  
+
   // Calculate pagination
   const endIndex = Math.min(startIndex + limit, collection.length);
   const paginatedItems = collection.slice(startIndex, endIndex);
-  
+
   // Generate tokens for next and previous pages
   let nextToken: string | undefined;
   let prevToken: string | undefined;
-  
+
   // If there is a next page
   if (endIndex < collection.length) {
     const nextTokenData: TokenData = {
       lastIndex: endIndex,
-      resourceId
+      resourceId,
     };
     nextToken = paginationUtils.createAndStoreToken(nextTokenData);
   }
-  
+
   // If there is a previous page
   if (startIndex > 0) {
     const prevTokenData: TokenData = {
       lastIndex: startIndex,
-      resourceId
+      resourceId,
     };
     prevToken = paginationUtils.createAndStoreToken(prevTokenData);
   }
-  
+
   return {
     items: paginatedItems,
     next_token: nextToken,
     prev_token: prevToken,
-    limit
+    limit,
   };
 }
 

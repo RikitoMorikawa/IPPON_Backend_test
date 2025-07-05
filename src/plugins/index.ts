@@ -4,9 +4,13 @@ import fastifySwaggerUi from '@fastify/swagger-ui';
 import fastifyCors from '@fastify/cors';
 import fastifyMultipart from '@fastify/multipart';
 import { jsonSchemaTransform } from 'fastify-type-provider-zod';
+import dynamoDbPlugin from './dynamoDbPlugin';
+import tenantPlugin from './tenantPlugin';
+import config from '../config';
 
 export async function registerPlugins(app: FastifyInstance): Promise<void> {
-  // Swagger configuration
+  app.register(dynamoDbPlugin);
+  app.register(tenantPlugin);
   await app.register(fastifySwagger, {
     openapi: {
       info: {
@@ -16,23 +20,27 @@ export async function registerPlugins(app: FastifyInstance): Promise<void> {
       },
       servers: [
         {
-          url: `http://${process.env.SWAGGER_HOST || 'localhost:8080'}`,
-          description: 'Development server'
-        }
+          url: config.frontend.baseUrl,
+          description: `${config.environment} server`,
+        },
       ],
       tags: [
-        { name: 'reports', description: 'Report related APIs' }
+        { name: 'auth', description: 'Authentication related APIs' },
+        { name: 'reports', description: 'Report related APIs' },
+        { name: 'properties', description: 'Property related APIs' },
+        { name: 'customers', description: 'Customer related APIs' },
+        { name: 'inquiries', description: 'Inquiry related APIs' },
+        { name: 'employees', description: 'Employee related APIs' },
+        { name: 'clients', description: 'Client related APIs' },
+        { name: 'dashboard', description: 'Dashboard related APIs' }
       ],
       components: {
-        securitySchemes: {
-          // 認証が必要な場合はここに設定
-        }
-      }
+        securitySchemes: {},
+      },
     },
-    transform: jsonSchemaTransform
+    transform: jsonSchemaTransform,
   });
 
-  // Swagger UI configuration
   await app.register(fastifySwaggerUi, {
     routePrefix: '/documentation',
     uiConfig: {
@@ -42,24 +50,22 @@ export async function registerPlugins(app: FastifyInstance): Promise<void> {
       deepLinking: true,
       displayRequestDuration: true,
       filter: true,
-      tryItOutEnabled: true
+      tryItOutEnabled: true,
     },
-    staticCSP: true,
+    staticCSP: false,
+    transformStaticCSP: (header) => {
+      return header.replace("style-src 'self' https:", "style-src 'self' https: 'unsafe-inline'");
+    },
     transformSpecification: (swaggerObject) => {
       return swaggerObject;
     },
   });
 
-  // CORS configuration
-  await app.register(fastifyCors, {
-    origin: process.env.CORS_ORIGIN || '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  });
+  // CORS設定は middleware.ts で統一管理
 
-  // Multipart/File upload configuration
   await app.register(fastifyMultipart, {
     limits: {
-      fileSize: 5 * 1024 * 1024, // 5MB
+      fileSize: 5 * 1024 * 1024,
     },
   });
 }

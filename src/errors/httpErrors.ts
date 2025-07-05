@@ -18,8 +18,14 @@ export class ForbiddenError extends AppError {
     super(message, ErrorCode.FORBIDDEN, 403, details);
   }
 }
-
 export class NotFoundError extends AppError {
+  /**
+   * Constructs a new NotFoundError instance.
+   *
+   * @param message - A descriptive message for the error. Defaults to 'Not found'.
+   * @param details - Optional additional details about the error.
+   */
+
   constructor(message = 'Not found', details?: any) {
     super(message, ErrorCode.NOT_FOUND, 404, details);
   }

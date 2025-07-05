@@ -1,39 +1,41 @@
 import { createApp } from '@src/server';
 import { FastifyInstance } from 'fastify';
 import dotenv from 'dotenv';
+import { registerComponents } from './services/componentsService';
+import config from './config';
+// import { updateAccessTokenDuration } from './utils/cognitoUtils';
 
 dotenv.config();
 
 const appSingleton = (() => {
   let instance: FastifyInstance | null = null;
-  
+
   return {
     getInstance: async (): Promise<FastifyInstance> => {
       if (!instance) {
         instance = await createApp();
       }
       return instance;
-    }
+    },
   };
 })();
 
 const startServer = async (): Promise<void> => {
   try {
     const app = await appSingleton.getInstance();
-    const PORT = Number(process.env.PORT) || 8080;
-    const HOST = process.env.HOST || '0.0.0.0';
+    // await updateAccessTokenDuration();
 
-    await app.listen({ port: PORT, host: HOST });
-    console.log(`✅ Server running at http://${HOST}:${PORT}`);
-    console.log(`📚 API Documentation available at http://${HOST}:${PORT}/documentation`);
-    console.log("🔍 Current Environment:", process.env.NODE_ENV);
+    await app.listen({ port: config.server.port, host: config.server.host });
+    registerComponents(app);
+    console.log(`✅ Server running at http://${config.server.host}:${config.server.port}`);
+    console.log(`📚 API Documentation available at http://${config.server.host}:${config.server.port}/documentation`);
+    console.log('🔍 Current Environment:', config.environment);
   } catch (err) {
     console.error('❌ Error starting server:', err);
     process.exit(1);
   }
 };
 
-// if this file is executed directly, start the server
 if (require.main === module) {
   startServer();
 }

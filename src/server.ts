@@ -3,6 +3,8 @@ import { registerPlugins } from '@src/plugins';
 import { registerRoutes } from '@src/routes';
 import { errorHandler } from '@src/errors/errorHandler';
 import { ZodTypeProvider, serializerCompiler, validatorCompiler } from 'fastify-type-provider-zod';
+import { registerComponents } from './services/componentsService';
+import { registerMiddlewares } from '@src/middleware/middleware';
 
 export async function createApp(): Promise<FastifyInstance> {
   const app = Fastify({
@@ -16,6 +18,7 @@ export async function createApp(): Promise<FastifyInstance> {
         },
       },
     },
+    pluginTimeout: 30000, // 30 seconds for DynamoDB initialization
   }).withTypeProvider<ZodTypeProvider>();
 
   // Set up compiler for Zod schema validation
@@ -27,6 +30,9 @@ export async function createApp(): Promise<FastifyInstance> {
 
   // Register plugins
   await registerPlugins(app);
+
+  // Register middlewares (including CORS)
+  await registerMiddlewares(app);
 
   // Register routes
   registerRoutes(app);
