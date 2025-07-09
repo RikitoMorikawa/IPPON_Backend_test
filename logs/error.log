@@ -1,0 +1,1393 @@
+2025-07-07 20:38:01 [ERROR]: body/personal_phone_number Required
+Stack: Error: body/personal_phone_number Required
+    at defaultSchemaErrorFormatter (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/fastify/lib/context.js:92:10)
+    at wrapValidationError (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/fastify/lib/validation.js:249:17)
+    at validate (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/fastify/lib/validation.js:167:16)
+    at preValidationCallback (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/fastify/lib/handleRequest.js:89:25)
+    at handler (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/fastify/lib/handleRequest.js:73:7)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/fastify/lib/contentTypeParser.js:214:9
+    at AsyncResource.runInAsyncScope (node:async_hooks:211:14)
+    at done (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/fastify/lib/contentTypeParser.js:207:14)
+    at Parser.defaultJsonParser [as fn] (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/fastify/lib/contentTypeParser.js:312:7)
+    at IncomingMessage.onEnd (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/fastify/lib/contentTypeParser.js:296:27)
+    at IncomingMessage.emit (node:events:507:28)
+    at IncomingMessage.emit (node:domain:489:12)
+    at endReadableNT (node:internal/streams/readable:1696:12)
+    at processTicksAndRejections (node:internal/process/task_queues:90:21) | {
+  "path": "/api/v1/employees",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "client_id": "8146c820-57e7-4808-8de1-58ffcc4df32c",
+    "role": "admin",
+    "family_name": "テスト",
+    "first_name": "テスト",
+    "family_name_kana": "テスト",
+    "first_name_kana": "テスト",
+    "mail_address": "3165071@gmail.com"
+  }
+}
+2025-07-07 20:38:17 [ERROR]: body/personal_phone_number Required
+Stack: Error: body/personal_phone_number Required
+    at defaultSchemaErrorFormatter (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/fastify/lib/context.js:92:10)
+    at wrapValidationError (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/fastify/lib/validation.js:249:17)
+    at validate (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/fastify/lib/validation.js:167:16)
+    at preValidationCallback (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/fastify/lib/handleRequest.js:89:25)
+    at handler (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/fastify/lib/handleRequest.js:73:7)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/fastify/lib/contentTypeParser.js:214:9
+    at AsyncResource.runInAsyncScope (node:async_hooks:211:14)
+    at done (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/fastify/lib/contentTypeParser.js:207:14)
+    at Parser.defaultJsonParser [as fn] (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/fastify/lib/contentTypeParser.js:312:7)
+    at IncomingMessage.onEnd (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/fastify/lib/contentTypeParser.js:296:27)
+    at IncomingMessage.emit (node:events:507:28)
+    at IncomingMessage.emit (node:domain:489:12)
+    at endReadableNT (node:internal/streams/readable:1696:12)
+    at processTicksAndRejections (node:internal/process/task_queues:90:21) | {
+  "path": "/api/v1/employees",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "client_id": "8146c820-57e7-4808-8de1-58ffcc4df32c",
+    "role": "admin",
+    "family_name": "テスト",
+    "first_name": "テスト",
+    "family_name_kana": "テスト",
+    "first_name_kana": "テスト",
+    "mail_address": "3165071@gmail.com"
+  }
+}
+2025-07-07 20:56:51 [ERROR]: body/personal_phone_number Required
+Stack: Error: body/personal_phone_number Required
+    at defaultSchemaErrorFormatter (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/fastify/lib/context.js:92:10)
+    at wrapValidationError (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/fastify/lib/validation.js:249:17)
+    at validate (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/fastify/lib/validation.js:167:16)
+    at preValidationCallback (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/fastify/lib/handleRequest.js:89:25)
+    at handler (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/fastify/lib/handleRequest.js:73:7)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/fastify/lib/contentTypeParser.js:214:9
+    at AsyncResource.runInAsyncScope (node:async_hooks:211:14)
+    at done (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/fastify/lib/contentTypeParser.js:207:14)
+    at Parser.defaultJsonParser [as fn] (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/fastify/lib/contentTypeParser.js:312:7)
+    at IncomingMessage.onEnd (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/fastify/lib/contentTypeParser.js:296:27)
+    at IncomingMessage.emit (node:events:507:28)
+    at IncomingMessage.emit (node:domain:489:12)
+    at endReadableNT (node:internal/streams/readable:1696:12)
+    at processTicksAndRejections (node:internal/process/task_queues:90:21) | {
+  "path": "/api/v1/employees",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "client_id": "8146c820-57e7-4808-8de1-58ffcc4df32c",
+    "role": "admin",
+    "family_name": "テスト",
+    "first_name": "テスト",
+    "family_name_kana": "テスト",
+    "first_name_kana": "テスト",
+    "mail_address": "3165071@gmail.com"
+  }
+}
+2025-07-09 14:55:50 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "tak***@fudosan-life.co.jp",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-09 14:55:50 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "takahashi@fudosan-life.co.jp",
+    "password": "TempPass123!"
+  }
+}
+2025-07-09 14:56:03 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "tak***@fudosan-life.co.jp",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-09 14:56:03 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "takahashi@fudosan-life.co.jp",
+    "password": "TempPass123!"
+  }
+}
+2025-07-09 14:57:13 [ERROR]: Authentication failed
+Stack: NotAuthorizedException: Incorrect username or password.
+    at Request.extractError (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/protocol/json.js:80:27)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:106:20)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:688:12)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:116:18)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9) | {
+  "module": "AUTH",
+  "email": "lib***@gmail.com",
+  "errorCode": "NotAuthorizedException",
+  "errorMessage": "Incorrect username or password.",
+  "awsErrorCode": "NotAuthorizedException",
+  "statusCode": 400,
+  "errorType": "NotAuthorizedException",
+  "requestId": "b0884708-422f-4773-92ad-1c7859f35cf1"
+}
+2025-07-09 14:57:13 [ERROR]: Cognito SIGN_IN - ERROR | {
+  "module": "COGNITO",
+  "operation": "SIGN_IN",
+  "email": "lib***@gmail.com",
+  "status": "ERROR",
+  "errorCode": "NotAuthorizedException",
+  "errorMessage": "Incorrect username or password.",
+  "errorType": "NotAuthorizedException"
+}
+2025-07-09 14:57:13 [ERROR]: Sign-in service failed
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "module": "AUTH",
+  "email": "lib***@gmail.com",
+  "errorCode": "Error",
+  "errorMessage": "Failed to sign in with Cognito: Incorrect username or password."
+}
+2025-07-09 14:57:13 [ERROR]: Sign-in controller failed
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "module": "AUTH",
+  "email": "lib***@gmail.com",
+  "errorCode": "Error",
+  "errorMessage": "Failed to sign in with Cognito: Incorrect username or password.",
+  "requestIP": "::1"
+}
+2025-07-09 14:57:13 [ERROR]: Failed to sign in with Cognito: Incorrect username or password.
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "libertypromotion4@gmail.com",
+    "password": "TempPass123!"
+  }
+}
+2025-07-09 14:57:32 [ERROR]: Authentication failed
+Stack: NotAuthorizedException: Incorrect username or password.
+    at Request.extractError (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/protocol/json.js:80:27)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:106:20)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:688:12)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:116:18)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9) | {
+  "module": "AUTH",
+  "email": "shi***@gmail.com",
+  "errorCode": "NotAuthorizedException",
+  "errorMessage": "Incorrect username or password.",
+  "awsErrorCode": "NotAuthorizedException",
+  "statusCode": 400,
+  "errorType": "NotAuthorizedException",
+  "requestId": "d4995df6-7a96-4703-90bc-4068a8f19b09"
+}
+2025-07-09 14:57:32 [ERROR]: Cognito SIGN_IN - ERROR | {
+  "module": "COGNITO",
+  "operation": "SIGN_IN",
+  "email": "shi***@gmail.com",
+  "status": "ERROR",
+  "errorCode": "NotAuthorizedException",
+  "errorMessage": "Incorrect username or password.",
+  "errorType": "NotAuthorizedException"
+}
+2025-07-09 14:57:32 [ERROR]: Sign-in service failed
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "module": "AUTH",
+  "email": "shi***@gmail.com",
+  "errorCode": "Error",
+  "errorMessage": "Failed to sign in with Cognito: Incorrect username or password."
+}
+2025-07-09 14:57:32 [ERROR]: Sign-in controller failed
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "module": "AUTH",
+  "email": "shi***@gmail.com",
+  "errorCode": "Error",
+  "errorMessage": "Failed to sign in with Cognito: Incorrect username or password.",
+  "requestIP": "::1"
+}
+2025-07-09 14:57:32 [ERROR]: Failed to sign in with Cognito: Incorrect username or password.
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "shinya51120899@gmail.com",
+    "password": "TempPass123!"
+  }
+}
+2025-07-09 15:00:35 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "tak***@fudosan-life.co.jp",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-09 15:00:35 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "takahashi@fudosan-life.co.jp",
+    "password": "TempPass123!"
+  }
+}
+2025-07-09 15:00:49 [ERROR]: Authentication failed
+Stack: NotAuthorizedException: Incorrect username or password.
+    at Request.extractError (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/protocol/json.js:80:27)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:106:20)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:688:12)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:116:18)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9) | {
+  "module": "AUTH",
+  "email": "lib***@gmail.com",
+  "errorCode": "NotAuthorizedException",
+  "errorMessage": "Incorrect username or password.",
+  "awsErrorCode": "NotAuthorizedException",
+  "statusCode": 400,
+  "errorType": "NotAuthorizedException",
+  "requestId": "990d1027-a161-49de-ac34-ad32ea789f6c"
+}
+2025-07-09 15:00:49 [ERROR]: Cognito SIGN_IN - ERROR | {
+  "module": "COGNITO",
+  "operation": "SIGN_IN",
+  "email": "lib***@gmail.com",
+  "status": "ERROR",
+  "errorCode": "NotAuthorizedException",
+  "errorMessage": "Incorrect username or password.",
+  "errorType": "NotAuthorizedException"
+}
+2025-07-09 15:00:49 [ERROR]: Sign-in service failed
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "module": "AUTH",
+  "email": "lib***@gmail.com",
+  "errorCode": "Error",
+  "errorMessage": "Failed to sign in with Cognito: Incorrect username or password."
+}
+2025-07-09 15:00:49 [ERROR]: Sign-in controller failed
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "module": "AUTH",
+  "email": "lib***@gmail.com",
+  "errorCode": "Error",
+  "errorMessage": "Failed to sign in with Cognito: Incorrect username or password.",
+  "requestIP": "::1"
+}
+2025-07-09 15:00:49 [ERROR]: Failed to sign in with Cognito: Incorrect username or password.
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "libertypromotion4@gmail.com",
+    "password": "TempPass123!"
+  }
+}
+2025-07-09 15:01:19 [ERROR]: Authentication failed
+Stack: NotAuthorizedException: Incorrect username or password.
+    at Request.extractError (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/protocol/json.js:80:27)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:106:20)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:688:12)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:116:18)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9) | {
+  "module": "AUTH",
+  "email": "shi***@gmail.com",
+  "errorCode": "NotAuthorizedException",
+  "errorMessage": "Incorrect username or password.",
+  "awsErrorCode": "NotAuthorizedException",
+  "statusCode": 400,
+  "errorType": "NotAuthorizedException",
+  "requestId": "221f791a-508a-4e1e-bc39-a758d0c2d5a7"
+}
+2025-07-09 15:01:19 [ERROR]: Cognito SIGN_IN - ERROR | {
+  "module": "COGNITO",
+  "operation": "SIGN_IN",
+  "email": "shi***@gmail.com",
+  "status": "ERROR",
+  "errorCode": "NotAuthorizedException",
+  "errorMessage": "Incorrect username or password.",
+  "errorType": "NotAuthorizedException"
+}
+2025-07-09 15:01:19 [ERROR]: Sign-in service failed
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "module": "AUTH",
+  "email": "shi***@gmail.com",
+  "errorCode": "Error",
+  "errorMessage": "Failed to sign in with Cognito: Incorrect username or password."
+}
+2025-07-09 15:01:19 [ERROR]: Sign-in controller failed
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "module": "AUTH",
+  "email": "shi***@gmail.com",
+  "errorCode": "Error",
+  "errorMessage": "Failed to sign in with Cognito: Incorrect username or password.",
+  "requestIP": "::1"
+}
+2025-07-09 15:01:19 [ERROR]: Failed to sign in with Cognito: Incorrect username or password.
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "shinya51120899@gmail.com",
+    "password": "TempPass123!"
+  }
+}
+2025-07-09 15:02:33 [ERROR]: Authentication failed
+Stack: NotAuthorizedException: Incorrect username or password.
+    at Request.extractError (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/protocol/json.js:80:27)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:106:20)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:688:12)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:116:18)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9) | {
+  "module": "AUTH",
+  "email": "shi***@gmail.com",
+  "errorCode": "NotAuthorizedException",
+  "errorMessage": "Incorrect username or password.",
+  "awsErrorCode": "NotAuthorizedException",
+  "statusCode": 400,
+  "errorType": "NotAuthorizedException",
+  "requestId": "15a872a6-06f0-42a9-bb17-a6ca3ace0ea5"
+}
+2025-07-09 15:02:33 [ERROR]: Cognito SIGN_IN - ERROR | {
+  "module": "COGNITO",
+  "operation": "SIGN_IN",
+  "email": "shi***@gmail.com",
+  "status": "ERROR",
+  "errorCode": "NotAuthorizedException",
+  "errorMessage": "Incorrect username or password.",
+  "errorType": "NotAuthorizedException"
+}
+2025-07-09 15:02:33 [ERROR]: Sign-in service failed
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "module": "AUTH",
+  "email": "shi***@gmail.com",
+  "errorCode": "Error",
+  "errorMessage": "Failed to sign in with Cognito: Incorrect username or password."
+}
+2025-07-09 15:02:33 [ERROR]: Sign-in controller failed
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "module": "AUTH",
+  "email": "shi***@gmail.com",
+  "errorCode": "Error",
+  "errorMessage": "Failed to sign in with Cognito: Incorrect username or password.",
+  "requestIP": "::1"
+}
+2025-07-09 15:02:33 [ERROR]: Failed to sign in with Cognito: Incorrect username or password.
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "shinya51120899@gmail.com",
+    "password": "Vxm}Y]8gJ9Pb"
+  }
+}
+2025-07-09 16:49:58 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "tak***@fudosan-life.co.jp",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-09 16:49:58 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "takahashi@fudosan-life.co.jp",
+    "password": "TempPass123!"
+  }
+}
+2025-07-09 16:50:08 [ERROR]: Authentication failed
+Stack: NotAuthorizedException: Incorrect username or password.
+    at Request.extractError (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/protocol/json.js:80:27)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:106:20)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:688:12)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:116:18)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "NotAuthorizedException",
+  "errorMessage": "Incorrect username or password.",
+  "awsErrorCode": "NotAuthorizedException",
+  "statusCode": 400,
+  "errorType": "NotAuthorizedException",
+  "requestId": "2420a74d-97fb-49cd-aa77-8b90e17a20c4"
+}
+2025-07-09 16:50:08 [ERROR]: Cognito SIGN_IN - ERROR | {
+  "module": "COGNITO",
+  "operation": "SIGN_IN",
+  "email": "suz***@fudosan-life.co.jp",
+  "status": "ERROR",
+  "errorCode": "NotAuthorizedException",
+  "errorMessage": "Incorrect username or password.",
+  "errorType": "NotAuthorizedException"
+}
+2025-07-09 16:50:08 [ERROR]: Sign-in service failed
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "Error",
+  "errorMessage": "Failed to sign in with Cognito: Incorrect username or password."
+}
+2025-07-09 16:50:08 [ERROR]: Sign-in controller failed
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "Error",
+  "errorMessage": "Failed to sign in with Cognito: Incorrect username or password.",
+  "requestIP": "::1"
+}
+2025-07-09 16:50:08 [ERROR]: Failed to sign in with Cognito: Incorrect username or password.
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "suzuki@fudosan-life.co.jp",
+    "password": "TempPass123!"
+  }
+}
+2025-07-09 16:50:13 [ERROR]: Authentication failed
+Stack: NotAuthorizedException: Incorrect username or password.
+    at Request.extractError (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/protocol/json.js:80:27)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:106:20)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:688:12)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:116:18)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "NotAuthorizedException",
+  "errorMessage": "Incorrect username or password.",
+  "awsErrorCode": "NotAuthorizedException",
+  "statusCode": 400,
+  "errorType": "NotAuthorizedException",
+  "requestId": "834dc7ad-083e-4f8e-a7db-4abc3a6662dd"
+}
+2025-07-09 16:50:13 [ERROR]: Cognito SIGN_IN - ERROR | {
+  "module": "COGNITO",
+  "operation": "SIGN_IN",
+  "email": "suz***@fudosan-life.co.jp",
+  "status": "ERROR",
+  "errorCode": "NotAuthorizedException",
+  "errorMessage": "Incorrect username or password.",
+  "errorType": "NotAuthorizedException"
+}
+2025-07-09 16:50:13 [ERROR]: Sign-in service failed
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "Error",
+  "errorMessage": "Failed to sign in with Cognito: Incorrect username or password."
+}
+2025-07-09 16:50:13 [ERROR]: Sign-in controller failed
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "Error",
+  "errorMessage": "Failed to sign in with Cognito: Incorrect username or password.",
+  "requestIP": "::1"
+}
+2025-07-09 16:50:13 [ERROR]: Failed to sign in with Cognito: Incorrect username or password.
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "suzuki@fudosan-life.co.jp",
+    "password": "TempPass123!"
+  }
+}
+2025-07-09 16:50:35 [ERROR]: Authentication failed
+Stack: NotAuthorizedException: Incorrect username or password.
+    at Request.extractError (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/protocol/json.js:80:27)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:106:20)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:688:12)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:116:18)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "NotAuthorizedException",
+  "errorMessage": "Incorrect username or password.",
+  "awsErrorCode": "NotAuthorizedException",
+  "statusCode": 400,
+  "errorType": "NotAuthorizedException",
+  "requestId": "d42f8dfc-f9fe-4e9f-9bc6-a45153b80405"
+}
+2025-07-09 16:50:35 [ERROR]: Cognito SIGN_IN - ERROR | {
+  "module": "COGNITO",
+  "operation": "SIGN_IN",
+  "email": "suz***@fudosan-life.co.jp",
+  "status": "ERROR",
+  "errorCode": "NotAuthorizedException",
+  "errorMessage": "Incorrect username or password.",
+  "errorType": "NotAuthorizedException"
+}
+2025-07-09 16:50:35 [ERROR]: Sign-in service failed
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "Error",
+  "errorMessage": "Failed to sign in with Cognito: Incorrect username or password."
+}
+2025-07-09 16:50:35 [ERROR]: Sign-in controller failed
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "Error",
+  "errorMessage": "Failed to sign in with Cognito: Incorrect username or password.",
+  "requestIP": "::1"
+}
+2025-07-09 16:50:35 [ERROR]: Failed to sign in with Cognito: Incorrect username or password.
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "suzuki@fudosan-life.co.jp",
+    "password": "TempPass123!"
+  }
+}
+2025-07-09 16:50:59 [ERROR]: Authentication failed
+Stack: NotAuthorizedException: Incorrect username or password.
+    at Request.extractError (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/protocol/json.js:80:27)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:106:20)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:688:12)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:116:18)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "NotAuthorizedException",
+  "errorMessage": "Incorrect username or password.",
+  "awsErrorCode": "NotAuthorizedException",
+  "statusCode": 400,
+  "errorType": "NotAuthorizedException",
+  "requestId": "2d4c697a-98ee-4844-8803-67b8d1ead3aa"
+}
+2025-07-09 16:50:59 [ERROR]: Cognito SIGN_IN - ERROR | {
+  "module": "COGNITO",
+  "operation": "SIGN_IN",
+  "email": "suz***@fudosan-life.co.jp",
+  "status": "ERROR",
+  "errorCode": "NotAuthorizedException",
+  "errorMessage": "Incorrect username or password.",
+  "errorType": "NotAuthorizedException"
+}
+2025-07-09 16:50:59 [ERROR]: Sign-in service failed
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "Error",
+  "errorMessage": "Failed to sign in with Cognito: Incorrect username or password."
+}
+2025-07-09 16:50:59 [ERROR]: Sign-in controller failed
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "Error",
+  "errorMessage": "Failed to sign in with Cognito: Incorrect username or password.",
+  "requestIP": "::1"
+}
+2025-07-09 16:50:59 [ERROR]: Failed to sign in with Cognito: Incorrect username or password.
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "suzuki@fudosan-life.co.jp",
+    "password": "TempPass123!"
+  }
+}
+2025-07-09 16:51:11 [ERROR]: Authentication failed
+Stack: NotAuthorizedException: Incorrect username or password.
+    at Request.extractError (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/protocol/json.js:80:27)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:106:20)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:688:12)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:116:18)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "NotAuthorizedException",
+  "errorMessage": "Incorrect username or password.",
+  "awsErrorCode": "NotAuthorizedException",
+  "statusCode": 400,
+  "errorType": "NotAuthorizedException",
+  "requestId": "ccf4b393-6094-4432-a269-0408257981ff"
+}
+2025-07-09 16:51:11 [ERROR]: Cognito SIGN_IN - ERROR | {
+  "module": "COGNITO",
+  "operation": "SIGN_IN",
+  "email": "suz***@fudosan-life.co.jp",
+  "status": "ERROR",
+  "errorCode": "NotAuthorizedException",
+  "errorMessage": "Incorrect username or password.",
+  "errorType": "NotAuthorizedException"
+}
+2025-07-09 16:51:11 [ERROR]: Sign-in service failed
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "Error",
+  "errorMessage": "Failed to sign in with Cognito: Incorrect username or password."
+}
+2025-07-09 16:51:11 [ERROR]: Sign-in controller failed
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "Error",
+  "errorMessage": "Failed to sign in with Cognito: Incorrect username or password.",
+  "requestIP": "::1"
+}
+2025-07-09 16:51:11 [ERROR]: Failed to sign in with Cognito: Incorrect username or password.
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "suzuki@fudosan-life.co.jp",
+    "password": "TempPass123!"
+  }
+}
+2025-07-09 16:52:16 [ERROR]: Authentication failed
+Stack: NotAuthorizedException: Incorrect username or password.
+    at Request.extractError (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/protocol/json.js:80:27)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:106:20)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:688:12)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:116:18)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "NotAuthorizedException",
+  "errorMessage": "Incorrect username or password.",
+  "awsErrorCode": "NotAuthorizedException",
+  "statusCode": 400,
+  "errorType": "NotAuthorizedException",
+  "requestId": "afc5b2a7-a9f3-4e02-900e-67777cff0bf0"
+}
+2025-07-09 16:52:16 [ERROR]: Cognito SIGN_IN - ERROR | {
+  "module": "COGNITO",
+  "operation": "SIGN_IN",
+  "email": "suz***@fudosan-life.co.jp",
+  "status": "ERROR",
+  "errorCode": "NotAuthorizedException",
+  "errorMessage": "Incorrect username or password.",
+  "errorType": "NotAuthorizedException"
+}
+2025-07-09 16:52:16 [ERROR]: Sign-in service failed
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "Error",
+  "errorMessage": "Failed to sign in with Cognito: Incorrect username or password."
+}
+2025-07-09 16:52:16 [ERROR]: Sign-in controller failed
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "Error",
+  "errorMessage": "Failed to sign in with Cognito: Incorrect username or password.",
+  "requestIP": "::1"
+}
+2025-07-09 16:52:16 [ERROR]: Failed to sign in with Cognito: Incorrect username or password.
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "suzuki@fudosan-life.co.jp",
+    "password": "TempPass123!"
+  }
+}
+2025-07-09 16:52:46 [ERROR]: Authentication failed
+Stack: NotAuthorizedException: Incorrect username or password.
+    at Request.extractError (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/protocol/json.js:80:27)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:106:20)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:688:12)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:116:18)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "NotAuthorizedException",
+  "errorMessage": "Incorrect username or password.",
+  "awsErrorCode": "NotAuthorizedException",
+  "statusCode": 400,
+  "errorType": "NotAuthorizedException",
+  "requestId": "fab66deb-33e3-403d-8700-8b749fe28cda"
+}
+2025-07-09 16:52:46 [ERROR]: Cognito SIGN_IN - ERROR | {
+  "module": "COGNITO",
+  "operation": "SIGN_IN",
+  "email": "suz***@fudosan-life.co.jp",
+  "status": "ERROR",
+  "errorCode": "NotAuthorizedException",
+  "errorMessage": "Incorrect username or password.",
+  "errorType": "NotAuthorizedException"
+}
+2025-07-09 16:52:46 [ERROR]: Sign-in service failed
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "Error",
+  "errorMessage": "Failed to sign in with Cognito: Incorrect username or password."
+}
+2025-07-09 16:52:46 [ERROR]: Sign-in controller failed
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "Error",
+  "errorMessage": "Failed to sign in with Cognito: Incorrect username or password.",
+  "requestIP": "::1"
+}
+2025-07-09 16:52:46 [ERROR]: Failed to sign in with Cognito: Incorrect username or password.
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "suzuki@fudosan-life.co.jp",
+    "password": "TempPass123!"
+  }
+}
+2025-07-09 16:53:05 [ERROR]: Authentication failed
+Stack: NotAuthorizedException: Incorrect username or password.
+    at Request.extractError (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/protocol/json.js:80:27)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:106:20)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:688:12)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:116:18)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "NotAuthorizedException",
+  "errorMessage": "Incorrect username or password.",
+  "awsErrorCode": "NotAuthorizedException",
+  "statusCode": 400,
+  "errorType": "NotAuthorizedException",
+  "requestId": "6d7877dc-8ead-44f7-b5b6-86d00d30ec49"
+}
+2025-07-09 16:53:05 [ERROR]: Cognito SIGN_IN - ERROR | {
+  "module": "COGNITO",
+  "operation": "SIGN_IN",
+  "email": "suz***@fudosan-life.co.jp",
+  "status": "ERROR",
+  "errorCode": "NotAuthorizedException",
+  "errorMessage": "Incorrect username or password.",
+  "errorType": "NotAuthorizedException"
+}
+2025-07-09 16:53:05 [ERROR]: Sign-in service failed
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "Error",
+  "errorMessage": "Failed to sign in with Cognito: Incorrect username or password."
+}
+2025-07-09 16:53:05 [ERROR]: Sign-in controller failed
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "Error",
+  "errorMessage": "Failed to sign in with Cognito: Incorrect username or password.",
+  "requestIP": "::1"
+}
+2025-07-09 16:53:05 [ERROR]: Failed to sign in with Cognito: Incorrect username or password.
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "suzuki@fudosan-life.co.jp",
+    "password": "TempPass123!"
+  }
+}
+2025-07-09 16:58:47 [ERROR]: Authentication failed
+Stack: NotAuthorizedException: Incorrect username or password.
+    at Request.extractError (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/protocol/json.js:80:27)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:106:20)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:688:12)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:116:18)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "NotAuthorizedException",
+  "errorMessage": "Incorrect username or password.",
+  "awsErrorCode": "NotAuthorizedException",
+  "statusCode": 400,
+  "errorType": "NotAuthorizedException",
+  "requestId": "4b6689fd-f871-497a-b20f-b06022b02d31"
+}
+2025-07-09 16:58:47 [ERROR]: Cognito SIGN_IN - ERROR | {
+  "module": "COGNITO",
+  "operation": "SIGN_IN",
+  "email": "suz***@fudosan-life.co.jp",
+  "status": "ERROR",
+  "errorCode": "NotAuthorizedException",
+  "errorMessage": "Incorrect username or password.",
+  "errorType": "NotAuthorizedException"
+}
+2025-07-09 16:58:47 [ERROR]: Sign-in service failed
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "Error",
+  "errorMessage": "Failed to sign in with Cognito: Incorrect username or password."
+}
+2025-07-09 16:58:47 [ERROR]: Sign-in controller failed
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "Error",
+  "errorMessage": "Failed to sign in with Cognito: Incorrect username or password.",
+  "requestIP": "::1"
+}
+2025-07-09 16:58:47 [ERROR]: Failed to sign in with Cognito: Incorrect username or password.
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "suzuki@fudosan-life.co.jp",
+    "password": "TempPass123!"
+  }
+}
+2025-07-09 17:00:22 [ERROR]: Authentication failed
+Stack: NotAuthorizedException: Incorrect username or password.
+    at Request.extractError (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/protocol/json.js:80:27)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:106:20)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:688:12)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:116:18)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "NotAuthorizedException",
+  "errorMessage": "Incorrect username or password.",
+  "awsErrorCode": "NotAuthorizedException",
+  "statusCode": 400,
+  "errorType": "NotAuthorizedException",
+  "requestId": "8d7e6f01-a7cc-4f3b-95c2-c86fe2b19074"
+}
+2025-07-09 17:00:22 [ERROR]: Cognito SIGN_IN - ERROR | {
+  "module": "COGNITO",
+  "operation": "SIGN_IN",
+  "email": "suz***@fudosan-life.co.jp",
+  "status": "ERROR",
+  "errorCode": "NotAuthorizedException",
+  "errorMessage": "Incorrect username or password.",
+  "errorType": "NotAuthorizedException"
+}
+2025-07-09 17:00:22 [ERROR]: Sign-in service failed
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "Error",
+  "errorMessage": "Failed to sign in with Cognito: Incorrect username or password."
+}
+2025-07-09 17:00:22 [ERROR]: Sign-in controller failed
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "Error",
+  "errorMessage": "Failed to sign in with Cognito: Incorrect username or password.",
+  "requestIP": "::1"
+}
+2025-07-09 17:00:22 [ERROR]: Failed to sign in with Cognito: Incorrect username or password.
+Stack: Error: Failed to sign in with Cognito: Incorrect username or password.
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "suzuki@fudosan-life.co.jp",
+    "password": "TempPass123!"
+  }
+}
+2025-07-09 17:01:25 [ERROR]: Authentication failed
+Stack: NotAuthorizedException: Password attempts exceeded
+    at Request.extractError (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/protocol/json.js:80:27)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:106:20)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:688:12)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:116:18)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "NotAuthorizedException",
+  "errorMessage": "Password attempts exceeded",
+  "awsErrorCode": "NotAuthorizedException",
+  "statusCode": 400,
+  "errorType": "NotAuthorizedException",
+  "requestId": "4379de51-f60e-4821-8c1b-6c0149323bee"
+}
+2025-07-09 17:01:25 [ERROR]: Cognito SIGN_IN - ERROR | {
+  "module": "COGNITO",
+  "operation": "SIGN_IN",
+  "email": "suz***@fudosan-life.co.jp",
+  "status": "ERROR",
+  "errorCode": "NotAuthorizedException",
+  "errorMessage": "Password attempts exceeded",
+  "errorType": "NotAuthorizedException"
+}
+2025-07-09 17:01:25 [ERROR]: Sign-in service failed
+Stack: Error: Failed to sign in with Cognito: Password attempts exceeded
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "Error",
+  "errorMessage": "Failed to sign in with Cognito: Password attempts exceeded"
+}
+2025-07-09 17:01:25 [ERROR]: Sign-in controller failed
+Stack: Error: Failed to sign in with Cognito: Password attempts exceeded
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "Error",
+  "errorMessage": "Failed to sign in with Cognito: Password attempts exceeded",
+  "requestIP": "::1"
+}
+2025-07-09 17:01:25 [ERROR]: Failed to sign in with Cognito: Password attempts exceeded
+Stack: Error: Failed to sign in with Cognito: Password attempts exceeded
+    at signInCognito (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/utils/cognitoUtils.ts:203:11)
+    at processTicksAndRejections (node:internal/process/task_queues:105:5)
+    at async signInService (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/services/authService.ts:27:24)
+    at async Object.signInController (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/src/controllers/authController.ts:41:20) | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "suzuki@fudosan-life.co.jp",
+    "password": "TempPass123!"
+  }
+}
+2025-07-09 17:01:55 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "tak***@fudosan-life.co.jp",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-09 17:01:55 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "takahashi@fudosan-life.co.jp",
+    "password": "TempPass123!"
+  }
+}
+2025-07-09 17:02:05 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "nak***@osaka-fudosan.com",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-09 17:02:05 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "nakamura@osaka-fudosan.com",
+    "password": "TempPass123!"
+  }
+}
+2025-07-09 17:02:21 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "nak***@osaka-fudosan.com",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-09 17:02:21 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "nakamura@osaka-fudosan.com",
+    "password": "TempPass123!"
+  }
+}

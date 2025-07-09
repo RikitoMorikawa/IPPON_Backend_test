@@ -8,7 +8,7 @@ import {
   getPropertyById,
   deleteProperties,
   executeBatchDelete,
-} from '@src/models/propertyModel';
+} from '@src/repositroies/propertyModel';
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { CustomFastifyInstance } from '@src/interfaces/CustomFastifyInstance';
 import {

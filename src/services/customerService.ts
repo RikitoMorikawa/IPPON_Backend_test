@@ -1,5 +1,5 @@
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
-import { getCustomers, deleteCustomers } from '@src/models/customerModel';
+import { getCustomers, deleteCustomers } from '@src/repositroies/customerModel';
 import { uploadFileToS3 } from '@src/services/s3Service';
 import { Customer } from '@src/interfaces/customerInterfaces';
 import { CustomFastifyInstance } from '@src/interfaces/CustomFastifyInstance';
@@ -9,9 +9,9 @@ export const getCustomerService = async (
   ddbDocClient: DynamoDBDocumentClient,
   clientId: string,
   firstName: string,
-  familyName: string,
+  lastName: string,
 ): Promise<Customer[]> => {
-  return await getCustomers(ddbDocClient, clientId, firstName, familyName);
+  return await getCustomers(ddbDocClient, clientId, firstName, lastName);
 };
 
 export const deleteCustomerRecords = async (

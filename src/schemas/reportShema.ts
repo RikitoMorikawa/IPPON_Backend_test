@@ -167,7 +167,7 @@ export const createReportBodySchema = z.object({
   report_start_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Invalid date format').describe('Report Start Date / 報告開始日 (YYYY-MM-DD)'),
   report_end_date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Invalid date format').describe('Report End Date / 報告終了日 (YYYY-MM-DD)'),
   customer_interactions: z.array(z.object({
-    customer_id: z.string().describe('Customer ID / 顧客ID'),
+    customer_id: z.string().describe('Customer ID / 個人顧客ID'),
     customer_name: z.string().describe('Customer Name / 顧客名'),
     inquired_at: z.string().describe('DATETIME (YYYY-MM-DD hh:mm:ss) / 問い合わせ日時'),
     category: z.string().optional().describe('Category / 問い合わせカテゴリ'),
@@ -189,7 +189,7 @@ export const createReportResponseSchema = z.object({
   business_meeting_count: z.number().optional().describe('Business meeting count / 期間内の商談実施人数'),
   viewing_count: z.number().optional().describe('Previews / 期間内の内見人数'),
   customer_interactions: z.array(z.object({
-    customer_id: z.string().describe('Customer ID / 顧客ID'),
+    customer_id: z.string().describe('Customer ID / 個人顧客ID'),
     customer_name: z.string().describe('Customer Name / 顧客名'),
     inquired_at: z.string().describe('DATETIME (YYYY-MM-DD hh:mm:ss) / 問い合わせ日時'),
     category: z.string().optional().describe('Category / カテゴリ'),

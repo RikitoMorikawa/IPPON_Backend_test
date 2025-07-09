@@ -3,7 +3,8 @@ import { FastifyInstance } from 'fastify';
 import dotenv from 'dotenv';
 import { registerComponents } from './services/componentsService';
 import config from './config';
-// import { updateAccessTokenDuration } from './utils/cognitoUtils';
+import { startReportBatchJob } from '@src/jobs/reportBatchJob';
+
 
 dotenv.config();
 
@@ -27,6 +28,8 @@ const startServer = async (): Promise<void> => {
 
     await app.listen({ port: config.server.port, host: config.server.host });
     registerComponents(app);
+    startReportBatchJob((app as any).ddbDocClient);
+
     console.log(`✅ Server running at http://${config.server.host}:${config.server.port}`);
     console.log(`📚 API Documentation available at http://${config.server.host}:${config.server.port}/documentation`);
     console.log('🔍 Current Environment:', config.environment);

@@ -1,4 +1,4 @@
-import { Inquiry } from '@src/types/inquiry';
+import { Inquiry } from '@src/models/inquiryType';
 import { v4 as uuidv4 } from 'uuid';
 import {
   UpdateCommand,

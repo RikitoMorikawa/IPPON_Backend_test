@@ -38,7 +38,7 @@ export const signInService = async (email: string, password: string) => {
       sub: decoded.sub,
       hasClientId: !!decoded["custom:clientId"],
       hasGivenName: !!decoded["given_name"],
-      hasFamilyName: !!decoded["family_name"],
+      hasFamilyName: !!decoded["last_name"],
       hasType: !!decoded["custom:type"],
       hasRole: !!decoded["custom:role"]
     });
@@ -103,7 +103,7 @@ export const signInService = async (email: string, password: string) => {
 
     const userData = {
       client_id: clientId,
-      client_name: `${decoded["given_name"] || ''} ${decoded["family_name"] || ''}`.trim(),
+      client_name: `${decoded["given_name"] || ''} ${decoded["last_name"] || ''}`.trim(),
       token,
       employee_id: decoded["sub"] || '',
       type: decoded["custom:type"] || '',

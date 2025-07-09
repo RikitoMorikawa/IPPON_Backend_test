@@ -44,7 +44,7 @@ export const sendPassword = async (email: string, tempPassword: string): Promise
 <head>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-last: Arial, sans-serif;
             line-height: 1.6;
         }
 

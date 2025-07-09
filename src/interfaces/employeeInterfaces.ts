@@ -1,12 +1,11 @@
 export interface UpdateEmployeeRequestBody {
     client_id: string;
     employee_id: string;
-    family_name?: string;
+    last_name?: string;
     first_name?: string;
-    family_name_kana?: string;
+    last_name_kana?: string;
     first_name_kana?: string;
     mail_address?: string;
-    personal_phone_number?: string;
     ippn_mail_address?: string;
     role?: string;
 }
@@ -32,10 +31,10 @@ export interface Employee {
     employee_id: string;
     admin_flg: boolean;
     role: string;
-    family_name: string;
+    last_name: string;
     first_name: string;
     first_name_kana: string;
-    family_name_kana: string;
+    last_name_kana: string;
     mail_address: string;
     ippn_mail_address: string;
     personal_phone_number: string;
@@ -49,14 +48,14 @@ export interface CreateEmployeeRequestBody {
     client_id?: string;
     admin_flg?: boolean;
     role?: any;
-    family_name: string;
+    last_name: string;
     is_approve?: boolean;
     employee_id?: string;
     type?: string;
     password?: string;
     first_name: string;
     first_name_kana: string;
-    family_name_kana: string;
+    last_name_kana: string;
     mail_address: string;
     ippn_mail_address?: string;
     personal_phone_number: string;
@@ -72,9 +71,9 @@ export interface EmployeeData {
     update_timestamp: string;
     employee_id: string;
     admin_flg: boolean;
-    family_name: string;
+    last_name: string;
     first_name: string;
-    family_name_kana: string;
+    last_name_kana: string;
     first_name_kana: string;
     ippn_mail_address: string;
     personal_mail_number: string;

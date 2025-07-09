@@ -1,4 +1,4 @@
-import { Report } from '@src/types/report';
+import { Report } from '@src/models/report';
 
 export function validateReport(report: Report): string[] {
   const errors: string[] = [];

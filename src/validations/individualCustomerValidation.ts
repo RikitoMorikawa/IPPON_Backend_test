@@ -10,7 +10,7 @@ export const updateCustomerSchema = yup.object().shape({
   client_id: yup.string().optional(),
   customer_created_at: yup.string().required(),
   updates: yup.object().required().shape({
-    family_name: yup.string(),
+    last_name: yup.string(),
     first_name: yup.string(),
     phone_number: yup.string(),
     mail_address: yup.string().email(),

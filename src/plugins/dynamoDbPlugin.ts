@@ -7,6 +7,7 @@ import {
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import fp from 'fastify-plugin';
 import config from '@src/config';
+import { tableKeyStructures, DynamoDBSchemas, getSchemaByTableName } from '@src/schemas/dynamoSchemas';
 
 const dynamoDbPlugin = fp(async (app) => {
   try {
@@ -50,34 +51,36 @@ const dynamoDbPlugin = fp(async (app) => {
       app.log.info(`Table "${tableConfig.TableName}" created successfully.`);
     };
 
-    // Define custom key schema per table
-    const tableKeyMap: Record<string, { hashKey: string; rangeKey: string }> = {
-      inquiry: { hashKey: 'client_id', rangeKey: 'inquired_at' },
-      properties: { hashKey: 'client_id', rangeKey: 'created_at' },
-      report: { hashKey: 'client_id', rangeKey: 'created_at' },
-    };
-
-    for (const [key, tableName] of Object.entries(config.tableNames)) {
+    // dynamoSchemas.tsの定義を使用してテーブルを作成
+    for (const [configKey, tableName] of Object.entries(config.tableNames)) {
       app.log.info(`Checking if table "${tableName}" exists...`);
       const tableExists = await checkTableExists(tableName);
 
       if (!tableExists) {
         app.log.info(`Table "${tableName}" does not exist. Creating...`);
 
-        const { hashKey, rangeKey } = tableKeyMap[key] || {
-          hashKey: 'client_id',
-          rangeKey: 'created_at',
-        };
+        // スキーマ定義を取得
+        const schema = getSchemaByTableName(configKey);
+        if (!schema) {
+          app.log.error(`Schema not found for table: ${configKey}`);
+          throw new Error(`Schema not found for table: ${configKey}`);
+        }
+
+        const { partitionKey, sortKey } = schema.keys;
+        
+        // Log schema information for debugging
+        app.log.info(`Creating table "${tableName}" with PK: ${partitionKey}, SK: ${sortKey}`);
+        app.log.info(`Schema description: ${schema.description}`);
 
         const tableConfig = {
           TableName: tableName,
           KeySchema: [
-            { AttributeName: hashKey, KeyType: 'HASH' },
-            { AttributeName: rangeKey, KeyType: 'RANGE' },
+            { AttributeName: partitionKey, KeyType: 'HASH' },
+            { AttributeName: sortKey, KeyType: 'RANGE' },
           ],
           AttributeDefinitions: [
-            { AttributeName: hashKey, AttributeType: 'S' },
-            { AttributeName: rangeKey, AttributeType: 'S' },
+            { AttributeName: partitionKey, AttributeType: 'S' },
+            { AttributeName: sortKey, AttributeType: 'S' },
           ],
           ProvisionedThroughput: {
             ReadCapacityUnits: 5,
@@ -86,6 +89,11 @@ const dynamoDbPlugin = fp(async (app) => {
         };
 
         await createTable(tableConfig);
+        
+        // スキーマ情報をログに出力（デバッグ用）
+        app.log.info(`Table "${tableName}" created with schema:`);
+        app.log.info(`- Required fields: ${schema.requiredFields.join(', ')}`);
+        app.log.info(`- Optional fields: ${schema.optionalFields.join(', ')}`);
       } else {
         app.log.info(`Table "${tableName}" already exists.`);
       }

@@ -31,8 +31,8 @@ export const employeeHandler = async (
                 const createReq = req as FastifyRequest<{ Body: CreateEmployeeRequestBody }>;
                 const data = createReq.body;
 
-                if (!data.family_name || !data.first_name || !data.family_name_kana ||
-                    !data.first_name_kana || !data.mail_address || !data.personal_phone_number) {
+                if (!data.last_name || !data.first_name || !data.last_name_kana ||
+                    !data.first_name_kana || !data.mail_address) {
                     return reply.status(400).send(errorResponse(400, ERROR_MESSAGES.REQUIRE_PARAMETERS));
                 }
 

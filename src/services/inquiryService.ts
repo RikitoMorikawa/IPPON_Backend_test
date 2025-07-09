@@ -28,7 +28,7 @@ export function splitPayload(formData: Record<string, any>) {
     'client_id',
     'customer_created_at',
     'customer_id',
-    'employee_id',
+    'employee_id', // 顧客の担当者ID
     'first_name',
     'last_name',
     'middle_name',
@@ -52,7 +52,7 @@ export function splitPayload(formData: Record<string, any>) {
     'id',
     'method',
     'property_id',
-    'employee_id',
+    'employee_id', // 問い合わせの担当者ID（同じemployee_idを使用）
     'property_name',
     'type',
     'summary',

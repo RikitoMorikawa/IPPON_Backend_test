@@ -2,7 +2,7 @@ import { FastifyReply } from 'fastify';
 import { errorResponse, successResponse } from '@src/responses';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@src/responses/constants/propertyConstant';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
-import { createProperty, isPropertyNameTaken } from '@src/models/propertyModel';
+import { createProperty, isPropertyNameTaken } from '@src/repositroies/propertyModel';
 import { v4 as uuidv4 } from 'uuid';
 import { Property } from '@src/interfaces/propertyInterfaces';
 

@@ -1,11 +1,6 @@
-export interface CustomerInteraction {
-  customer_id?: string;
-  date?: string;
-  title?: string;
-  customer_name?: string;
-  category?: string;
-  content?: string;
-}
+import { PaginatedListResponse, SuccessResponse } from './responseInterfaces';
+import { CustomerInteraction } from '@src/models/reportType';
+import { ReportStatus } from '@src/enums/reportEnums';
 
 export interface Report {
   id: string;
@@ -72,3 +67,32 @@ export interface ExcelFormattedReport {
   title: string;
   isDraft: boolean;
 }
+
+
+export interface ReportListData {
+  id: string;
+  title: string;
+  created_at: string;
+  report_start_date: string;
+  report_end_date: string; 
+  is_draft: boolean;
+}
+
+export type ReportListResponse = PaginatedListResponse<ReportListData>;
+
+export interface ReportDetailData {
+  id: string;
+  title: string;
+  current_status: ReportStatus;
+  summary: string;
+  property_id: string;
+  is_suumo_published: boolean;
+  views_count: number;
+  inquiries_count: number;
+  business_meeting_count: number;
+  viewing_count: number;
+  created_at: string;
+  customer_interactions: CustomerInteraction[];
+}
+
+export type ReportDetailResponse = SuccessResponse<ReportDetailData>;

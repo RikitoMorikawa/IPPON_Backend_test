@@ -1,6 +1,6 @@
-import { Report } from '@src/types/report';
+import { Report } from '@src/models/report';
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
-import * as reportModel from '@src/models/reportModel';
+import * as reportModel from '@src/repositroies/reportModel';
 import { ReportErrors } from '@src/responses/reportResponse';
 import { v4 as uuidv4 } from 'uuid';
 import { PrismaClient } from '@prisma/client';
@@ -8,6 +8,7 @@ import { ScanCommand } from '@aws-sdk/lib-dynamodb';
 import config from '@src/config';
 import { generateReportExcel } from './excelService';
 import axios from 'axios';
+import { REPORT_STATUSES } from '@src/enums/reportEnums';
 
 const prisma = new PrismaClient();
 
@@ -70,6 +71,22 @@ export const getReportDetails = async (
 ) => {
   try {
     const report = await reportModel.getReportDetails(ddbDocClient, report_id, client_id);
+    if (!report) {
+      throw ReportErrors.reportNotFound({ report_id });
+    }
+    return report;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export const getReportDetailsForAPI = async (
+  report_id: string,
+  client_id: string,
+  ddbDocClient: DynamoDBDocumentClient,
+) => {
+  try {
+    const report = await reportModel.getReportDetailsForAPI(ddbDocClient, report_id, client_id);
     if (!report) {
       throw ReportErrors.reportNotFound({ report_id });
     }
@@ -180,7 +197,8 @@ export const createReport = async (
 
 
     // STEP 2: Summarize each inquiry using Meeting Report API
-    const summarizeResponse = await axios.post('https://summary-ai.ippon-cloud.com/api/v1/meeting-report', {
+    let summarizeResponse;
+    const requestData = {
       inquiry_infos: reportData.customer_interactions?.map((interaction, index, array) => {
         // Check if this is a new inquiry based on the title
         const isFirstInteraction = interaction.title === '新規問い合わせ';
@@ -190,28 +208,30 @@ export const createReport = async (
           customer_id: interaction.customer_id,
           customer_name: interaction.customer_name,
           property_name: reportData.property_name,
-          inquiry_type: interaction.type || 'email',
-          inquiry_title: interaction.title || 'inquiry',
+          inquiry_type: interaction.type || '',
+          inquiry_title: interaction.title || 'お問い合わせ',
           summary: interaction.summary,
-          category: interaction.category || 'inquiry',
           date: interaction.inquired_at.split(' ')[0],
           first_interaction_flag: isFirstInteraction
         };
       })
-    });
+    };
 
+    console.log('Meeting Report API Request:', JSON.stringify(requestData, null, 2));
 
-    // Add error handling with detailed logging
-    if (summarizeResponse.status !== 200) {
+    try {
+      summarizeResponse = await axios.post('https://summary-ai.ippon-cloud.com/api/v1/meeting-report', requestData);
+    } catch (error: any) {
       console.error('Meeting Report API Error:', {
-        status: summarizeResponse.status,
-        data: summarizeResponse.data,
+        status: error.response?.status,
+        statusText: error.response?.statusText,
+        data: error.response?.data,
         request: {
           url: 'https://summary-ai.ippon-cloud.com/api/v1/meeting-report',
-          data: reportData.customer_interactions
+          data: requestData
         }
       });
-      throw new Error(`Meeting Report API error: ${JSON.stringify(summarizeResponse.data)}`);
+      throw new Error(`Meeting Report API error (${error.response?.status}): ${JSON.stringify(error.response?.data)}`);
     }
 
     console.log("hello", summarizeResponse.data.data.inquiry_infos);
@@ -260,16 +280,20 @@ export const createReport = async (
     // STEP 4: Create the report in DynamoDB
     const id = `RPT-${reportData.report_start_date.replace(/-/g, '')}-${uuidv4().slice(0, 3).toUpperCase()}`;
 
+    // Generate title with date format
+    const reportDate = new Date().toISOString().split('T')[0];
+    const formattedTitle = `販売状況報告書_${reportDate}`;
+
     const report: Report = {
       id,
       client_id,
       property_id: reportData.property_id,
       report_start_date: reportData.report_start_date,
       report_end_date: reportData.report_end_date,
-      title: `Report ${id}`,
+      title: formattedTitle,
       is_draft: true,
-      report_date: new Date().toISOString().split('T')[0],
-      current_status: 'draft',
+      report_date: reportDate,
+      current_status: REPORT_STATUSES.RECRUITING,
       summary: summaryReport,
       // 物件テーブルから必須フィールドを取得
       price: property.price || '0',
@@ -299,7 +323,7 @@ export const createReport = async (
       client_id,
       property_id: reportData.property_id,
       property_name: reportData.property_name,
-      current_status: 'draft',
+      current_status: REPORT_STATUSES.RECRUITING,
       summary: summaryReport,
       is_suumo_published: property.is_suumo_published || false,
       views_count: property.views_count || 0,
@@ -462,6 +486,54 @@ export const saveReport = async (
     };
   } catch (error) {
     console.error('Error in saveReport:', error);
+    throw error;
+  }
+};
+
+export const getInquiriesForPeriod = async (
+  ddbDocClient: DynamoDBDocumentClient,
+  client_id: string,
+  property_id: string,
+  start_date: string,
+  end_date: string,
+) => {
+  try {
+    // 顧客情報を取得
+    const customerResult = await ddbDocClient.send(new ScanCommand({
+      TableName: config.tableNames.customers,
+      FilterExpression: 'client_id = :client_id',
+      ExpressionAttributeValues: {
+        ':client_id': client_id
+      }
+    }));
+    const customers = customerResult.Items || [];
+
+    // 期間内の問い合わせを検索
+    const inquiryResult = await ddbDocClient.send(new ScanCommand({
+      TableName: config.tableNames.inquiry,
+      FilterExpression: 'client_id = :client_id AND property_id = :property_id AND inquired_at BETWEEN :start_date AND :end_date',
+      ExpressionAttributeValues: {
+        ':client_id': client_id,
+        ':property_id': property_id,
+        ':start_date': start_date,
+        ':end_date': end_date
+      }
+    }));
+
+    const inquiries = (inquiryResult.Items || []).map(inquiry => {
+      const customer = customers.find(c => c.id === inquiry.customer_id);
+      return {
+        ...inquiry,
+        customer
+      };
+    });
+
+    return {
+      inquiries,
+      total: inquiries.length
+    };
+  } catch (error) {
+    console.error('Error in getInquiriesForPeriod:', error);
     throw error;
   }
 };

@@ -2,7 +2,7 @@ import { Workbook, Worksheet } from 'exceljs';
 import * as reportService from './reportService';
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { ReportErrors } from '@src/responses/reportResponse';
-import { Report } from '@src/types/report';
+import { Report } from '@src/models/report';
 import { ExcelFormattedReport } from '@src/interfaces/reportInterfaces';
 
 // Excel生成メイン関数

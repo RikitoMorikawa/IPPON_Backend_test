@@ -217,7 +217,7 @@ describe('Inquiries API Integration Tests', () => {
 
     it('2.3 存在しない顧客での問い合わせ作成', async () => {
       const inquiryWithInvalidCustomer = {
-        customer_id: 'cust-999', // 存在しない顧客ID
+        customer_id: 'cust-999', // 存在しない個人顧客ID
         property_id: 'prop-001',
         inquiry_type: '購入希望',
         inquiry_content: 'テスト問い合わせ'

@@ -4,15 +4,15 @@ import { errorResponse, successResponse } from '@src/responses';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@src/responses/constants/customerConstants';
 import { getClientId, getEmployeeId } from '@src/middleware/userContext';
 import { checkDynamoDBClient, getDynamoDBClient } from '@src/interfaces/checkDynamoDBClient';
-import { getAllCustomers, incrementPropertyInquiryCount } from '@src/models/customerModel';
-import { getAllInquires, searchInquiryByProperty } from '@src/models/inquiryModel';
-import { getAllProperties, getPropertyById } from '@src/models/propertyModel';
+import { getAllCustomers, incrementPropertyInquiryCount } from '@src/repositroies/customerModel';
+import { getAllInquires, searchInquiryByProperty } from '@src/repositroies/inquiryModel';
+import { getAllProperties, getPropertyById } from '@src/repositroies/propertyModel';
 import { InquiryListByPropertyParams } from '@src/interfaces/inquiryInterfaces';
-import { getClientById, getEmployeeById } from '../models/clientModel';
+import { getClientById, getEmployeeById } from '../repositroies/clientModel';
 import { processFormData } from '@src/services/customerService';
 import { inquirySchema } from '@src/validations/inquiryValidation';
 import { v4 as uuidv4 } from 'uuid';
-import { createNewInquiry, saveInquiry } from '@src/models/inquiryModel';
+import { createNewInquiry, saveInquiry } from '@src/repositroies/inquiryModel';
 
 export const inquiryController = async (
     app: CustomFastifyInstance,
@@ -40,7 +40,7 @@ export const inquiryController = async (
 
                     const newInquiry = createNewInquiry({
                         client_id: clientId,
-                        employee_id: employeeId,
+                        employee_id: formData.employee_id || '', // フォームデータから取得、未指定の場合は空文字
                         customer_id: formData.customer_id, // should be passed in formData
                         property_id: formData.property_id,
                         type: formData.type,

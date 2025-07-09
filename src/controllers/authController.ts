@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import dotenv from 'dotenv';
-import { checkEmailExists } from '@src/models/authModel';
+import { checkEmailExists } from '@src/repositroies/authModel';
 import { changePasswordSeriveInCognito, changeUserPasswordSeriveInCognito, LogoutService, ResetPasswordService, sendOtpService, signInService, verifyOtpService } from '../services/authService';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '../responses/constants/authConstant';
 import { changePasswordBodySchema, resetPasswordBodySchema, sendOtpBodySchema, signInBodySchema, verifyOtpBodySchema } from '@src/schemas/authSchema';

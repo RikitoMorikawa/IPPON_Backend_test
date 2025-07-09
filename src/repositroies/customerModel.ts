@@ -14,7 +14,7 @@ import { v4 as uuidv4 } from 'uuid';
 import config from '@src/config';
 import { errorResponse } from '@src/responses';
 import { Customer } from '@src/interfaces/customerInterfaces';
-import { Inquiry } from '@src/types/inquiry';
+import { Inquiry } from '@src/models/inquiryType';
 import dayjs from 'dayjs';
 import { ERROR_MESSAGES } from '@src/responses/constants/customerConstants';
 
@@ -101,15 +101,15 @@ export const getCustomers = async (
   ddbDocClient: DynamoDBDocumentClient,
   clientId: string,
   firstName: string,
-  familyName: string,
+  lastName: string,
 ): Promise<Customer[]> => {
   const customerParams = {
     TableName: config.tableNames.customers,
-    FilterExpression: 'client_id = :clientId AND (contains(first_name, :firstName) OR contains(last_name, :familyName) OR contains(middle_name, :familyName))',
+    FilterExpression: 'client_id = :clientId AND (contains(first_name, :firstName) OR contains(last_name, :lastName) OR contains(middle_name, :lastName))',
     ExpressionAttributeValues: {
       ':clientId': clientId,
       ':firstName': firstName,
-      ':familyName': familyName,
+      ':lastName': lastName,
     },
   };
 
@@ -146,22 +146,43 @@ export async function verifyCustomerExists(
   customer_id: string,
   reply: FastifyReply,
 ): Promise<boolean> {
-  const getCommand = new GetCommand({
-    TableName: config.tableNames.customers,
-    Key: {
-      client_id,
-      created_at,
-    },
-  });
+  try {
+    // First, try to get the customer using the provided keys
+    const getCommand = new GetCommand({
+      TableName: config.tableNames.customers,
+      Key: {
+        client_id,
+        created_at,
+      },
+    });
 
-  const existingItem = await ddbDocClient.send(getCommand);
+    const existingItem = await ddbDocClient.send(getCommand);
 
-  if (!existingItem.Item || existingItem.Item.id !== customer_id) {
-    reply.status(404).send(errorResponse(404, ERROR_MESSAGES.RECORD_NOT_FOUND_ERROR));
+    if (existingItem.Item && existingItem.Item.id === customer_id) {
+      return true;
+    }
+
+    // If not found with provided keys, try to find by customer_id and client_id
+    const scanParams = {
+      TableName: config.tableNames.customers,
+      FilterExpression: 'id = :customer_id AND client_id = :client_id',
+      ExpressionAttributeValues: {
+        ':customer_id': customer_id,
+        ':client_id': client_id,
+      },
+    };
+
+    const scanResult = await ddbDocClient.send(new ScanCommand(scanParams));
+    
+    if (scanResult.Items && scanResult.Items.length > 0) {
+      return true;
+    }
+
+    return false;
+  } catch (error) {
+    console.error('Error verifying customer existence:', error);
     return false;
   }
-
-  return true;
 }
 
 /**
@@ -174,48 +195,89 @@ export async function executeCustomerUpdate(
   customer_id: string,
   updates: Record<string, any>,
 ): Promise<any> {
-  const updateExpressions: string[] = [];
-  const expressionAttributeValues: Record<string, any> = {
-    ':customer_id': customer_id,
-  };
-  const expressionAttributeNames: Record<string, string> = {
-    '#id': 'id',
-  };
+  try {
+    // First, find the actual customer record to get the correct created_at
+    let actualCreatedAt = created_at;
+    
+    // Try to get customer with provided created_at first
+    const getCommand = new GetCommand({
+      TableName: config.tableNames.customers,
+      Key: {
+        client_id,
+        created_at,
+      },
+    });
 
-  Object.entries(updates).forEach(([key, value]) => {
-    const attributeKey = `#${key}`;
-    const valueKey = `:${key}`;
+    const existingItem = await ddbDocClient.send(getCommand);
+    
+    if (!existingItem.Item || existingItem.Item.id !== customer_id) {
+      // If not found, scan for the customer by ID and client_id
+      const scanParams = {
+        TableName: config.tableNames.customers,
+        FilterExpression: 'id = :customer_id AND client_id = :client_id',
+        ExpressionAttributeValues: {
+          ':customer_id': customer_id,
+          ':client_id': client_id,
+        },
+      };
 
-    updateExpressions.push(`${attributeKey} = ${valueKey}`);
-    expressionAttributeValues[valueKey] = value;
-    expressionAttributeNames[attributeKey] = key;
-  });
+      const scanResult = await ddbDocClient.send(new ScanCommand(scanParams));
 
-  if (updateExpressions.length === 0) {
-    throw new Error(ERROR_MESSAGES.NO_VALID_FIELD_ERROR);
+      if (!scanResult.Items || scanResult.Items.length === 0) {
+        throw new Error(ERROR_MESSAGES.RECORD_NOT_FOUND_ERROR);
+      }
+      
+      actualCreatedAt = scanResult.Items[0].created_at;
+    }
+
+    const updateExpressions: string[] = [];
+    const expressionAttributeValues: Record<string, any> = {
+      ':customer_id': customer_id,
+    };
+    const expressionAttributeNames: Record<string, string> = {
+      '#id': 'id',
+    };
+
+    Object.entries(updates).forEach(([key, value]) => {
+      const attributeKey = `#${key}`;
+      const valueKey = `:${key}`;
+
+      updateExpressions.push(`${attributeKey} = ${valueKey}`);
+      expressionAttributeValues[valueKey] = value;
+      expressionAttributeNames[attributeKey] = key;
+    });
+
+    if (updateExpressions.length === 0) {
+      throw new Error(ERROR_MESSAGES.NO_VALID_FIELD_ERROR);
+    }
+
+    const updateParams: UpdateCommandInput = {
+      TableName: config.tableNames.customers,
+      Key: {
+        client_id,
+        created_at: actualCreatedAt,
+      },
+      ConditionExpression: '#id = :customer_id',
+      UpdateExpression: `SET ${updateExpressions.join(', ')}`,
+      ExpressionAttributeValues: expressionAttributeValues,
+      ExpressionAttributeNames: expressionAttributeNames,
+      ReturnValues: 'ALL_NEW',
+    };
+
+    const result = await ddbDocClient.send(new UpdateCommand(updateParams));
+
+    return result;
+  } catch (error) {
+    console.error('Error updating customer:', error);
+    throw error;
   }
-
-  const updateParams: UpdateCommandInput = {
-    TableName: config.tableNames.customers,
-    Key: {
-      client_id,
-      created_at,
-    },
-    ConditionExpression: '#id = :customer_id',
-    UpdateExpression: `SET ${updateExpressions.join(', ')}`,
-    ExpressionAttributeValues: expressionAttributeValues,
-    ExpressionAttributeNames: expressionAttributeNames,
-    ReturnValues: 'ALL_NEW',
-  };
-
-  return ddbDocClient.send(new UpdateCommand(updateParams));
 }
 
 export const searchCustomerAndInquiry = async (
   ddbDocClient: DynamoDBDocumentClient,
   clientId: string,
   firstName: string,
-  familyName: string,
+  lastName: string,
   inquiryTimestamp?: string,
   inquiryMethod?: string,
   employeeName?: string,
@@ -234,11 +296,11 @@ export const searchCustomerAndInquiry = async (
     customerExprAttrValues[':firstName'] = firstName;
   }
 
-  if (familyName) {
+  if (lastName) {
     customerFilterExpressions.push(
-      '(contains(last_name, :familyName) OR contains(middle_name, :familyName))',
+      '(contains(last_name, :lastName) OR contains(middle_name, :lastName))',
     );
-    customerExprAttrValues[':familyName'] = familyName;
+    customerExprAttrValues[':lastName'] = lastName;
   }
 
   const customerParams = {

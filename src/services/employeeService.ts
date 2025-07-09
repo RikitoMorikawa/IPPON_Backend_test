@@ -11,7 +11,7 @@ const cognito = new AWS.CognitoIdentityServiceProvider();
 const EMPLOYEE_IPPON_CLIENT_EMPLOYEE_AWS_USER_POOL_ID = process.env.IPPON_CLIENT_EMPLOYEE_AWS_USER_POOL_ID;
 
 export const createEmployeeService = async (data: CreateEmployeeRequestBody) => {
-    if (!data.family_name || !data.first_name || !data.mail_address || !data.client_id) {
+    if (!data.last_name || !data.first_name || !data.mail_address || !data.client_id) {
         throw new Error(ERROR_MESSAGES.MISSING_PARAMETERS);
     }
 
@@ -25,11 +25,13 @@ export const createEmployeeService = async (data: CreateEmployeeRequestBody) => 
     const newEmployee = await prisma.mstClientEmployees.create({
         data: {
             client_id: data.client_id,
-            registring_admin_member_id: 'temp-member-id', // TODO: 実際のメンバーIDを設定
+            // TODO: 作成者のIDを設定する必要あり。
+            registring_admin_member_id: null, 
             is_active: true,
-            last_name: data.family_name,
+            is_admin: data.role === 'admin',
+            last_name: data.last_name,
             first_name: data.first_name,
-            last_name_kana: data.family_name_kana || '',
+            last_name_kana: data.last_name_kana || '',
             first_name_kana: data.first_name_kana || '',
             mail_address: data.mail_address
         },
@@ -131,19 +133,34 @@ export const updateEmployeeService = async (data: UpdateEmployeeRequestBody) => 
         throw new Error(ERROR_MESSAGES.NOT_FOUND_EMPLOYEE);
     }
 
+    // 1. PostgreSQL更新
     const updatedEmployee = await prisma.mstClientEmployees.update({
         where: { id: existingEmployee.id },
         data: {
-            last_name: data.family_name,
+            last_name: data.last_name,
             first_name: data.first_name,
-            last_name_kana: data.family_name_kana,
+            last_name_kana: data.last_name_kana,
             first_name_kana: data.first_name_kana,
-            mail_address: data.mail_address
+            mail_address: data.mail_address,
+            is_admin: data.role === 'admin'
         },
         include: {
             client: true
         }
     });
+
+    // 2. Cognito更新
+    try {
+        await updateEmployeeInCognito(existingEmployee.mail_address, {
+            email: data.mail_address,
+            family_name: data.last_name,
+            given_name: data.first_name,
+            role: data.role
+        });
+    } catch (error) {
+        console.error('Error updating user in Cognito:', error);
+        // Cognito更新失敗時は警告のみ（PostgreSQL更新は成功しているため）
+    }
 
     return updatedEmployee;
 };
@@ -224,6 +241,53 @@ export const deleteUserFromCognito = async (mailAddress: string): Promise<void> 
     }
 };
 
+export const updateEmployeeInCognito = async (currentEmail: string, updateData: {
+    email?: string;
+    family_name?: string;
+    given_name?: string;
+    role?: string;
+}): Promise<void> => {
+    try {
+        const attributes = [];
+
+        if (updateData.email && updateData.email !== currentEmail) {
+            attributes.push({ Name: 'email', Value: updateData.email });
+            attributes.push({ Name: 'email_verified', Value: 'true' });
+        }
+        if (updateData.family_name) {
+            attributes.push({ Name: 'family_name', Value: updateData.family_name });
+        }
+        if (updateData.given_name) {
+            attributes.push({ Name: 'given_name', Value: updateData.given_name });
+        }
+        if (updateData.role) {
+            attributes.push({ Name: 'custom:role', Value: updateData.role });
+        }
+
+        if (attributes.length > 0) {
+            await cognito.adminUpdateUserAttributes({
+                UserPoolId: EMPLOYEE_IPPON_CLIENT_EMPLOYEE_AWS_USER_POOL_ID as string,
+                Username: currentEmail,
+                UserAttributes: attributes
+            }).promise();
+        }
+
+        // メールアドレス変更の場合、ユーザー名も更新が必要
+        if (updateData.email && updateData.email !== currentEmail) {
+            // Cognitoではユーザー名変更は直接サポートされていないため、
+            // 必要に応じて追加処理を実装
+            console.warn('Email change detected. Consider implementing username update logic.');
+        }
+    } catch (error: any) {
+        console.error('Cognito Update Error:', error);
+        if (error.code === 'UserNotFoundException') {
+            console.warn(`User ${currentEmail} not found in Cognito User Pool`);
+            return;
+        }
+        throw new Error('Error updating user in Cognito');
+    }
+};
+
 export const createEmployeeInCognito = async (data: CreateEmployeeRequestBody): Promise<string> => {
     try {
         if (!data.password) {
@@ -240,7 +304,7 @@ export const createEmployeeInCognito = async (data: CreateEmployeeRequestBody): 
                 { Name: 'custom:type', Value: data.type || 'employee' },
                 { Name: 'custom:role', Value: data.role || 'general' },
                 { Name: 'custom:is_approve', Value: 'true' },
-                { Name: 'family_name', Value: data.family_name },
+                { Name: 'family_name', Value: data.last_name },
                 { Name: 'given_name', Value: data.first_name },
             ],
             MessageAction: 'SUPPRESS',

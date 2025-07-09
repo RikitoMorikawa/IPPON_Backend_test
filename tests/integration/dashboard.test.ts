@@ -11,7 +11,7 @@ import { mockDynamoDBDocumentClient, mockAuthHeaders, mockUserContext, mockDynam
     1.3 統計情報付きダッシュボードデータ取得
 
   2. エラーケース
-    2.1 存在しない顧客IDでのダッシュボード取得
+    2.1 存在しない個人顧客IDでのダッシュボード取得
     2.2 認証なしでのダッシュボード取得
 */
 
@@ -159,7 +159,7 @@ describe('Dashboard API Integration Tests', () => {
   });
 
   describe('エラーシナリオ', () => {
-    it('2.1 存在しない顧客IDでのダッシュボード取得', async () => {
+    it('2.1 存在しない個人顧客IDでのダッシュボード取得', async () => {
       const response = await app.inject({
         method: 'GET',
         url: '/api/v1/dashboard/cust-999',

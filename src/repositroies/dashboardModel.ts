@@ -4,8 +4,9 @@ import {
 } from '@aws-sdk/lib-dynamodb';
 import config from '@src/config';
 import dayjs from 'dayjs';
-
-
+import { DashboardInquiryData } from '@src/interfaces/dashboardInterfaces';
+import { PaginatedResponse } from '@src/interfaces/responseInterfaces';
+import { getEmployeeById } from '@src/repositroies/clientModel';
 
 export const searchDashboard = async (
   ddbDocClient: DynamoDBDocumentClient,
@@ -14,13 +15,12 @@ export const searchDashboard = async (
   lastName: string,
   inquiryTimestamp: string,
   inquiryMethod: string,
-  employeeName: string,
   page: number,
   limit: number,
   propertyId: string,
   inquiryId: string,
   employeeId: string,
-) => {
+): Promise<PaginatedResponse<DashboardInquiryData>> => {
   try {
     page = Number.isNaN(page) || page < 1 ? 1 : page;
     limit = Number.isNaN(limit) || limit < 1 ? 10 : limit;
@@ -88,9 +88,19 @@ export const searchDashboard = async (
     }
 
     if (employeeId) {
-      inquiryFilterExpressions.push('#employee_id = :employeeId');
-      inquiryExprAttrValues[':employeeId'] = employeeId;
-      inquiryExprAttrNames['#employee_id'] = 'employee_id';
+      // employeeIdが指定されている場合のみフィルタリング
+      // 空文字列の場合は「未割り当て」として検索対象に含める
+      if (employeeId === 'unassigned') {
+        // 「未割り当て」を検索する場合
+        inquiryFilterExpressions.push('(attribute_not_exists(#employee_id) OR #employee_id = :emptyString)');
+        inquiryExprAttrValues[':emptyString'] = '';
+        inquiryExprAttrNames['#employee_id'] = 'employee_id';
+      } else {
+        // 特定の従業員を検索する場合
+        inquiryFilterExpressions.push('#employee_id = :employeeId');
+        inquiryExprAttrValues[':employeeId'] = employeeId;
+        inquiryExprAttrNames['#employee_id'] = 'employee_id';
+      }
     }
 
     if (inquiryMethod) {
@@ -146,17 +156,58 @@ export const searchDashboard = async (
     }
 
     // === 4. Join Data ===
-    const combined = inquiries.map(inquiry => {
-      const customer = customers.find(c => c.id === inquiry.customer_id);
-      const property = properties.find(p => p.id === inquiry.property_id);
-      return {
-        inquiry: {
-          ...inquiry,
-          customer: customer || null,
-          property: property || null
-        }
-      };
-    });
+    const combined: DashboardInquiryData[] = await Promise.all(
+      inquiries.map(async (inquiry) => {
+        const customer = customers.find(c => c.id === inquiry.customer_id);
+        const property = properties.find(p => p.id === inquiry.property_id);
+        
+        // Get employee details for the inquiry's assigned employee
+        const employee = inquiry.employee_id ? await getEmployeeById(inquiry.employee_id) : null;
+        
+        return {
+          inquiry: {
+            id: inquiry.id,
+            method: inquiry.method,
+            type: inquiry.type,
+            summary: inquiry.summary,
+            created_at: inquiry.created_at,
+            property: property ? {
+              id: property.id,
+              name: property.name,
+            } : {
+              id: '',
+              name: '',
+            },
+            customer: customer ? {
+              id: customer.id,
+              first_name: customer.first_name,
+              last_name: customer.last_name,
+              mail_address: customer.mail_address,
+              phone_number: customer.phone_number,
+              employee_id: customer.employee_id || '', // 顧客の担当者IDを正しく設定
+            } : {
+              id: '',
+              first_name: '',
+              last_name: '',
+              mail_address: '',
+              phone_number: '',
+              employee_id: '', // 顧客が見つからない場合は空文字
+            },
+            employee: employee ? {
+              id: employee.id,
+              first_name: employee.first_name,
+              last_name: employee.last_name,
+              mail_address: employee.mail_address,
+            } : {
+              id: '',
+              first_name: '未割り当て',
+              last_name: '',
+              mail_address: '',
+            },
+          },
+        };
+      })
+    );
 
     // === 5. Pagination ===
     const total = combined.length;

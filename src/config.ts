@@ -36,6 +36,13 @@ const AiReport: Record<Environment, string> = {
   development: 'dev-sales-brokerage-ai-report-dynamodb',
 };
 
+// Table: バッチレポート設定 (Batch Report Settings)
+// Manages batch report generation settings
+const BatchReportSettings: Record<Environment, string> = {
+  production: 'prod-sales-brokerage-batch-report-settings-dynamodb',
+  development: 'dev-sales-brokerage-batch-report-settings-dynamodb',
+};
+
 // Environment-specific frontend URLs
 const frontendUrls: Record<Environment, string[]> = {
   development: [
@@ -68,6 +75,7 @@ export default {
     inquiry: Inquiry[environment],
     properties: Property[environment],
     report: AiReport[environment],
+    batchReportSettings: BatchReportSettings[environment],
   },
 
   dynamoConfig: {

@@ -9,7 +9,7 @@ import {
   executeCustomerUpdate,
   deleteMultipleCustomersAndInquiries,
   incrementPropertyInquiryCount,
-} from '@src/models/customerModel';
+} from '@src/repositroies/customerModel';
 import { sendEmail } from './EmailController';
 import { customerSchema, updateCustomerSchema } from '@src/validations/individualCustomerValidation';
 import { getClientId, getEmployeeId } from '@src/middleware/userContext';
@@ -23,18 +23,18 @@ import {
   fetchIndividualCustomer,
   searchCustomerAndInquiry,
   getAllCustomers,
-} from '@src/models/customerModel';
+} from '@src/repositroies/customerModel';
 import {
   createNewInquiry,
   executeInquiryUpdate,
   getAllInquires,
   showInquiryDetails,
-} from '@src/models/inquiryModel';
+} from '@src/repositroies/inquiryModel';
 import { v4 as uuidv4 } from 'uuid';
 import { prepareInquiryUpdates, splitPayload } from '@src/services/inquiryService';
-import { verifyInquiryExists } from '@src/models/inquiryModel';
+import { verifyInquiryExists } from '@src/repositroies/inquiryModel';
 import { updateInquirySchema } from '@src/validations/inquiryValidation';
-import { getPropertyInfoByPropertyName, getPropertyById } from '@src/models/propertyModel';
+import { getPropertyInfoByPropertyName, getPropertyById } from '@src/repositroies/propertyModel';
 
 export const customerHandler = async (
   app: CustomFastifyInstance,
@@ -314,15 +314,19 @@ export const customerHandler = async (
             console.error('Error during customer debug scan:', scanError);
           }
           
-          return;
+          return reply.status(404).send(errorResponse(404, ERROR_MESSAGES.CUSTOMER_NOT_FOUND_ERROR));
         }
 
         const { customerUpdate, inquiryUpdate } = splitPayload(formData);
         console.log('customerUpdate:', customerUpdate);
         console.log('inquiryUpdate:', inquiryUpdate);
 
+        // Remove key fields from customerUpdate to avoid updating primary keys
         delete customerUpdate.client_id;
         delete customerUpdate.customer_id;
+        delete customerUpdate.customer_created_at;
+
+        console.log('customerUpdate after key removal:', customerUpdate);
 
         // Handle ID card updates with empty string logic
 

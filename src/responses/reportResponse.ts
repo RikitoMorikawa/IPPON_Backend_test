@@ -1,6 +1,6 @@
 import { NotFoundError, BadRequestError } from '@src/errors/httpErrors';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '@src/responses/constants/reports/reportConstant';
-import { ReportListResponse } from '@src/types/report';
+import { ReportListResponse } from '@src/models/report';
 
 // API Response interface
 export interface ApiResponse<T> {

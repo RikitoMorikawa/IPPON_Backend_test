@@ -5,9 +5,69 @@ import {
   PutCommand,
   GetCommand,
 } from '@aws-sdk/lib-dynamodb';
-import { Report } from '@src/types/report';
+import { Report } from '@src/models/report';
 import config from '@src/config';
 import { getClientDataByClientId } from '@src/services/clientDataService';
+import { ReportDetailData } from '@src/interfaces/reportInterfaces';
+import { ReportStatus, REPORT_STATUSES } from '@src/enums/reportEnums';
+import { CustomerInteraction } from '@src/models/reportType';
+
+export const getReportDetailsForAPI = async (
+  ddbDocClient: DynamoDBDocumentClient,
+  report_id: string,
+  client_id: string,
+): Promise<ReportDetailData | null> => {
+  try {
+    const reportParams = {
+      TableName: config.tableNames.report,
+      KeyConditionExpression: 'client_id = :client_id',
+      FilterExpression: 'id = :report_id',
+      ExpressionAttributeValues: {
+        ':client_id': client_id,
+        ':report_id': report_id,
+      },
+    };
+
+    const reportCommand = new QueryCommand(reportParams);
+    const reportResult = await ddbDocClient.send(reportCommand);
+
+    const reportData = reportResult.Items?.[0] as Report;
+
+    if (!reportData) {
+      console.warn(`No report found for report_id: ${report_id}`);
+      return null;
+    }
+
+    // Convert to ReportDetailData format
+    const formattedCustomerInteractions: CustomerInteraction[] = (reportData.customer_interactions || []).map((interaction: any) => ({
+      date: interaction.date || new Date().toISOString(),
+      type: interaction.type || 'inquiry',
+      customer_id: interaction.customer_id,
+      customer_name: interaction.customer_name,
+      content: interaction.content || '',
+      category: interaction.category,
+      title: interaction.title
+    }));
+
+    return {
+      id: reportData.id || '',
+      title: reportData.title || '',
+      current_status: (reportData.current_status as ReportStatus) || REPORT_STATUSES.RECRUITING,
+      summary: reportData.summary || '',
+      property_id: reportData.property_id || '',
+      is_suumo_published: reportData.is_suumo_published || false,
+      views_count: reportData.views_count || 0,
+      inquiries_count: reportData.inquiries_count || 0,
+      business_meeting_count: reportData.business_meeting_count || 0,
+      viewing_count: reportData.viewing_count || 0,
+      created_at: reportData.created_at || new Date().toISOString(),
+      customer_interactions: formattedCustomerInteractions
+    };
+  } catch (error) {
+    console.error('Error in getReportDetailsForAPI model:', error);
+    throw error;
+  }
+};
 
 export const getReportDetails = async (
   ddbDocClient: DynamoDBDocumentClient,
