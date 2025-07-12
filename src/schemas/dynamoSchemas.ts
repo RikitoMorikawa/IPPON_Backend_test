@@ -334,6 +334,7 @@ export const BatchReportSettingSchema = {
     'client_id',             // DynamoDB PK
     'property_id',           // 物件ID
     'start_date',            // 開始日
+    'weekday',               // 曜日
     'auto_create_period',    // 自動作成期間 ("1週間" | "2週間")
     'auto_generate',         // AI自動生成フラグ
     'execution_time',        // 実行時刻
@@ -349,6 +350,7 @@ export const BatchReportSettingSchema = {
   optionalFields: [
     'property_name',         // 物件名（キャッシュ用）
     'last_execution_date',   // 最後実行日時
+    'deleted_at',            // 削除日時
   ],
   
   // データ型定義
@@ -357,6 +359,7 @@ export const BatchReportSettingSchema = {
     client_id: 'string',
     property_id: 'string',
     property_name: 'string',
+    weekday: 'string',
     start_date: 'string',            // YYYY-MM-DD形式
     auto_create_period: 'string',    // "1週間" | "2週間"
     auto_generate: 'boolean',
@@ -368,6 +371,7 @@ export const BatchReportSettingSchema = {
     created_at: 'string',            // ISO 8601形式
     updated_at: 'string',            // ISO 8601形式
     employee_id: 'string',
+    deleted_at: 'string',
   },
 };
 

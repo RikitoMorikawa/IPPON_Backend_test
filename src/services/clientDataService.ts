@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client';
+import { withoutDeleted } from '../utils/softDelete';
 
 const prisma = new PrismaClient();
 
@@ -14,16 +15,16 @@ export const getClientDataByClientId = async (clientId: string): Promise<ClientD
   try {
     // クライアント情報を取得
     const client = await prisma.mstClients.findUnique({
-      where: {
+      where: withoutDeleted({
         id: clientId,
         is_active: true,
-      },
+      }),
       select: {
         name: true,
         employees: {
-          where: {
+          where: withoutDeleted({
             is_active: true,
-          },
+          }),
           select: {
             first_name: true,
             last_name: true,
@@ -57,10 +58,10 @@ export const getClientDataByClientId = async (clientId: string): Promise<ClientD
 export const getClientDataByEmployeeEmail = async (email: string): Promise<ClientData | null> => {
   try {
     const employee = await prisma.mstClientEmployees.findFirst({
-      where: {
+      where: withoutDeleted({
         mail_address: email,
         is_active: true,
-      },
+      }),
       include: {
         client: {
           select: {

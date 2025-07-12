@@ -18,6 +18,7 @@ export interface BatchReportSetting {
   // 基本設定
   property_id: string;         // 物件ID
   property_name?: string;      // 物件名（キャッシュ用）
+  weekday: number;             // 追加: 0=日曜, 1=月曜, ... 6=土曜
   
   // 期間設定
   start_date: string;          // 開始日 (YYYY-MM-DD)
@@ -36,12 +37,14 @@ export interface BatchReportSetting {
   // メタデータ
   created_at: string;          // 作成日時 (ISO 8601)
   updated_at: string;          // 更新日時 (ISO 8601)
+  deleted_at?: string;         // 削除日時 (ISO 8601)
   employee_id: string;         // 作成した従業員ID
 }
 
 // バッチレポート設定作成用のリクエスト型
 export interface CreateBatchReportSettingRequest {
   property_id: string;
+  weekday: number;             // 追加: 0=日曜, 1=月曜, ... 6=土曜
   start_date: string;
   auto_create_period: AutoCreatePeriod;
   auto_generate: boolean;
@@ -51,6 +54,7 @@ export interface CreateBatchReportSettingRequest {
 // バッチレポート設定更新用のリクエスト型
 export interface UpdateBatchReportSettingRequest {
   property_id?: string;
+  weekday?: number;            // 追加: 0=日曜, 1=月曜, ... 6=土曜
   start_date?: string;
   auto_create_period?: AutoCreatePeriod;
   auto_generate?: boolean;
@@ -64,9 +68,11 @@ export interface BatchExecutionTarget {
   client_id: string;
   property_id: string;
   property_name?: string;
+  weekday: number;             // 追加: 0=日曜, 1=月曜, ... 6=土曜
   start_date: string;
   auto_create_period: AutoCreatePeriod;
   auto_generate: boolean;
+  execution_time: string;      // 実行時刻 (HH:mm)
   next_execution_date: string;
   execution_count: number;
   employee_id: string;

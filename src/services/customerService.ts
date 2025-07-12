@@ -17,8 +17,9 @@ export const getCustomerService = async (
 export const deleteCustomerRecords = async (
   ddbDocClient: DynamoDBDocumentClient,
   ids: string[],
+  clientId: string, 
 ): Promise<void> => {
-  await deleteCustomers(ddbDocClient, ids);
+  await deleteCustomers(ddbDocClient, ids, clientId);
 };
 
 export const detectMimeType = (buffer: Buffer): string => {

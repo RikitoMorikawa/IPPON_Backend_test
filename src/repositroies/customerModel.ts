@@ -17,6 +17,7 @@ import { Customer } from '@src/interfaces/customerInterfaces';
 import { Inquiry } from '@src/models/inquiryType';
 import dayjs from 'dayjs';
 import { ERROR_MESSAGES } from '@src/responses/constants/customerConstants';
+import { scanWithoutDeleted, queryWithoutDeleted, softDeleteDynamo } from '@src/utils/softDelete';
 
 export const saveCustomer = async (
   ddbDocClient: DynamoDBDocumentClient,
@@ -43,57 +44,32 @@ export const saveCustomer = async (
 };
 
 export const createNewCustomer = (data: any): Customer => {
-  const {
-    client_id,
-    employee_id,
-    first_name,
-    last_name,
-    middle_name,
-    first_name_kana,
-    middle_name_kana,
-    last_name_kana,
-    birthday,
-    gender,
-    mail_address,
-    phone_number,
-    postcode,
-    prefecture,
-    city,
-    street_address,
-    building,
-    room_number,
-    id_card_front,
-    id_card_back,
-    id_card_front_path,
-    id_card_back_path,
-  } = data;
+  const timestamp = new Date().toISOString();
 
   return {
-    client_id,
-    employee_id,
     id: uuidv4(),
-    first_name,
-    last_name,
-    middle_name,
-    first_name_kana,
-    middle_name_kana,
-    last_name_kana,
-    birthday,
-    gender,
-    mail_address,
-    phone_number,
-    postcode,
-    prefecture,
-    city,
-    street_address,
-    building,
-    room_number,
-    id_card_front: id_card_front || id_card_front_path,
-    id_card_back: id_card_back || id_card_back_path,
-    id_card_front_path: id_card_front_path || id_card_front,
-    id_card_back_path: id_card_back_path || id_card_back,
-    created_at: new Date().toISOString(),
-    updated_at: new Date().toISOString(),
+    client_id: data.client_id,
+    employee_id: data.employee_id,
+    first_name: data.first_name,
+    last_name: data.last_name,
+    middle_name: data.middle_name || null,
+    first_name_kana: data.first_name_kana || null,
+    middle_name_kana: data.middle_name_kana || null,
+    last_name_kana: data.last_name_kana || null,
+    birthday: data.birthday,
+    gender: data.gender || null,
+    mail_address: data.mail_address,
+    phone_number: data.phone_number || null,
+    postcode: data.postcode,
+    prefecture: data.prefecture,
+    city: data.city,
+    street_address: data.street_address,
+    building: data.building || null,
+    room_number: data.room_number || null,
+    id_card_front_path: data.id_card_front_path,
+    id_card_back_path: data.id_card_back_path,
+    created_at: timestamp,
+    updated_at: timestamp,
   };
 };
 
@@ -103,37 +79,74 @@ export const getCustomers = async (
   firstName: string,
   lastName: string,
 ): Promise<Customer[]> => {
+  const filterExpressions: string[] = [];
+  const expressionAttributeValues: Record<string, string> = {};
+
+  filterExpressions.push('client_id = :clientId');
+  expressionAttributeValues[':clientId'] = clientId;
+
+  if (firstName) {
+    filterExpressions.push('contains(first_name, :firstName)');
+    expressionAttributeValues[':firstName'] = firstName;
+  }
+
+  if (lastName) {
+    filterExpressions.push(
+      '(contains(last_name, :lastName) OR contains(middle_name, :lastName))',
+    );
+    expressionAttributeValues[':lastName'] = lastName;
+  }
+
   const customerParams = {
     TableName: config.tableNames.customers,
-    FilterExpression: 'client_id = :clientId AND (contains(first_name, :firstName) OR contains(last_name, :lastName) OR contains(middle_name, :lastName))',
-    ExpressionAttributeValues: {
-      ':clientId': clientId,
-      ':firstName': firstName,
-      ':lastName': lastName,
-    },
+    FilterExpression: filterExpressions.join(' AND '),
+    ExpressionAttributeValues: expressionAttributeValues,
   };
 
-  const result = await ddbDocClient.send(new ScanCommand(customerParams));
+  // 論理削除済みを除外してスキャン
+  const result = await scanWithoutDeleted(ddbDocClient, customerParams);
   return (result.Items as Customer[]) || [];
 };
 
 export const deleteCustomers = async (
   ddbDocClient: DynamoDBDocumentClient,
-  ids: string[],
+  customerIds: string[],
+  clientId: string,
 ): Promise<void> => {
-  const deleteRequests = ids.map((id) => ({
-    DeleteRequest: {
-      Key: { id },
-    },
-  }));
+  try {
+    // まず、削除対象の顧客情報を取得してキーを確認
+    const customersToDelete = [];
+    
+    for (const customerId of customerIds) {
+      const scanParams = {
+        TableName: config.tableNames.customers,
+        FilterExpression: 'id = :customer_id AND client_id = :client_id',
+        ExpressionAttributeValues: {
+          ':customer_id': customerId,
+          ':client_id': clientId,
+        },
+      };
 
-  const params = {
-    RequestItems: {
-      Customers: deleteRequests,
-    },
-  };
+      const result = await scanWithoutDeleted(ddbDocClient, scanParams);
+      if (result.Items && result.Items.length > 0) {
+        customersToDelete.push(result.Items[0]);
+      }
+    }
 
-  await ddbDocClient.send(new BatchWriteCommand(params));
+    // 論理削除を実行
+    const deletePromises = customersToDelete.map(customer => 
+      softDeleteDynamo(ddbDocClient, config.tableNames.customers, {
+        client_id: customer.client_id,
+        created_at: customer.created_at
+      })
+    );
+
+    await Promise.all(deletePromises);
+    console.log(`Successfully soft deleted ${customersToDelete.length} customers`);
+  } catch (error) {
+    console.error('Error soft deleting customers:', error);
+    throw error;
+  }
 };
 
 /**
@@ -172,7 +185,7 @@ export async function verifyCustomerExists(
       },
     };
 
-    const scanResult = await ddbDocClient.send(new ScanCommand(scanParams));
+    const scanResult = await scanWithoutDeleted(ddbDocClient, scanParams);
     
     if (scanResult.Items && scanResult.Items.length > 0) {
       return true;
@@ -221,7 +234,7 @@ export async function executeCustomerUpdate(
         },
       };
 
-      const scanResult = await ddbDocClient.send(new ScanCommand(scanParams));
+      const scanResult = await scanWithoutDeleted(ddbDocClient, scanParams);
 
       if (!scanResult.Items || scanResult.Items.length === 0) {
         throw new Error(ERROR_MESSAGES.RECORD_NOT_FOUND_ERROR);
@@ -308,7 +321,7 @@ export const searchCustomerAndInquiry = async (
     FilterExpression: customerFilterExpressions.join(' AND '),
     ExpressionAttributeValues: customerExprAttrValues,
   };
-  const customerResult = await ddbDocClient.send(new ScanCommand(customerParams));
+  const customerResult = await scanWithoutDeleted(ddbDocClient, customerParams);
   customers = customerResult.Items || [];
 
   const customerIds = customers.map((c) => c.id);
@@ -374,7 +387,7 @@ export const searchCustomerAndInquiry = async (
     FilterExpression: inquiryFilterExpressions.join(' AND '),
     ExpressionAttributeValues: inquiryExprAttrValues,
   };
-  const inquiryResult = await ddbDocClient.send(new ScanCommand(inquiryParams));
+  const inquiryResult = await scanWithoutDeleted(ddbDocClient, inquiryParams);
   inquiries = inquiryResult.Items || [];
 
   const result = customers.map((customer) => {
@@ -405,7 +418,7 @@ export const fetchIndividualCustomer = async (
     },
   };
 
-  const result = await ddbDocClient.send(new ScanCommand(params));
+  const result = await scanWithoutDeleted(ddbDocClient, params);
   return result.Items && result.Items.length > 0 ? result.Items[0] : null;
 };
 
@@ -420,7 +433,7 @@ export const getAllCustomers = async (ddbDocClient: DynamoDBDocumentClient, clie
     };
 
     const [individualResult] = await Promise.all([
-      ddbDocClient.send(new ScanCommand(individualParams)),
+      scanWithoutDeleted(ddbDocClient, individualParams),
     ]);
 
     const customers = {
@@ -498,20 +511,16 @@ export const deleteMultipleCustomersAndInquiries = async ({
 
   try {
     const [customerRes, inquiryRes] = await Promise.all([
-      ddbDocClient.send(
-        new QueryCommand({
+      queryWithoutDeleted(ddbDocClient, {
           TableName: config.tableNames.customers,
           KeyConditionExpression: 'client_id = :cid',
           ExpressionAttributeValues: { ':cid': clientId },
         }),
-      ),
-      ddbDocClient.send(
-        new QueryCommand({
+      queryWithoutDeleted(ddbDocClient, {
           TableName: config.tableNames.inquiry,
           KeyConditionExpression: 'client_id = :cid',
           ExpressionAttributeValues: { ':cid': clientId },
         }),
-      ),
     ]);
 
     const customersToDelete = (customerRes.Items ?? []).filter((item) =>
@@ -601,13 +610,11 @@ export const deleteMultipleCustomersAndInquiriesStrict = async ({
   customerIds,
 }: DeleteMultipleCustomersInput) => {
   try {
-    const customerRes = await ddbDocClient.send(
-      new QueryCommand({
+    const customerRes = await queryWithoutDeleted(ddbDocClient, {
         TableName: config.tableNames.customers,
         KeyConditionExpression: 'client_id = :cid',
         ExpressionAttributeValues: { ':cid': clientId },
-      }),
-    );
+      });
 
     const existingCustomers = customerRes.Items ?? [];
     const existingCustomerIds = existingCustomers.map((customer) => customer.id);
@@ -619,13 +626,11 @@ export const deleteMultipleCustomersAndInquiriesStrict = async ({
 
     const customersToDelete = existingCustomers.filter((item) => customerIds.includes(item.id));
 
-    const inquiryRes = await ddbDocClient.send(
-      new QueryCommand({
+    const inquiryRes = await queryWithoutDeleted(ddbDocClient, {
         TableName: config.tableNames.inquiry,
         KeyConditionExpression: 'client_id = :cid',
         ExpressionAttributeValues: { ':cid': clientId },
-      }),
-    );
+      });
 
     const inquiriesToDelete = (inquiryRes.Items ?? []).filter((item) =>
       customerIds.includes(item.customer_id),

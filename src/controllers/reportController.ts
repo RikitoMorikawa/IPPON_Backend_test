@@ -13,12 +13,13 @@ import { CustomFastifyInstance } from '@src/interfaces/CustomFastifyInstance';
 import { getClientId } from '@src/middleware/userContext';
 import { verifyDdbClient } from '@src/services/customerService';
 import { errorResponse, successResponse } from '@src/responses';
-import { generateReportExcel } from '@src/services/excelService';
+import { generateReportExcel, generateMultipleReportsExcel } from '@src/services/excelService';
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { ReportListData, ReportListResponse, ReportDetailData, ReportDetailResponse } from '@src/interfaces/reportInterfaces';
 import { ReportStatus, REPORT_STATUSES } from '@src/enums/reportEnums';
 import { ScanCommand } from '@aws-sdk/lib-dynamodb';
 import config from '@src/config';
+import { scanWithoutDeleted } from '@src/utils/softDelete';
 import * as batchReportModel from '@src/repositroies/batchReportModel';
 import { CreateBatchReportSettingRequest } from '@src/models/batchReportType';
 import { getEmployeeId } from '@src/middleware/userContext';
@@ -237,6 +238,139 @@ export const deleteReport = async (
   }
 };
 
+/**
+ * 複数レポートを削除
+ */
+export const deleteMultipleReports = async (
+  request: FastifyRequest<{
+    Body: {
+      report_ids: string[];
+    };
+  }>,
+  reply: FastifyReply,
+): Promise<void> => {
+  try {
+    const { report_ids } = request.body;
+    const app = request.server as CustomFastifyInstance;
+    const client_id = getClientId(request);
+
+    if (!Array.isArray(report_ids) || report_ids.length === 0) {
+      return reply.status(400).send({
+        status: 400,
+        message: 'report_idsは空でない配列である必要があります。',
+        data: null,
+      });
+    }
+
+    const result = await reportService.deleteMultipleReports(
+      report_ids,
+      client_id,
+      app.ddbDocClient
+    );
+
+    // 全て見つからなかった場合
+    if (result.not_found_ids.length === report_ids.length) {
+      return reply.status(404).send({
+        status: 404,
+        message: `指定されたレポートIDが見つかりませんでした: ${result.not_found_ids.join(', ')}`,
+        data: {
+          deleted_count: result.deleted_count,
+          not_found_ids: result.not_found_ids,
+          errors: result.errors,
+        },
+      });
+    }
+
+    // 部分的に削除できなかった場合
+    if (result.not_found_ids.length > 0 || result.errors.length > 0) {
+      return reply.status(207).send({
+        status: 207,
+        message: '一部のレポートの削除が完了しました',
+        data: {
+          deleted_count: result.deleted_count,
+          not_found_ids: result.not_found_ids,
+          errors: result.errors,
+        },
+      });
+    }
+
+    // 全て成功した場合
+    return reply.status(200).send({
+      status: 200,
+      message: 'レポートが正常に削除されました',
+      data: {
+        deleted_count: result.deleted_count,
+        not_found_ids: result.not_found_ids,
+        errors: result.errors,
+      },
+    });
+  } catch (error) {
+    console.error('Error in deleteMultipleReports controller:', error);
+    throw error;
+  }
+};
+
+/**
+ * 複数レポートのExcelファイルをダウンロード
+ */
+export const downloadMultipleReportsExcel = async (
+  request: FastifyRequest<{
+    Body: {
+      report_ids: string[];
+    };
+  }>,
+  reply: FastifyReply,
+): Promise<void> => {
+  try {
+    const { report_ids } = request.body;
+    const app = request.server as CustomFastifyInstance;
+    const client_id = getClientId(request);
+
+    if (!Array.isArray(report_ids) || report_ids.length === 0) {
+      return reply.status(400).send({
+        status: 400,
+        message: 'report_idsは空でない配列である必要があります。',
+        data: null,
+      });
+    }
+
+    // レポートのステータスを完了状態に更新
+    const statusUpdateResult = await reportModel.updateMultipleReportsStatus(
+      app.ddbDocClient,
+      report_ids,
+      client_id
+    );
+
+    console.log('Status update result:', statusUpdateResult);
+
+    // Excelファイルを生成
+    const excelBuffer = await generateMultipleReportsExcel(
+      report_ids,
+      client_id,
+      app.ddbDocClient
+    );
+
+    // ファイル名を生成（日付付き）
+    const today = new Date();
+    const dateStr = today.toISOString().split('T')[0]; // YYYY-MM-DD
+    const filename = `報告書一覧_${dateStr}.xlsx`;
+
+    reply.header('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+    reply.header('Content-Disposition', `attachment; filename="${encodeURIComponent(filename)}"`);
+
+    return reply.send(excelBuffer);
+  } catch (error) {
+    console.error('Error in downloadMultipleReportsExcel controller:', error);
+    return reply.status(500).send({
+      status: 500,
+      message: 'Excelファイルの生成中にエラーが発生しました',
+      data: {
+        error: error instanceof Error ? error.message : 'Unknown error'
+      },
+    });
+  }
+};
+
 export const createReport = async (
   request: FastifyRequest<{
     Body: {
@@ -329,14 +463,14 @@ export const saveReport = async (request: FastifyRequest, reply: FastifyReply) =
       console.log('Creating new report without AI processing...');
       
       // 物件情報を取得して property_name を設定
-      const propertyResult = await (request.server as any).ddbDocClient.send(new ScanCommand({
+      const propertyResult = await scanWithoutDeleted((request.server as any).ddbDocClient, {
         TableName: config.tableNames.properties,
         FilterExpression: 'id = :id AND client_id = :client_id',
         ExpressionAttributeValues: {
           ':id': reportData.property_id,
           ':client_id': client_id
         }
-      }));
+      });
 
       if (!propertyResult.Items || propertyResult.Items.length === 0) {
         return reply.status(400).send({
@@ -466,13 +600,14 @@ export const setupReportBatch = async (request: FastifyRequest, reply: FastifyRe
   const { property_id } = request.params as { property_id: string };
   const client_id = getClientId(request);
   const employee_id = getEmployeeId(request);
-  const batchData = request.body as CreateBatchReportSettingRequest;
+  const batchData = request.body as any; // executionTime対応のためany型で受ける
 
   try {
-    // property_idをbatchDataに追加
+    // property_idをbatchDataに追加し、executionTime→execution_time変換
     const fullBatchData = {
       ...batchData,
-      property_id: property_id
+      property_id: property_id,
+      execution_time: batchData.executionTime ?? batchData.execution_time,
     };
 
     // バッチ設定を保存
@@ -484,14 +619,14 @@ export const setupReportBatch = async (request: FastifyRequest, reply: FastifyRe
     );
 
     // 物件名を取得してレスポンスに含める
-    const propertyResult = await (request.server as any).ddbDocClient.send(new ScanCommand({
+    const propertyResult = await scanWithoutDeleted((request.server as any).ddbDocClient, {
       TableName: config.tableNames.properties,
       FilterExpression: 'id = :id AND client_id = :client_id',
       ExpressionAttributeValues: {
         ':id': property_id,
         ':client_id': client_id
       }
-    }));
+    });
 
     const property = propertyResult.Items?.[0];
 
@@ -508,11 +643,21 @@ export const setupReportBatch = async (request: FastifyRequest, reply: FastifyRe
         execution_time: batchSetting.execution_time,
         next_execution_date: batchSetting.next_execution_date,
         status: batchSetting.status,
-        created_at: batchSetting.created_at
+        created_at: batchSetting.created_at,
+        weekday: batchSetting.weekday 
       }
     });
   } catch (error) {
     console.error('Error in setupReportBatch:', error);
+    
+    if (error instanceof Error && error.message.includes('この物件の報告書自動出力設定はすでに存在します')) {
+      return reply.status(409).send({
+        status: 409,
+        message: 'この物件の報告書自動出力設定はすでに存在します。',
+        data: null
+      });
+    }
+    
     throw error;
   }
 };
@@ -553,16 +698,26 @@ export const updateReportBatch = async (request: FastifyRequest, reply: FastifyR
     if (updateData.execution_time !== undefined) {
       updates.execution_time = updateData.execution_time;
     }
+    if (updateData.weekday !== undefined) {
+      updates.weekday = updateData.weekday;
+    }
 
-    // start_dateまたはexecution_timeが変更された場合、next_execution_dateを再計算
-    if (updateData.start_date || updateData.execution_time) {
+    // start_date, execution_time, weekday のいずれかが変更された場合、next_execution_dateを再計算
+    if (updateData.start_date || updateData.execution_time || updateData.weekday !== undefined) {
       const startDate = new Date(updateData.start_date || existingBatch.start_date);
       const executionTime = updateData.execution_time || existingBatch.execution_time;
       const [hours, minutes] = executionTime.split(':').map(Number);
-      
-      const nextExecutionDate = new Date(startDate);
-      nextExecutionDate.setHours(hours, minutes, 0, 0);
-      updates.next_execution_date = nextExecutionDate.toISOString();
+      const weekday = updateData.weekday !== undefined ? updateData.weekday : existingBatch.weekday;
+
+      // 新しい曜日に合わせて日付を調整
+      const nextDate = new Date(startDate);
+      const currentWeekday = nextDate.getDay();
+      let daysToAdd = weekday - currentWeekday;
+      if (daysToAdd < 0) daysToAdd += 7;
+      nextDate.setDate(nextDate.getDate() + daysToAdd);
+      nextDate.setHours(hours, minutes, 0, 0);
+
+      updates.next_execution_date = nextDate.toISOString();
     }
 
     // バッチ設定を更新
@@ -574,14 +729,14 @@ export const updateReportBatch = async (request: FastifyRequest, reply: FastifyR
     );
 
     // 物件名を取得してレスポンスに含める
-    const propertyResult = await (request.server as any).ddbDocClient.send(new ScanCommand({
+    const propertyResult = await scanWithoutDeleted((request.server as any).ddbDocClient, {
       TableName: config.tableNames.properties,
       FilterExpression: 'id = :id AND client_id = :client_id',
       ExpressionAttributeValues: {
         ':id': property_id,
         ':client_id': client_id
       }
-    }));
+    });
 
     const property = propertyResult.Items?.[0];
 
@@ -600,7 +755,8 @@ export const updateReportBatch = async (request: FastifyRequest, reply: FastifyR
         status: updatedBatch.status,
         execution_count: updatedBatch.execution_count,
         last_execution_date: updatedBatch.last_execution_date || null,
-        updated_at: updatedBatch.updated_at
+        updated_at: updatedBatch.updated_at,
+        weekday: updatedBatch.weekday
       }
     });
   } catch (error) {

@@ -7,6 +7,7 @@ import dayjs from 'dayjs';
 import { DashboardInquiryData } from '@src/interfaces/dashboardInterfaces';
 import { PaginatedResponse } from '@src/interfaces/responseInterfaces';
 import { getEmployeeById } from '@src/repositroies/clientModel';
+import { scanWithoutDeleted } from '@src/utils/softDelete';
 
 export const searchDashboard = async (
   ddbDocClient: DynamoDBDocumentClient,
@@ -56,7 +57,7 @@ export const searchDashboard = async (
       ExpressionAttributeValues: customerExprAttrValues
     };
 
-    const customerResult = await ddbDocClient.send(new ScanCommand(customerScanInput));
+    const customerResult = await scanWithoutDeleted(ddbDocClient, customerScanInput);
     customers = customerResult.Items || [];
 
     const customerIds = customers.map(c => c.id);
@@ -133,7 +134,7 @@ export const searchDashboard = async (
       inquiryScanInput.ExpressionAttributeNames = inquiryExprAttrNames;
     }
 
-    const inquiryResult = await ddbDocClient.send(new ScanCommand(inquiryScanInput));
+    const inquiryResult = await scanWithoutDeleted(ddbDocClient, inquiryScanInput);
     inquiries = inquiryResult.Items || [];
 
     // === 3. Load Properties ===
@@ -147,11 +148,11 @@ export const searchDashboard = async (
         propExprValues[`:pid${i}`] = id;
       });
 
-      const propertyResult = await ddbDocClient.send(new ScanCommand({
+      const propertyResult = await scanWithoutDeleted(ddbDocClient, {
         TableName: config.tableNames.properties,
         FilterExpression: propFilterExpr,
         ExpressionAttributeValues: propExprValues
-      }));
+      });
       properties = propertyResult.Items || [];
     }
 

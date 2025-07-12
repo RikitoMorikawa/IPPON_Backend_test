@@ -6,11 +6,13 @@ import {
   ScanCommandOutput,
   ScanCommandInput,
   QueryCommand,
+  GetCommand,
 } from '@aws-sdk/lib-dynamodb';
 import config from '@src/config';
 import dayjs from 'dayjs';
 import { deleteFileFromS3 } from '@src/services/s3Service';
 import { Property, PropertySearchParams } from '@src/interfaces/propertyInterfaces';
+import { scanWithoutDeleted, queryWithoutDeleted, softDeleteDynamo } from '@src/utils/softDelete';
 
 export const createProperty = async (ddbDocClient: DynamoDBDocumentClient, property: Property) => {
   const params = {
@@ -34,7 +36,7 @@ export const getPropertyById = async (
       ':id': propId,
     },
   };
-  return await ddbDocClient.send(new ScanCommand(params));
+  return await scanWithoutDeleted(ddbDocClient, params);
 };
 
 export const buildDeleteParams = (deleteRequests: { props: any[] }) => {
@@ -63,7 +65,7 @@ export const getPropertiesByName = async (
     },
   };
 
-  const result = await ddbDocClient.send(new ScanCommand(params));
+  const result = await scanWithoutDeleted(ddbDocClient, params);
 
   if (result.Items && result.Items.length > 0) {
     return result.Items as Property[];
@@ -83,7 +85,7 @@ export const getPropertyByContractorAmount = async (
     },
   };
 
-  const result = await ddbDocClient.send(new ScanCommand(params));
+  const result = await scanWithoutDeleted(ddbDocClient, params);
 
   if (result.Items && result.Items.length > 0) {
     const foundProperty = result.Items[0];
@@ -145,7 +147,7 @@ export const getPropertyIdsByRent = async (
   }
 
   try {
-    const result = await ddbDocClient.send(new ScanCommand(params));
+    const result = await scanWithoutDeleted(ddbDocClient, params);
     const propertyIds = result.Items?.map((item: any) => item.prop_id) || [];
     return propertyIds;
   } catch (error) {
@@ -165,7 +167,7 @@ export const getPropertyByRentalPrice = async (
     },
   };
 
-  const result = await ddbDocClient.send(new ScanCommand(params));
+  const result = await scanWithoutDeleted(ddbDocClient, params);
 
   if (result.Items && result.Items.length > 0) {
     const foundProperty = result.Items[0];
@@ -521,7 +523,7 @@ export const searchProperties = async (
   }
 
   // Execute Scan for paginated items
-  const result = await ddbDocClient.send(new ScanCommand(params));
+  const result = await scanWithoutDeleted(ddbDocClient, params);
 
   // Execute Scan again to count total items matching filter
   const countParams = {
@@ -531,7 +533,7 @@ export const searchProperties = async (
   delete countParams.Limit;
   delete countParams.ExclusiveStartKey;
 
-  const countResult = await ddbDocClient.send(new ScanCommand(countParams));
+  const countResult = await scanWithoutDeleted(ddbDocClient, countParams);
   const totalCount = countResult.Count || 0;
 
   return {
@@ -550,8 +552,7 @@ export const fetchAllProperties = async (
   lastKey?: Record<string, any>,
 ) => {
   try {
-    const result = await ddbDocClient.send(
-      new ScanCommand({
+    const result = await scanWithoutDeleted(ddbDocClient, {
         TableName: config.tableNames.properties,
         FilterExpression: 'client_id = :clientId',
         ExpressionAttributeValues: {
@@ -559,8 +560,7 @@ export const fetchAllProperties = async (
         },
         Limit: limit,
         ExclusiveStartKey: lastKey || undefined,
-      }),
-    );
+      });
 
     return {
       items: result.Items || [],
@@ -577,7 +577,7 @@ export const deleteProperties = async (
   propIds: string,
   clientIds: string,
 ) => {
-  const deleteRequests: { properties: any[] } = { properties: [] };
+  const deletedProperties: any[] = [];
   const prop_ids = propIds.split(',').map((id) => id.trim());
   const client_ids = clientIds.split(',').map((id) => id.trim());
 
@@ -594,37 +594,41 @@ export const deleteProperties = async (
       },
     };
 
-    const propertyResult = await ddbDocClient.send(new ScanCommand(propertyQuery));
+    // 論理削除済みを除外してスキャン
+    const propertyResult = await scanWithoutDeleted(ddbDocClient, propertyQuery);
     const propertiesToDelete = propertyResult.Items || [];
 
     for (const property of propertiesToDelete) {
-      if (property.s3_path) {
-        const path = property.s3_path.replace(process.env.AWS_S3_URL || '', '');
-        console.error('Tracking Path:', path);
-        await deleteFileFromS3(path);
-      }
+      // S3ファイルの削除は論理削除なので行わない（必要に応じて後で物理削除できる）
+      // if (property.s3_path) {
+      //   const path = property.s3_path.replace(process.env.AWS_S3_URL || '', '');
+      //   console.error('Tracking Path:', path);
+      //   await deleteFileFromS3(path);
+      // }
 
-      // Add to delete requests for DynamoDB
-      deleteRequests.properties.push({
-        DeleteRequest: {
-          Key: {
-            client_id: property.client_id,
-            created_at: property.created_at,
-          },
-        },
+      // 論理削除を実行
+      await softDeleteDynamo(ddbDocClient, config.tableNames.properties, {
+        client_id: property.client_id,
+        created_at: property.created_at,
       });
+
+      deletedProperties.push(property);
     }
   }
 
-  return deleteRequests;
+  return { properties: deletedProperties };
 };
 
+// executeBatchDelete関数は論理削除では不要になりますが、
+// 既存のコードとの互換性のために残しておきます
 export const executeBatchDelete = async (
   ddbDocClient: DynamoDBDocumentClient,
   deleteParams: { RequestItems: { [key: string]: any[] } },
 ) => {
   try {
-    await ddbDocClient.send(new BatchWriteCommand(deleteParams));
+    // 論理削除では実際のBatchWriteCommandは実行しません
+    console.log('Logical delete mode: BatchWriteCommand skipped');
+    console.log('Delete params would have been:', JSON.stringify(deleteParams, null, 2));
   } catch (error) {
     console.error('Error executing batch delete:', error);
     throw error;
@@ -641,8 +645,7 @@ export const getLastEvaluatedKeyForPage = async (
   let lastKey: Record<string, any> | undefined = undefined;
 
   for (let i = 1; i < page; i++) {
-    const result: ScanCommandOutput = await ddbDocClient.send(
-      new ScanCommand({
+    const result: ScanCommandOutput = await scanWithoutDeleted(ddbDocClient, {
         TableName: tableName,
         FilterExpression: 'client_id = :clientId',
         ExpressionAttributeValues: {
@@ -650,8 +653,7 @@ export const getLastEvaluatedKeyForPage = async (
         },
         Limit: limit,
         ExclusiveStartKey: lastKey,
-      }),
-    );
+      });
 
     if (!result.LastEvaluatedKey) {
       return null; // Reached end before desired page
@@ -845,7 +847,7 @@ export const searchPropertiesWithPageNumber = async (
   }
 
   // Scan all matching results (page size set to 1000)
-  const allData = await ddbDocClient.send(new ScanCommand(params));
+  const allData = await scanWithoutDeleted(ddbDocClient, params);
   const allItems = allData.Items || [];
   const areaFilteredItems = exclusive_area
     ? allItems.filter((item) => {
@@ -886,8 +888,7 @@ export const getPropertyInfoByPropertyName = async (
   let ExclusiveStartKey: Record<string, any> | undefined = undefined;
 
   do {
-    const result: ScanCommandOutput = await ddbDocClient.send(
-      new ScanCommand({
+    const result: ScanCommandOutput = await scanWithoutDeleted(ddbDocClient, {
         TableName: config.tableNames.properties,
         FilterExpression: 'client_id = :clientId AND #name = :propertyName',
         ExpressionAttributeNames: {
@@ -898,8 +899,7 @@ export const getPropertyInfoByPropertyName = async (
           ':propertyName': propertyName,
         },
         ExclusiveStartKey,
-      }),
-    );
+      });
 
     if (result.Items && result.Items.length > 0) {
       const property = result.Items[0] as Property;
@@ -924,8 +924,7 @@ export async function isPropertyNameTaken(
 ): Promise<boolean> {
   const normalizedName = name.trim().toLowerCase();
 
-  const result = await ddbDocClient.send(
-    new ScanCommand({
+  const result = await scanWithoutDeleted(ddbDocClient, {
       TableName: config.tableNames.properties,
       FilterExpression: 'client_id = :clientId AND attribute_exists(#name)',
       ExpressionAttributeNames: {
@@ -934,8 +933,7 @@ export async function isPropertyNameTaken(
       ExpressionAttributeValues: {
         ':clientId': client_id,
       },
-    }),
-  );
+    });
 
   const match = result.Items?.some((item) => {
     const existingName = item.name?.trim().toLowerCase();
@@ -958,7 +956,7 @@ export const getAllProperties = async (ddbDocClient: DynamoDBDocumentClient, cli
     };
 
     const [individualResult] = await Promise.all([
-      ddbDocClient.send(new ScanCommand(individualParams)),
+      scanWithoutDeleted(ddbDocClient, individualParams),
     ]);
 
     const properties = {
@@ -989,8 +987,7 @@ export const getPropertySummaries = async (
     },
   };
 
-  const command = new QueryCommand(params);
-  const result = await ddbDocClient.send(command);
+  const result = await queryWithoutDeleted(ddbDocClient, params);
   return result.Items as { id: string; name: string }[];
 };
 

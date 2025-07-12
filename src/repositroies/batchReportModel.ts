@@ -16,6 +16,25 @@ import {
   BatchExecutionTarget,
   AutoCreatePeriod,
 } from '@src/models/batchReportType';
+import { queryWithoutDeleted, scanWithoutDeleted, softDeleteDynamo } from '@src/utils/softDelete';
+
+// 日本時間（JST）での現在時刻を取得
+const getJSTDate = (): Date => {
+  const now = new Date();
+  // 日本時間（UTC+9）に変換
+  return new Date(now.getTime() + (9 * 60 * 60 * 1000));
+};
+
+// 指定したweekdayの次の日付を日本時間で返す（0=日曜, 1=月曜...）
+const calculateNextWeekday = (weekday: number): Date => {
+  const today = getJSTDate();
+  const currentWeekday = today.getUTCDay(); // JST調整済みなのでUTCで取得
+  let daysToAdd = weekday - currentWeekday;
+  if (daysToAdd <= 0) daysToAdd += 7;
+  const nextDate = new Date(today);
+  nextDate.setUTCDate(today.getUTCDate() + daysToAdd);
+  return nextDate;
+};
 
 /**
  * バッチレポート設定を作成
@@ -26,26 +45,47 @@ export const createBatchReportSetting = async (
   employee_id: string,
   request: CreateBatchReportSettingRequest,
 ): Promise<BatchReportSetting> => {
+  // 既存のバッチ設定をチェック
+  const existingBatch = await getBatchReportSettingByProperty(
+    ddbDocClient,
+    client_id,
+    request.property_id
+  );
+
+  if (existingBatch) {
+    throw new Error('この物件の報告書自動出力設定はすでに存在します。');
+  }
+
   const id = uuidv4();
   const now = new Date().toISOString();
   
   // 物件名は後で更新可能なので、ここではスキップ
   const property_name = '';
   
-  // 次回実行日時を計算
-  const startDate = new Date(request.start_date);
-  const executionTime = request.execution_time || '01:00';
+  // ログ出力: リクエスト内容
+  console.log('[createBatchReportSetting] request:', request);
+  
+  // weekdayから開始日を日本時間で計算
+  const startDate = calculateNextWeekday(Number(request.weekday));
+  const executionTime = request.execution_time ?? '01:00';
   const [hours, minutes] = executionTime.split(':').map(Number);
   
+  // 日本時間での実行時刻を設定
   const nextExecutionDate = new Date(startDate);
-  nextExecutionDate.setHours(hours, minutes, 0, 0);
+  nextExecutionDate.setUTCHours(hours, minutes, 0, 0);
+
+  // ログ出力: 計算結果
+  console.log('[createBatchReportSetting] JST executionTime:', executionTime, 'hours:', hours, 'minutes:', minutes);
+  console.log('[createBatchReportSetting] JST startDate:', startDate.toISOString());
+  console.log('[createBatchReportSetting] JST nextExecutionDate:', nextExecutionDate.toISOString());
   
   const batchSetting: BatchReportSetting = {
     id,
     client_id,
     property_id: request.property_id,
     property_name, // 物件名を保存
-    start_date: request.start_date,
+    weekday: request.weekday, // 文字列で保存
+    start_date: startDate.toISOString().split('T')[0], // 計算された開始日
     auto_create_period: request.auto_create_period,
     auto_generate: request.auto_generate,
     execution_time: executionTime,
@@ -83,7 +123,14 @@ export const getBatchReportSetting = async (
   });
 
   const result = await ddbDocClient.send(command);
-  return result.Item as BatchReportSetting || null;
+  const item = result.Item as BatchReportSetting;
+  
+  // 論理削除済みの場合はnullを返す
+  if (item && item.deleted_at) {
+    return null;
+  }
+  
+  return item || null;
 };
 
 /**
@@ -93,15 +140,15 @@ export const getBatchReportSettingsByClient = async (
   ddbDocClient: DynamoDBDocumentClient,
   client_id: string,
 ): Promise<BatchReportSetting[]> => {
-  const command = new QueryCommand({
+  const queryParams = {
     TableName: config.tableNames.batchReportSettings,
     KeyConditionExpression: 'client_id = :client_id',
     ExpressionAttributeValues: {
       ':client_id': client_id,
     },
-  });
+  };
 
-  const result = await ddbDocClient.send(command);
+  const result = await queryWithoutDeleted(ddbDocClient, queryParams);
   return (result.Items as BatchReportSetting[]) || [];
 };
 
@@ -113,7 +160,7 @@ export const getBatchReportSettingByProperty = async (
   client_id: string,
   property_id: string,
 ): Promise<BatchReportSetting | null> => {
-  const command = new QueryCommand({
+  const queryParams = {
     TableName: config.tableNames.batchReportSettings,
     KeyConditionExpression: 'client_id = :client_id',
     FilterExpression: 'property_id = :property_id',
@@ -121,9 +168,9 @@ export const getBatchReportSettingByProperty = async (
       ':client_id': client_id,
       ':property_id': property_id,
     },
-  });
+  };
 
-  const result = await ddbDocClient.send(command);
+  const result = await queryWithoutDeleted(ddbDocClient, queryParams);
   const settings = (result.Items as BatchReportSetting[]) || [];
   
   // 最新の設定を返す（created_atでソート）
@@ -188,38 +235,51 @@ export const deleteBatchReportSetting = async (
   client_id: string,
   created_at: string,
 ): Promise<void> => {
-  const command = new DeleteCommand({
-    TableName: config.tableNames.batchReportSettings,
-    Key: {
-      client_id,
-      created_at,
-    },
+  // 論理削除を実行
+  await softDeleteDynamo(ddbDocClient, config.tableNames.batchReportSettings, {
+    client_id,
+    created_at,
   });
-
-  await ddbDocClient.send(command);
+  
+  console.log(`Successfully soft deleted batch report setting: ${client_id}/${created_at}`);
 };
 
 /**
  * 実行すべきバッチレポート設定を検索
+ * 現在時刻から過去1時間以内に実行予定だったバッチを取得
  */
 export const getExecutableBatchSettings = async (
   ddbDocClient: DynamoDBDocumentClient,
   currentDateTime: string,
 ): Promise<BatchExecutionTarget[]> => {
-  const command = new ScanCommand({
+  // 1時間前の時刻を計算（入力のcurrentDateTimeは既に日本時間）
+  const currentTime = new Date(currentDateTime);
+  const oneHourAgo = new Date(currentTime.getTime() - 60 * 60 * 1000); // 1時間前
+
+  console.log(`[getExecutableBatchSettings] JST time window: ${oneHourAgo.toISOString()} to ${currentDateTime}`);
+
+  const scanParams = {
     TableName: config.tableNames.batchReportSettings,
-    FilterExpression: '#status = :status AND next_execution_date <= :currentDateTime',
+    FilterExpression: '#status = :status AND next_execution_date > :oneHourAgo AND next_execution_date <= :currentDateTime',
     ExpressionAttributeNames: {
       '#status': 'status',
     },
     ExpressionAttributeValues: {
       ':status': 'active',
+      ':oneHourAgo': oneHourAgo.toISOString(),
       ':currentDateTime': currentDateTime,
     },
-  });
+  };
 
-  const result = await ddbDocClient.send(command);
-  return (result.Items as BatchExecutionTarget[]) || [];
+  const result = await scanWithoutDeleted(ddbDocClient, scanParams);
+  const batches = (result.Items as BatchExecutionTarget[]) || [];
+  
+  console.log(`[getExecutableBatchSettings] Found ${batches.length} executable batches`);
+  batches.forEach(batch => {
+    console.log(`  - Batch ${batch.id}: execution_time=${batch.execution_time}, next_execution_date=${batch.next_execution_date}`);
+  });
+  
+  return batches;
 };
 
 /**
@@ -229,18 +289,31 @@ export const updateNextExecutionDate = async (
   ddbDocClient: DynamoDBDocumentClient,
   client_id: string,
   created_at: string,
+  weekday: number, // 追加
   auto_create_period: AutoCreatePeriod,
   current_execution_date: string,
 ): Promise<void> => {
-  // 次回実行日時を計算
+  // 現在の実行日から次回の同じ曜日を日本時間で計算
   const currentDate = new Date(current_execution_date);
   const nextDate = new Date(currentDate);
   
   if (auto_create_period === '1週間ごと') {
-    nextDate.setDate(currentDate.getDate() + 7);
+    nextDate.setUTCDate(currentDate.getUTCDate() + 7);
   } else if (auto_create_period === '2週間ごと') {
-    nextDate.setDate(currentDate.getDate() + 14);
+    nextDate.setUTCDate(currentDate.getUTCDate() + 14);
   }
+
+  // 指定曜日に調整（日本時間基準）
+  const targetWeekday = weekday;
+  const currentWeekday = nextDate.getUTCDay(); // JST調整済みなのでUTCで取得
+  const adjustment = targetWeekday - currentWeekday;
+  if (adjustment !== 0) {
+    nextDate.setUTCDate(nextDate.getUTCDate() + adjustment);
+  }
+
+  console.log(`[updateNextExecutionDate] JST current: ${current_execution_date}`);
+  console.log(`[updateNextExecutionDate] JST next: ${nextDate.toISOString()}`);
+  console.log(`[updateNextExecutionDate] weekday adjustment: ${adjustment} (target: ${targetWeekday}, current: ${currentWeekday})`);
 
   const command = new UpdateCommand({
     TableName: config.tableNames.batchReportSettings,

@@ -9,6 +9,8 @@ import config from '@src/config';
 import { generateReportExcel } from './excelService';
 import axios from 'axios';
 import { REPORT_STATUSES } from '@src/enums/reportEnums';
+import { INQUIRY_CATEGORIES } from '@src/enums/inquiryEnums';
+import { scanWithoutDeleted } from '@src/utils/softDelete';
 
 const prisma = new PrismaClient();
 
@@ -158,6 +160,36 @@ export const deleteReport = async (
   }
 };
 
+/**
+ * 複数レポートを削除
+ */
+export const deleteMultipleReports = async (
+  report_ids: string[],
+  client_id: string,
+  ddbDocClient: DynamoDBDocumentClient,
+): Promise<{
+  deleted_count: number;
+  not_found_ids: string[];
+  errors: string[];
+}> => {
+  try {
+    if (!Array.isArray(report_ids) || report_ids.length === 0) {
+      throw new Error('レポートIDの配列が必要です');
+    }
+
+    const result = await reportModel.deleteMultipleReports(
+      ddbDocClient,
+      report_ids,
+      client_id
+    );
+
+    return result;
+  } catch (error) {
+    console.error('Error in deleteMultipleReports service:', error);
+    throw error;
+  }
+};
+
 export const createReport = async (
   reportData: {
     property_id: string;
@@ -179,14 +211,14 @@ export const createReport = async (
 ) => {
   try {
     // STEP 1: Get property details from DynamoDB
-    const propertyResult = await ddbDocClient.send(new ScanCommand({
+    const propertyResult = await scanWithoutDeleted(ddbDocClient, {
       TableName: config.tableNames.properties,
       FilterExpression: 'id = :id AND client_id = :client_id',
       ExpressionAttributeValues: {
         ':id': reportData.property_id,
         ':client_id': client_id
       }
-    }));
+    });
 
 
     if (!propertyResult.Items || propertyResult.Items.length === 0) {
@@ -201,7 +233,7 @@ export const createReport = async (
     const requestData = {
       inquiry_infos: reportData.customer_interactions?.map((interaction, index, array) => {
         // Check if this is a new inquiry based on the title
-        const isFirstInteraction = interaction.title === '新規問い合わせ';
+        const isFirstInteraction = interaction.category === INQUIRY_CATEGORIES.NEW_INQUIRY;
 
         return {
           inquiry_id: `INQ-${interaction.inquired_at.split(' ')[0].replace(/-/g, '')}-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`,
@@ -407,14 +439,14 @@ export const saveReport = async (
     }
 
     // Get property details
-    const propertyResult = await ddbDocClient.send(new ScanCommand({
+    const propertyResult = await scanWithoutDeleted(ddbDocClient, {
       TableName: config.tableNames.properties,
       FilterExpression: 'id = :id AND client_id = :client_id',
       ExpressionAttributeValues: {
         ':id': reportData.property_id,
         ':client_id': client_id
       }
-    }));
+    });
 
     if (!propertyResult.Items || propertyResult.Items.length === 0) {
       throw ReportErrors.propertyNotFound({ property_id: reportData.property_id });
@@ -499,17 +531,17 @@ export const getInquiriesForPeriod = async (
 ) => {
   try {
     // 顧客情報を取得
-    const customerResult = await ddbDocClient.send(new ScanCommand({
+    const customerResult = await scanWithoutDeleted(ddbDocClient, {
       TableName: config.tableNames.customers,
       FilterExpression: 'client_id = :client_id',
       ExpressionAttributeValues: {
         ':client_id': client_id
       }
-    }));
+    });
     const customers = customerResult.Items || [];
 
     // 期間内の問い合わせを検索
-    const inquiryResult = await ddbDocClient.send(new ScanCommand({
+    const inquiryResult = await scanWithoutDeleted(ddbDocClient, {
       TableName: config.tableNames.inquiry,
       FilterExpression: 'client_id = :client_id AND property_id = :property_id AND inquired_at BETWEEN :start_date AND :end_date',
       ExpressionAttributeValues: {
@@ -518,7 +550,7 @@ export const getInquiriesForPeriod = async (
         ':start_date': start_date,
         ':end_date': end_date
       }
-    }));
+    });
 
     const inquiries = (inquiryResult.Items || []).map(inquiry => {
       const customer = customers.find(c => c.id === inquiry.customer_id);

@@ -1,44 +1,52 @@
-import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
+import { DynamoDBDocumentClient, ScanCommand } from '@aws-sdk/lib-dynamodb';
+import * as reportModel from '@src/repositroies/reportModel';
 import * as batchReportModel from '@src/repositroies/batchReportModel';
 import * as reportService from '@src/services/reportService';
-import { BatchExecutionTarget } from '@src/models/batchReportType';
 import config from '@src/config';
-import { ScanCommand } from '@aws-sdk/lib-dynamodb';
+import { BatchExecutionTarget } from '@src/models/batchReportType';
+import { scanWithoutDeleted } from '@src/utils/softDelete';
+
+// 日本時間（JST）での現在時刻を取得
+const getJSTCurrentDateTime = (): string => {
+  const now = new Date();
+  // 日本時間（UTC+9）に変換
+  const jstTime = new Date(now.getTime() + (9 * 60 * 60 * 1000));
+  return jstTime.toISOString();
+};
 
 /**
- * 実行すべきバッチレポート設定を処理
+ * バッチレポート処理を実行
  */
-export const processBatchReportSettings = async (ddbDocClient: DynamoDBDocumentClient): Promise<void> => {
+export const processBatchReportSettings = async (
+  ddbDocClient: DynamoDBDocumentClient,
+): Promise<void> => {
+  const currentDateTime = getJSTCurrentDateTime();
+  console.log(`[BatchService] Processing batch reports at JST: ${currentDateTime}`);
+
   try {
-    const currentDateTime = new Date().toISOString();
-    console.log(`[BatchService] Processing batch reports at ${currentDateTime}`);
-    
     // 実行すべきバッチ設定を取得
     const executableBatches = await batchReportModel.getExecutableBatchSettings(
       ddbDocClient,
       currentDateTime
     );
 
+    console.log(`[BatchService] Found ${executableBatches.length} batches to process`);
+
     if (executableBatches.length === 0) {
-      console.log('[BatchService] No executable batch settings found');
+      console.log('[BatchService] No batches to process at this time');
       return;
     }
 
-    console.log(`[BatchService] Found ${executableBatches.length} executable batch settings`);
+    // 各バッチを並列処理
+    const promises = executableBatches.map(batch => 
+      processSingleBatch(ddbDocClient, batch)
+    );
 
-    // 各バッチ設定を処理
-    for (const batch of executableBatches) {
-      try {
-        await processSingleBatch(ddbDocClient, batch);
-      } catch (error) {
-        console.error(`[BatchService] Error processing batch ${batch.id}:`, error);
-        // 個別のバッチエラーは続行
-      }
-    }
-
-    console.log('[BatchService] Batch processing completed');
+    await Promise.allSettled(promises);
+    
+    console.log(`[BatchService] Batch processing completed`);
   } catch (error) {
-    console.error('[BatchService] Error in processBatchReportSettings:', error);
+    console.error('[BatchService] Error in batch processing:', error);
     throw error;
   }
 };
@@ -79,14 +87,14 @@ const processSingleBatch = async (
     );
 
     // 物件情報を取得
-    const propertyResult = await ddbDocClient.send(new ScanCommand({
+    const propertyResult = await scanWithoutDeleted(ddbDocClient, {
       TableName: config.tableNames.properties,
       FilterExpression: 'id = :id AND client_id = :client_id',
       ExpressionAttributeValues: {
         ':id': batch.property_id,
         ':client_id': batch.client_id
       }
-    }));
+    });
 
     if (!propertyResult.Items || propertyResult.Items.length === 0) {
       console.warn(`[BatchService] Property not found: ${batch.property_id}`);
@@ -129,6 +137,7 @@ const processSingleBatch = async (
       ddbDocClient,
       batch.client_id,
       batch.created_at,
+      batch.weekday, // 追加
       batch.auto_create_period,
       batch.next_execution_date
     );

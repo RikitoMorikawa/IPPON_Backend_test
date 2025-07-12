@@ -9,6 +9,7 @@ import {
 import { DynamoDBDocumentClient, PutCommand, GetCommand, QueryCommand, UpdateCommand, DeleteCommand } from '@aws-sdk/lib-dynamodb';
 import { validateTableData, validateTableKeys } from '@src/utils/schemaValidation';
 import { getSchemaByTableName } from '@src/schemas/dynamoSchemas';
+import { queryWithoutDeleted } from '@src/utils/softDelete';
 
 export const createTableIfNotExists = async (ddbDocClient: DynamoDBClient, tableName: string) => {
   try {
@@ -204,13 +205,11 @@ export class SchemaValidatedDynamoDBHelper {
       }
     }
 
-    const command = new QueryCommand({
+    const result = await queryWithoutDeleted(this.ddbDocClient, {
       TableName: tableName,
       KeyConditionExpression: keyConditionExpression,
       ExpressionAttributeValues: expressionAttributeValues,
     });
-
-    const result = await this.ddbDocClient.send(command);
     return result.Items || [];
   }
 

@@ -87,7 +87,7 @@ export const employeeHandler = async (
                     employee_id: id ?? '',
                 };
 
-                const updatedEmployee = await updateEmployeeService(bodyWithId);
+                const updatedEmployee = await updateEmployeeService(bodyWithId, false);
 
                 return reply
                     .status(200)

@@ -5,8 +5,10 @@ import {
   getReportsByClient,
   createReport,
   deleteReport,
+  deleteMultipleReports,
   saveReport,
   downloadReport,
+  downloadMultipleReportsExcel,
   setupReportBatch,
   updateReportBatch,
 } from '@src/controllers/reportController';
@@ -50,6 +52,14 @@ export default async function reportRoutes(fastify: FastifyInstance): Promise<vo
     handler: deleteReport,
   });
 
+  // 複数レポート削除API
+  app.route({
+    method: 'DELETE',
+    url: '/reports',
+    preHandler: cognitoAuthMiddleware,
+    handler: deleteMultipleReports,
+  });
+
   app.route({
     method: 'POST',
     url: '/properties/:property_id/reports/save',
@@ -76,5 +86,13 @@ export default async function reportRoutes(fastify: FastifyInstance): Promise<vo
     url: '/:property_id/reports/:report_id/download',
     preHandler: cognitoAuthMiddleware,
     handler: downloadReport,
+  });
+
+  // 複数レポートExcelダウンロードAPI
+  app.route({
+    method: 'POST',
+    url: '/reports/excel-download',
+    preHandler: cognitoAuthMiddleware,
+    handler: downloadMultipleReportsExcel,
   });
 }

@@ -305,15 +305,16 @@ export const deletePropertiesByIds = async (
 
   const propertyIdArray = propIds.split(',').map((id) => id.trim());
   const clientIdString = Array(propertyIdArray.length).fill(clientId).join(',');
-  const deleteRequests = await deleteProperties(ddbDocClient, propIds, clientIdString);
+  
+  const deleteResult = await deleteProperties(ddbDocClient, propIds, clientIdString);
 
-  if (deleteRequests.properties.length === 0) {
+  if (deleteResult.properties.length === 0) {
     return { success: false, reason: 'NOT_FOUND' };
   }
 
   const deleteParams: { RequestItems: { [key: string]: any } } = { RequestItems: {} };
-  deleteParams.RequestItems[config.tableNames.properties] = deleteRequests.properties;
-
+  deleteParams.RequestItems[config.tableNames.properties] = deleteResult.properties;
   await executeBatchDelete(ddbDocClient, deleteParams);
+  
   return { success: true };
 };

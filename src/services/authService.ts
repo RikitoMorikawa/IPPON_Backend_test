@@ -9,6 +9,7 @@ import { computeSecretHash } from '../utils/cognitoUtils';
 import { PrismaClient } from '@prisma/client';
 import config from '../config';
 import { authLogger } from '../utils/logger';
+import { withoutDeleted } from '../utils/softDelete';
 dotenv.config();
 
 
@@ -38,7 +39,7 @@ export const signInService = async (email: string, password: string) => {
       sub: decoded.sub,
       hasClientId: !!decoded["custom:clientId"],
       hasGivenName: !!decoded["given_name"],
-      hasFamilyName: !!decoded["last_name"],
+      hasFamilyName: !!decoded["family_name"],
       hasType: !!decoded["custom:type"],
       hasRole: !!decoded["custom:role"]
     });
@@ -55,10 +56,10 @@ export const signInService = async (email: string, password: string) => {
         authLogger.info('Searching for employee in PostgreSQL', email);
         
         const employee = await prisma.mstClientEmployees.findFirst({
-          where: {
+          where: withoutDeleted({
             mail_address: email,
             is_active: true
-          },
+          }),
           include: {
             client: true
           }
@@ -67,11 +68,11 @@ export const signInService = async (email: string, password: string) => {
         if (employee) {
           clientId = employee.client_id;
           
-                     authLogger.info('Employee found in PostgreSQL, updating Cognito', email, {
-             clientId: clientId,
-             employeeId: employee.id,
-             clientName: (employee.client as any)?.client_name
-           });
+          authLogger.info('Employee found in PostgreSQL, updating Cognito', email, {
+            clientId: clientId,
+            employeeId: employee.id,
+            clientName: (employee.client as any)?.client_name
+          });
           
           // Cognitoユーザーのcustom:clientId属性を更新
           const updateParams = {
@@ -236,8 +237,8 @@ export const LogoutService = async (accessToken: string): Promise<boolean> => {
     authLogger.info('Global sign out completed successfully');
     return true;
   } catch (error) {
-    authLogger.error('Logout service failed', error);
-    return false;
+    authLogger.warn('Cognito global sign out failed, but treating logout as successful', error instanceof Error ? error.message : 'Unknown error');
+    return true;
   }
 };
 
@@ -385,4 +386,12 @@ export const changeUserPasswordSeriveInCognito = async (
     authLogger.error('Error changing user password', error, email);
     throw new Error(error instanceof Error ? error.message : 'Failed to change password');
   }
+};
+
+export const getNewTokenAfterUpdate = async (email: string): Promise<any> => {
+  authLogger.info('Getting new token after employee update - DISABLED FOR SECURITY', email);
+  
+  // この関数は危険なため無効化
+  // パスワードを変更してしまうリスクがあるため使用しない
+  throw new Error('getNewTokenAfterUpdate is disabled for security reasons');
 };

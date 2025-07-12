@@ -10,6 +10,7 @@ import {
 import config from '@src/config';
 import dayjs from 'dayjs';
 import { TransactWriteCommand } from '@aws-sdk/lib-dynamodb';
+import { scanWithoutDeleted } from '@src/utils/softDelete';
 
 
 export const saveInquiry = async (
@@ -141,7 +142,7 @@ export const getAllInquires = async (ddbDocClient: DynamoDBDocumentClient, clien
     };
 
     const [individualResult] = await Promise.all([
-      ddbDocClient.send(new ScanCommand(individualParams)),
+      scanWithoutDeleted(ddbDocClient, individualParams),
     ]);
 
     const inquires = {
@@ -169,7 +170,7 @@ export const getAllInquiryHistory = async (ddbDocClient: DynamoDBDocumentClient,
     };
 
     const [individualResult] = await Promise.all([
-      ddbDocClient.send(new ScanCommand(individualParams)),
+      scanWithoutDeleted(ddbDocClient, individualParams),
     ]);
 
     const inquires = {
@@ -196,7 +197,7 @@ export const showInquiryDetails = async (
     },
   };
 
-  const result = await ddbDocClient.send(new ScanCommand(params));
+  const result = await scanWithoutDeleted(ddbDocClient, params);
   return result.Items && result.Items.length > 0 ? result.Items[0] : null;
 };
 
@@ -233,11 +234,11 @@ export const searchInquiryByProperty = async (
     console.log('Customer filter:', customerFilterExpressions.join(' AND '));
     console.log('Customer values:', customerExprAttrValues);
 
-    const result = await ddbDocClient.send(new ScanCommand({
+    const result = await scanWithoutDeleted(ddbDocClient, {
       TableName: config.tableNames.customers,
       FilterExpression: customerFilterExpressions.join(' AND '),
       ExpressionAttributeValues: customerExprAttrValues
-    }));
+    });
     customers = result.Items || [];
     
     console.log('Found customers:', customers.length);
@@ -310,13 +311,13 @@ export const searchInquiryByProperty = async (
       console.log("Inquiry filters:", inquiryScanInput.FilterExpression);
       console.log("Inquiry values:", inquiryScanInput.ExpressionAttributeValues);
 
-      const result = await ddbDocClient.send(new ScanCommand(inquiryScanInput));
+      const result = await scanWithoutDeleted(ddbDocClient, inquiryScanInput);
       inquiries = result.Items || [];
     } else {
 
-      const result = await ddbDocClient.send(new ScanCommand({
+      const result = await scanWithoutDeleted(ddbDocClient, {
         TableName: config.tableNames.inquiry
-      }));
+      });
       const allInquiries = result.Items || [];
       inquiries = allInquiries;
     }
@@ -338,11 +339,11 @@ export const searchInquiryByProperty = async (
         exprValues[`:pid${i}`] = id;
       });
 
-      const result = await ddbDocClient.send(new ScanCommand({
+      const result = await scanWithoutDeleted(ddbDocClient, {
         TableName: config.tableNames.properties,
         FilterExpression: filterExpr,
         ExpressionAttributeValues: exprValues
-      }));
+      });
       properties = result.Items || [];
     }
 
@@ -452,7 +453,7 @@ export const searchInquiryHistoryDetails = async (
 
     console.log('📋 DynamoDB Scan Input:', JSON.stringify(scanInput, null, 2));
 
-    const result = await ddbDocClient.send(new ScanCommand(scanInput));
+    const result = await scanWithoutDeleted(ddbDocClient, scanInput);
     inquiries = result.Items || [];
 
     console.log(`✅ DynamoDB Scan Result: Found ${inquiries.length} inquiries`);
@@ -518,15 +519,15 @@ export const updateInquiryHistory = async (
       // デバッグ: 該当のclient_idで存在するすべてのinquiryを確認
       console.log('🔍 Searching for all inquiries with client_id:', clientId);
       try {
-        const scanCommand = new ScanCommand({
+        const scanParams = {
           TableName: config.tableNames.inquiry,
           FilterExpression: 'client_id = :clientId',
           ExpressionAttributeValues: {
             ':clientId': clientId
           }
-        });
+        };
         
-        const scanResult = await ddbDocClient.send(scanCommand);
+        const scanResult = await scanWithoutDeleted(ddbDocClient, scanParams);
         console.log('Found inquiries for this client:', scanResult.Items?.length || 0);
         
         if (scanResult.Items && scanResult.Items.length > 0) {

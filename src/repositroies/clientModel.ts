@@ -1,13 +1,14 @@
 import { PrismaClient } from '@prisma/client';
+import { withoutDeleted } from '../utils/softDelete';
 
 const prisma = new PrismaClient();
 
 export const getClientById = async (clientId: string) => {
     try {
         const client = await prisma.mstClients.findUnique({
-            where: {
+            where: withoutDeleted({
                 id: clientId
-            }
+            })
         });
 
         if (!client) {
@@ -30,9 +31,9 @@ export const getEmployeeById = async (employeeId: string | undefined | null) => 
         }
 
         const employee = await prisma.mstClientEmployees.findUnique({
-            where: {
+            where: withoutDeleted({
                 id: employeeId
-            }
+            })
         });
 
         return employee || null;

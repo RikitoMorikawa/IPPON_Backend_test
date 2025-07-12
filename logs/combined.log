@@ -3415,3 +3415,294 @@ Stack: Error: Failed to sign in with Cognito: Password attempts exceeded
   "clientId": "0423994e-0c0e-4906-b80b-b098b1527a83",
   "employeeId": "c794fa88-1001-7029-06de-15a6cf7d984b"
 }
+2025-07-09 20:01:18 [INFO]: Sign-in request received | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "requestIP": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+}
+2025-07-09 20:01:18 [INFO]: Checking email exists in database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-09 20:01:18 [INFO]: Email exists, proceeding with sign-in service | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-09 20:01:18 [INFO]: Sign-in service started | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-09 20:01:18 [INFO]: Cognito SIGN_IN - START | {
+  "module": "COGNITO",
+  "operation": "SIGN_IN",
+  "email": "suz***@fudosan-life.co.jp",
+  "status": "START"
+}
+2025-07-09 20:01:18 [INFO]: Checking USER_PASSWORD_AUTH configuration | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-09 20:01:19 [WARN]: USER_PASSWORD_AUTH not enabled, enabling it now | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-09 20:01:19 [INFO]: USER_PASSWORD_AUTH has been enabled successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-09 20:01:20 [INFO]: Looking up user by email | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-09 20:01:20 [INFO]: User found in Cognito, proceeding with authentication | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "username": "c794fa88-1001-7029-06de-15a6cf7d984b",
+  "userStatus": "CONFIRMED",
+  "enabled": true
+}
+2025-07-09 20:01:20 [INFO]: Initiating Cognito authentication | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "authFlow": "USER_PASSWORD_AUTH",
+  "clientId": "4ur6m2mo71c3eunmevutnbma1e"
+}
+2025-07-09 20:01:20 [INFO]: Cognito SIGN_IN - SUCCESS | {
+  "module": "COGNITO",
+  "operation": "SIGN_IN",
+  "email": "suz***@fudosan-life.co.jp",
+  "status": "SUCCESS",
+  "accessTokenExists": true,
+  "idTokenExists": true,
+  "refreshTokenExists": true,
+  "tokenType": "Bearer"
+}
+2025-07-09 20:01:20 [INFO]: Cognito authentication successful, decoding token | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-09 20:01:20 [INFO]: JWT token decoded successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "sub": "c794fa88-1001-7029-06de-15a6cf7d984b",
+  "hasClientId": true,
+  "hasGivenName": true,
+  "hasFamilyName": true,
+  "hasType": true,
+  "hasRole": true
+}
+2025-07-09 20:01:20 [INFO]: custom:clientId found in token | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "clientId": "0423994e-0c0e-4906-b80b-b098b1527a83"
+}
+2025-07-09 20:01:20 [INFO]: Sign-in service completed successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "clientId": "0423994e-0c0e-4906-b80b-b098b1527a83",
+  "employeeId": "c794fa88-1001-7029-06de-15a6cf7d984b",
+  "type": "employee",
+  "role": "general",
+  "hasAccessToken": true,
+  "hasIdToken": true
+}
+2025-07-09 20:01:20 [INFO]: Sign-in controller completed successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "hasToken": true
+}
+2025-07-11 14:04:16 [INFO]: Sign-in request received | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "requestIP": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+}
+2025-07-11 14:04:16 [INFO]: Checking email exists in database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-11 14:04:17 [INFO]: Email exists, proceeding with sign-in service | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-11 14:04:17 [INFO]: Sign-in service started | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-11 14:04:17 [INFO]: Cognito SIGN_IN - START | {
+  "module": "COGNITO",
+  "operation": "SIGN_IN",
+  "email": "suz***@fudosan-life.co.jp",
+  "status": "START"
+}
+2025-07-11 14:04:17 [INFO]: Checking USER_PASSWORD_AUTH configuration | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-11 14:04:17 [WARN]: USER_PASSWORD_AUTH not enabled, enabling it now | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-11 14:04:17 [INFO]: USER_PASSWORD_AUTH has been enabled successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-11 14:04:18 [INFO]: Looking up user by email | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-11 14:04:18 [INFO]: User found in Cognito, proceeding with authentication | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "username": "c794fa88-1001-7029-06de-15a6cf7d984b",
+  "userStatus": "CONFIRMED",
+  "enabled": true
+}
+2025-07-11 14:04:18 [INFO]: Initiating Cognito authentication | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "authFlow": "USER_PASSWORD_AUTH",
+  "clientId": "4ur6m2mo71c3eunmevutnbma1e"
+}
+2025-07-11 14:04:19 [INFO]: Cognito SIGN_IN - SUCCESS | {
+  "module": "COGNITO",
+  "operation": "SIGN_IN",
+  "email": "suz***@fudosan-life.co.jp",
+  "status": "SUCCESS",
+  "accessTokenExists": true,
+  "idTokenExists": true,
+  "refreshTokenExists": true,
+  "tokenType": "Bearer"
+}
+2025-07-11 14:04:19 [INFO]: Cognito authentication successful, decoding token | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-11 14:04:19 [INFO]: JWT token decoded successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "sub": "c794fa88-1001-7029-06de-15a6cf7d984b",
+  "hasClientId": true,
+  "hasGivenName": true,
+  "hasFamilyName": true,
+  "hasType": true,
+  "hasRole": true
+}
+2025-07-11 14:04:19 [INFO]: custom:clientId found in token | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "clientId": "0423994e-0c0e-4906-b80b-b098b1527a83"
+}
+2025-07-11 14:04:19 [INFO]: Sign-in service completed successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "clientId": "0423994e-0c0e-4906-b80b-b098b1527a83",
+  "employeeId": "c794fa88-1001-7029-06de-15a6cf7d984b",
+  "type": "employee",
+  "role": "admin",
+  "hasAccessToken": true,
+  "hasIdToken": true
+}
+2025-07-11 14:04:19 [INFO]: Sign-in controller completed successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "hasToken": true
+}
+2025-07-11 14:18:51 [INFO]: Sign-in request received | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "requestIP": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+}
+2025-07-11 14:18:51 [INFO]: Checking email exists in database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-11 14:18:51 [INFO]: Email exists, proceeding with sign-in service | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-11 14:18:51 [INFO]: Sign-in service started | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-11 14:18:51 [INFO]: Cognito SIGN_IN - START | {
+  "module": "COGNITO",
+  "operation": "SIGN_IN",
+  "email": "suz***@fudosan-life.co.jp",
+  "status": "START"
+}
+2025-07-11 14:18:51 [INFO]: Checking USER_PASSWORD_AUTH configuration | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-11 14:18:51 [WARN]: USER_PASSWORD_AUTH not enabled, enabling it now | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-11 14:18:51 [INFO]: USER_PASSWORD_AUTH has been enabled successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-11 14:18:52 [INFO]: Looking up user by email | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-11 14:18:53 [INFO]: User found in Cognito, proceeding with authentication | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "username": "c794fa88-1001-7029-06de-15a6cf7d984b",
+  "userStatus": "CONFIRMED",
+  "enabled": true
+}
+2025-07-11 14:18:53 [INFO]: Initiating Cognito authentication | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "authFlow": "USER_PASSWORD_AUTH",
+  "clientId": "4ur6m2mo71c3eunmevutnbma1e"
+}
+2025-07-11 14:18:53 [INFO]: Cognito SIGN_IN - SUCCESS | {
+  "module": "COGNITO",
+  "operation": "SIGN_IN",
+  "email": "suz***@fudosan-life.co.jp",
+  "status": "SUCCESS",
+  "accessTokenExists": true,
+  "idTokenExists": true,
+  "refreshTokenExists": true,
+  "tokenType": "Bearer"
+}
+2025-07-11 14:18:53 [INFO]: Cognito authentication successful, decoding token | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-11 14:18:53 [INFO]: JWT token decoded successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "sub": "c794fa88-1001-7029-06de-15a6cf7d984b",
+  "hasClientId": true,
+  "hasGivenName": true,
+  "hasFamilyName": true,
+  "hasType": true,
+  "hasRole": true
+}
+2025-07-11 14:18:53 [INFO]: custom:clientId found in token | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "clientId": "0423994e-0c0e-4906-b80b-b098b1527a83"
+}
+2025-07-11 14:18:53 [INFO]: Sign-in service completed successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "clientId": "0423994e-0c0e-4906-b80b-b098b1527a83",
+  "employeeId": "c794fa88-1001-7029-06de-15a6cf7d984b",
+  "type": "employee",
+  "role": "admin",
+  "hasAccessToken": true,
+  "hasIdToken": true
+}
+2025-07-11 14:18:53 [INFO]: Sign-in controller completed successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "hasToken": true
+}

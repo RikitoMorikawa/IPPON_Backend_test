@@ -1,12 +1,5 @@
 import { z } from 'zod';
 
-export const signInBodySchema = z
-  .object({
-    email: z.string().email().describe('User email address (must be a valid email)'),
-    password: z.string().min(6).describe('User password (minimum 6 characters)'),
-  })
-  .describe('Schema for sign-in request body');
-
 export const apiSignInSuccessResponseSchema = z
   .object({
     status: z.number().describe('HTTP status code of the response'),
@@ -31,26 +24,6 @@ export const apiSignInSuccessResponseSchema = z
       .describe('Authenticated user and token details'),
   })
   .describe('Schema for successful sign-in API response');
-
-export const sendOtpBodySchema = z
-  .object({
-    email: z.string().email().describe('User email address for OTP request'),
-  })
-  .describe('Schema for OTP request body');
-
-export const verifyOtpBodySchema = z.object({
-  email: z.string().email().describe('Email used to receive OTP'),
-  otp: z.string().min(1, 'OTP is required').describe('OTP sent to user'),
-});
-
-export const resetPasswordBodySchema = z.object({
-  email: z.string().email().describe('Email used to reset password'),
-  verificationCode: z
-    .string()
-    .min(1, 'Verification code is required')
-    .describe('Cognito verification code'),
-  newPassword: z.string().min(8, 'Password must be at least 8 characters').describe('New password'),
-});
 
 export const checkEmailBodySchema = z.object({
   email: z.string().email().describe('Email to check if registered'),

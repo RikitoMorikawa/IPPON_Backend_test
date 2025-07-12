@@ -103,6 +103,14 @@ const propertyRoutes: FastifyPluginCallback = (app, opts, done) => {
     handler: (req, reply) => propertyBatchStatusHandler(customApp, req, reply),
   });
 
+  // DELETE /properties/batch-status/:id - バッチ設定削除
+  customApp.route({
+    method: 'DELETE',
+    url: '/properties/batch-status/:id',
+    preHandler: cognitoAuthMiddleware,
+    handler: (req, reply) => propertyBatchStatusHandler(customApp, req, reply),
+  });
+
   done();
 };
 

@@ -4,6 +4,7 @@ import {
   DeleteCommand,
   PutCommand,
   GetCommand,
+  BatchWriteCommand,
 } from '@aws-sdk/lib-dynamodb';
 import { Report } from '@src/models/report';
 import config from '@src/config';
@@ -11,6 +12,7 @@ import { getClientDataByClientId } from '@src/services/clientDataService';
 import { ReportDetailData } from '@src/interfaces/reportInterfaces';
 import { ReportStatus, REPORT_STATUSES } from '@src/enums/reportEnums';
 import { CustomerInteraction } from '@src/models/reportType';
+import { queryWithoutDeleted, softDeleteDynamo } from '@src/utils/softDelete';
 
 export const getReportDetailsForAPI = async (
   ddbDocClient: DynamoDBDocumentClient,
@@ -28,8 +30,7 @@ export const getReportDetailsForAPI = async (
       },
     };
 
-    const reportCommand = new QueryCommand(reportParams);
-    const reportResult = await ddbDocClient.send(reportCommand);
+    const reportResult = await queryWithoutDeleted(ddbDocClient, reportParams);
 
     const reportData = reportResult.Items?.[0] as Report;
 
@@ -85,8 +86,7 @@ export const getReportDetails = async (
       },
     };
 
-    const reportCommand = new QueryCommand(reportParams);
-    const reportResult = await ddbDocClient.send(reportCommand);
+    const reportResult = await queryWithoutDeleted(ddbDocClient, reportParams);
 
     const reportData = reportResult.Items?.[0] as Report;
 
@@ -107,8 +107,7 @@ export const getReportDetails = async (
       },
     };
 
-    const propertyCommand = new QueryCommand(propertyParams);
-    const propertyResult = await ddbDocClient.send(propertyCommand);
+    const propertyResult = await queryWithoutDeleted(ddbDocClient, propertyParams);
 
     const propertyData = propertyResult.Items?.[0];
 
@@ -146,8 +145,7 @@ export const getPropertyReports = async (
 
     console.log('DynamoDB Query Params:', JSON.stringify(params, null, 2));
 
-    const command = new QueryCommand(params);
-    const result = await ddbDocClient.send(command);
+    const result = await queryWithoutDeleted(ddbDocClient, params);
 
     console.log('DynamoDB Query Result:', {
       itemsCount: result.Items?.length,
@@ -199,8 +197,7 @@ export const getReportsByClientId = async (
     };
 
     // Query for paginated reports
-    const command = new QueryCommand(params);
-    const result = await ddbDocClient.send(command);
+    const result = await queryWithoutDeleted(ddbDocClient, params);
 
     // Query to get total count (ignoring Limit and ExclusiveStartKey)
     const countParams: any = {
@@ -210,8 +207,7 @@ export const getReportsByClientId = async (
       ExpressionAttributeValues: params.ExpressionAttributeValues,
       Select: 'COUNT',
     };
-    const countCommand = new QueryCommand(countParams);
-    const countResult = await ddbDocClient.send(countCommand);
+    const countResult = await queryWithoutDeleted(ddbDocClient, countParams);
     const total = countResult.Count ?? 0;
 
     let reports = result.Items as Report[];
@@ -256,20 +252,130 @@ export const deleteReport = async (
       throw new Error('Report not found');
     }
 
-    const params = {
-      TableName: config.tableNames.report,
-      Key: {
-        client_id: client_id,
-        created_at: report.created_at
-      },
-    };
-
-    console.log('DynamoDB Delete Params:', JSON.stringify(params, null, 2));
-
-    const command = new DeleteCommand(params);
-    await ddbDocClient.send(command);
+    // 論理削除を実行
+    await softDeleteDynamo(ddbDocClient, config.tableNames.report, {
+      client_id: client_id,
+      created_at: report.created_at
+    });
   } catch (error) {
     console.error('Error in deleteReport model:', error);
+    throw error;
+  }
+};
+
+/**
+ * 複数レポートを削除
+ */
+export const deleteMultipleReports = async (
+  ddbDocClient: DynamoDBDocumentClient,
+  report_ids: string[],
+  client_id: string,
+): Promise<{
+  deleted_count: number;
+  not_found_ids: string[];
+  errors: string[];
+}> => {
+  const result = {
+    deleted_count: 0,
+    not_found_ids: [] as string[],
+    errors: [] as string[],
+  };
+
+  try {
+    // 各レポートIDに対して詳細を取得
+    const reportsToDelete: Array<{ report_id: string; created_at: string }> = [];
+    
+    for (const report_id of report_ids) {
+      try {
+        const report = await getReportDetails(ddbDocClient, report_id, client_id);
+        if (report) {
+          reportsToDelete.push({
+            report_id,
+            created_at: report.created_at
+          });
+        } else {
+          result.not_found_ids.push(report_id);
+        }
+      } catch (error) {
+        console.warn(`Report ${report_id} not found:`, error);
+        result.not_found_ids.push(report_id);
+      }
+    }
+
+    if (reportsToDelete.length === 0) {
+      console.log('No reports found to delete');
+      return result;
+    }
+
+    // 各レポートを論理削除
+    for (const report of reportsToDelete) {
+      try {
+        await softDeleteDynamo(ddbDocClient, config.tableNames.report, {
+          client_id: client_id,
+          created_at: report.created_at
+        });
+        result.deleted_count++;
+      } catch (error) {
+        result.errors.push(`レポート${report.report_id}の削除に失敗しました: ${error}`);
+      }
+    }
+
+    console.log(`Successfully deleted ${result.deleted_count} reports`);
+    return result;
+  } catch (error) {
+    console.error('Error in deleteMultipleReports:', error);
+    throw error;
+  }
+};
+
+/**
+ * 複数レポートのステータスを更新（is_draft=false, completed状態に）
+ */
+export const updateMultipleReportsStatus = async (
+  ddbDocClient: DynamoDBDocumentClient,
+  report_ids: string[],
+  client_id: string,
+): Promise<{
+  updated_count: number;
+  not_found_ids: string[];
+  errors: string[];
+}> => {
+  const result = {
+    updated_count: 0,
+    not_found_ids: [] as string[],
+    errors: [] as string[],
+  };
+
+  try {
+    // 各レポートIDに対して詳細を取得・更新
+    for (const report_id of report_ids) {
+      try {
+        const report = await getReportDetails(ddbDocClient, report_id, client_id);
+        if (!report) {
+          result.not_found_ids.push(report_id);
+          continue;
+        }
+
+        // レポートを完了状態に更新
+        const updatedReport: Report = {
+          ...report,
+          is_draft: false,
+          current_status: 'completed', // または適切なステータス
+          updated_at: new Date().toISOString()
+        };
+
+        await updateReport(ddbDocClient, updatedReport);
+        result.updated_count++;
+      } catch (error) {
+        console.warn(`Failed to update report ${report_id}:`, error);
+        result.errors.push(`レポート${report_id}の更新に失敗しました: ${error}`);
+      }
+    }
+
+    console.log(`Successfully updated ${result.updated_count} reports status`);
+    return result;
+  } catch (error) {
+    console.error('Error in updateMultipleReportsStatus:', error);
     throw error;
   }
 };

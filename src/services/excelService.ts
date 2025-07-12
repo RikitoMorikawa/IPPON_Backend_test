@@ -2,8 +2,6 @@ import { Workbook, Worksheet } from 'exceljs';
 import * as reportService from './reportService';
 import { DynamoDBDocumentClient } from '@aws-sdk/lib-dynamodb';
 import { ReportErrors } from '@src/responses/reportResponse';
-import { Report } from '@src/models/report';
-import { ExcelFormattedReport } from '@src/interfaces/reportInterfaces';
 
 // Excel生成メイン関数
 export async function generateReportExcel(
@@ -88,6 +86,67 @@ export async function generateReportExcel(
     return buffer as unknown as Buffer;
 }
 
+/**
+ * 複数レポートのExcelファイルを生成
+ * 各レポートを個別のシートとして作成
+ */
+export async function generateMultipleReportsExcel(
+    reportIds: string[],
+    clientId: string,
+    ddbDocClient: DynamoDBDocumentClient,
+): Promise<Buffer> {
+    const workbook = new Workbook();
+    const processedReports: string[] = [];
+    const failedReports: string[] = [];
+
+    for (const reportId of reportIds) {
+        try {
+            const reportData = await getReportData(reportId, clientId, ddbDocClient);
+            
+            // シート名を生成（物件名 + 作成日時で一意にする）
+            const propertyName = reportData.propertyName || reportId;
+            const createdAt = reportData.createdAt || new Date().toISOString();
+            const timeStamp = new Date(createdAt).toISOString().replace(/[-T:]/g, '').slice(0, 14); // YYYYMMDDHHmmss形式
+            const sheetName = `${propertyName}_${timeStamp}`.substring(0, 31); // Excelシート名の制限
+            
+            const worksheet = workbook.addWorksheet(sheetName);
+
+            worksheet.pageSetup = {
+                paperSize: 9, // A4
+                orientation: 'portrait',
+                margins: {
+                    left: 0.7,
+                    right: 0.7,
+                    top: 0.75,
+                    bottom: 0.75,
+                    header: 0.3,
+                    footer: 0.3,
+                },
+            };
+
+            // Column width settings
+            const columnWidths = Array(28).fill(4);
+            worksheet.columns = columnWidths.map((width) => ({ width }));
+
+            let currentRow = 1;
+
+            // レポート内容を生成
+            currentRow = createHeader(worksheet, reportData, currentRow);
+            currentRow = createSalesStatusSection(worksheet, reportData, currentRow);
+            currentRow = createOverallReportSection(worksheet, reportData, currentRow);
+            currentRow = createInquiryHistorySection(worksheet, reportData, currentRow);
+
+            processedReports.push(reportId);
+        } catch (error) {
+            console.error(`Failed to process report ${reportId}:`, error);
+            failedReports.push(reportId);
+        }
+    }
+
+    const buffer = await workbook.xlsx.writeBuffer();
+    return buffer as unknown as Buffer;
+}
+
 // DynamoDBからデータ取得
 async function getReportData(
     reportId: string,
@@ -112,7 +171,7 @@ async function getReportData(
         // Basic information (UI screen base)
         reportId: reportAny.report_id,
         reportDate: formatJapaneseDate(reportAny.report_date || ''),
-
+        createdAt: reportAny.created_at, // Add created_at to the returned data
 
 
         // Basic information (UI screen base)
@@ -194,7 +253,7 @@ async function getReportData(
             })),
 
         // Other
-        currentStatus: reportAny.current_status || '募集中',
+        currentStatus: reportAny.current_status || '',
         title: reportAny.report_name || '販売状況報告書',
         isDraft: reportAny.publish_status === 'draft',
 

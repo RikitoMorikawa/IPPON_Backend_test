@@ -4,39 +4,25 @@ import dotenv from 'dotenv';
 import { checkEmailExists } from '@src/repositroies/authModel';
 import { changePasswordSeriveInCognito, changeUserPasswordSeriveInCognito, LogoutService, ResetPasswordService, sendOtpService, signInService, verifyOtpService } from '../services/authService';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '../responses/constants/authConstant';
-import { changePasswordBodySchema, resetPasswordBodySchema, sendOtpBodySchema, signInBodySchema, verifyOtpBodySchema } from '@src/schemas/authSchema';
+import { changePasswordBodySchema} from '@src/schemas/authSchema';
 import { BadRequestError, NotFoundError } from '@src/errors/httpErrors';
 import { decryptEmail, encryptEmail } from '@src/utils/crypto';
 import { constructEmailContentforMember, sendEmailWithSES } from '@src/services/emailService';
 import { errorResponse, successResponse } from '@src/responses';
 import { authLogger } from '@src/utils/logger';
+import { SendOtpRequestBody, SignRequestBody, SignInResponse, VerifyOtpRequestBody, ResetPasswordRequestBody, CheckEmailRequestBody } from '@src/interfaces/authInterfaces';
 
 dotenv.config();
 
 export const signInController = async (
   request: FastifyRequest<{
-    Body: z.infer<typeof signInBodySchema>;
+    Body: SignRequestBody;
   }>,
-  reply: FastifyReply
+  reply: FastifyReply<{ Reply: SignInResponse }>,
 ): Promise<void> => {
   const { email, password } = request.body;
-  
-  authLogger.info('Sign-in request received', email, { 
-    requestIP: request.ip,
-    userAgent: request.headers['user-agent']
-  });
 
   try {
-    authLogger.info('Checking email exists in database', email);
-    
-    if (!(await checkEmailExists(email))) {
-      authLogger.warn('Email not found in database', email);
-      throw {
-        statusCode: 404,
-        message: ERROR_MESSAGES.EMAIL_NOT_FOUND
-      };
-    }
-
     authLogger.info('Email exists, proceeding with sign-in service', email);
     const result = await signInService(email, password);
 
@@ -49,15 +35,16 @@ export const signInController = async (
     }
 
     authLogger.info('Sign-in controller completed successfully', email, {
-      clientId: result.data?.client_id,
-      employeeId: result.data?.employee_id
+      hasToken: !!result.data?.token
     });
 
-    reply.code(200).send({
+    const response: SignInResponse = {
       status: 200,
       message: SUCCESS_MESSAGES.SIGNIN_SUCCESS,
       data: result.data
-    });
+    };
+
+    reply.code(200).send(response);
   } catch (error: any) {
     authLogger.error('Sign-in controller failed', error, email, {
       statusCode: error.statusCode,
@@ -71,25 +58,13 @@ export const signInController = async (
 
 export const sendOtpController = async (
   request: FastifyRequest<{
-    Body: z.infer<typeof sendOtpBodySchema>;
+    Body: SendOtpRequestBody;
   }>,
   reply: FastifyReply
 ): Promise<void> => {
   const { email } = request.body;
-  
-  authLogger.info('Send OTP request received', email, { 
-    requestIP: request.ip 
-  });
 
   try {
-    if (!(await checkEmailExists(email))) {
-      authLogger.warn('Email not found for OTP request', email);
-      throw {
-        statusCode: 404,
-        message: ERROR_MESSAGES.EMAIL_NOT_EXISTS
-      };
-    }
-
     authLogger.info('Email exists, sending OTP', email);
     await sendOtpService(email);
 
@@ -110,26 +85,18 @@ export const sendOtpController = async (
 
 export const verifyOtpController = async (
   request: FastifyRequest<{
-    Body: z.infer<typeof verifyOtpBodySchema>;
+    Body: VerifyOtpRequestBody;
   }>,
   reply: FastifyReply
 ): Promise<void> => {
   const { email, otp } = request.body;
-  
-  authLogger.info('Verify OTP request received', email, { 
+
+  authLogger.info('Verify OTP request received', email, {
     otpLength: otp.length,
-    requestIP: request.ip 
+    requestIP: request.ip
   });
 
   try {
-    if (!(await checkEmailExists(email))) {
-      authLogger.warn('Email not found for OTP verification', email);
-      throw {
-        statusCode: 404,
-        message: ERROR_MESSAGES.EMAIL_NOT_EXISTS
-      };
-    }
-
     authLogger.info('Email exists, verifying OTP', email);
     const isOtpValid = await verifyOtpService(email, otp);
 
@@ -157,33 +124,14 @@ export const verifyOtpController = async (
 };
 
 export const ResetPasswordController = async (
-  req: FastifyRequest<{ Body: z.infer<typeof resetPasswordBodySchema> }>,
+  request: FastifyRequest<{
+    Body: ResetPasswordRequestBody;
+  }>,
   reply: FastifyReply
 ): Promise<void> => {
-  const { email, verificationCode, newPassword } = req.body;
-  
-  authLogger.info('Reset password request received', email, { 
-    verificationCodeLength: verificationCode?.length,
-    newPasswordLength: newPassword?.length,
-    requestIP: req.ip 
-  });
-
-  if (!email || !verificationCode || !newPassword) {
-    authLogger.warn('Missing required fields for password reset', email, {
-      hasEmail: !!email,
-      hasVerificationCode: !!verificationCode,
-      hasNewPassword: !!newPassword
-    });
-    throw new BadRequestError(ERROR_MESSAGES.EMAIL_VALIDATION_CODE_NEW_PASSWORD_REQUIRED);
-  }
+  const { email, verificationCode, newPassword } = request.body;
 
   try {
-    const emailExists = await checkEmailExists(email);
-    if (!emailExists) {
-      authLogger.warn('Email not found for password reset', email);
-      throw new NotFoundError(ERROR_MESSAGES.EMAIL_NOT_EXISTS);
-    }
-
     authLogger.info('Email exists, proceeding with password reset', email);
     await ResetPasswordService(email, verificationCode, newPassword);
 
@@ -195,7 +143,7 @@ export const ResetPasswordController = async (
     });
   } catch (cognitoError: any) {
     authLogger.error('Reset password controller failed', cognitoError, email, {
-      requestIP: req.ip
+      requestIP: request.ip
     });
     throw new BadRequestError(
       cognitoError.message || ERROR_MESSAGES.NOT_MET_VERIFICATION_CODE_REQUIREMENTS
@@ -204,36 +152,18 @@ export const ResetPasswordController = async (
 };
 
 export const checkEmailController = async (
-  req: FastifyRequest<{ Body: { email: string } }>,
+  request: FastifyRequest<{
+    Body: CheckEmailRequestBody;
+  }>,
   reply: FastifyReply
 ): Promise<void> => {
-  const { email } = req.body;
-  
-  authLogger.info('Check email request received', email, { 
-    requestIP: req.ip 
+  const { email } = request.body;
+
+  authLogger.info('Check email request received', email, {
+    requestIP: request.ip
   });
 
-  if (!email) {
-    authLogger.warn('Email check request missing email field', undefined, {
-      requestIP: req.ip
-    });
-    throw {
-      statusCode: 400,
-      message: ERROR_MESSAGES.REQUIRE_EMAIL
-    };
-  }
-
   try {
-    const emailExists = await checkEmailExists(email);
-
-    if (!emailExists) {
-      authLogger.warn('Email not registered in system', email);
-      throw {
-        statusCode: 404,
-        message: ERROR_MESSAGES.NOT_REGISTER_EMAIL
-      };
-    }
-
     authLogger.info('Email check completed successfully', email, { exists: true });
 
     reply.code(200).send({
@@ -242,7 +172,7 @@ export const checkEmailController = async (
     });
   } catch (error: any) {
     authLogger.error('Check email controller failed', error, email, {
-      requestIP: req.ip
+      requestIP: request.ip
     });
     throw error;
   }
@@ -254,11 +184,13 @@ export const changePasswordController = async (
   reply: FastifyReply
 ): Promise<void> => {
   const { email, oldPassword, newPassword } = req.body;
-  
-  authLogger.info('Change password request received', email, { 
+  const { iv } = req.body as any;
+
+  authLogger.info('Change password request received', email, {
     oldPasswordLength: oldPassword?.length,
     newPasswordLength: newPassword?.length,
-    requestIP: req.ip 
+    requestIP: req.ip,
+    hasIv: !!iv
   });
 
   if (!email || !oldPassword || !newPassword) {
@@ -267,33 +199,39 @@ export const changePasswordController = async (
       hasOldPassword: !!oldPassword,
       hasNewPassword: !!newPassword
     });
-    throw {
-      statusCode: 400,
-      message: ERROR_MESSAGES.EMAIL_PASSWORD_REQUIRED
-    };
+    throw new BadRequestError(ERROR_MESSAGES.EMAIL_PASSWORD_REQUIRED);
   }
+  let actualEmail = email;
 
   try {
-    const emailExists = await checkEmailExists(email);
-    if (!emailExists) {
-      authLogger.warn('Email not found for password change', email);
-      throw {
-        statusCode: 404,
-        message: ERROR_MESSAGES.NOT_REGISTER_EMAIL
-      };
+    if (iv && email.length > 50) {
+      try {
+        authLogger.info('Attempting to decrypt email', undefined, { emailLength: email.length });
+        actualEmail = decryptEmail(email, iv);
+        authLogger.info('Email decrypted successfully', actualEmail);
+      } catch (decryptError) {
+        authLogger.error('Failed to decrypt email', decryptError);
+        throw new BadRequestError('Invalid email encryption parameters');
+      }
     }
 
-    authLogger.info('Email exists, proceeding with password change', email);
-    await changePasswordSeriveInCognito(email, oldPassword, newPassword);
+    const emailExists = await checkEmailExists(actualEmail);
+    if (!emailExists) {
+      authLogger.warn('Email not found for password change', actualEmail);
+      throw new NotFoundError(ERROR_MESSAGES.NOT_REGISTER_EMAIL);
+    }
 
-    authLogger.info('Change password controller completed successfully', email);
+    authLogger.info('Email exists, proceeding with password change', actualEmail);
+    await changePasswordSeriveInCognito(actualEmail, oldPassword, newPassword);
+
+    authLogger.info('Change password controller completed successfully', actualEmail);
 
     reply.code(200).send({
       status: 200,
       message: SUCCESS_MESSAGES.CHANGE_PASSWORD_SUCCESS
     });
   } catch (error: any) {
-    authLogger.error('Change password controller failed', error, email, {
+    authLogger.error('Change password controller failed', error, actualEmail, {
       requestIP: req.ip
     });
     throw {
@@ -309,10 +247,10 @@ export const logoutController = async (
   reply: FastifyReply
 ): Promise<void> => {
   const authHeader = req.headers.authorization;
-  
-  authLogger.info('Logout request received', undefined, { 
+
+  authLogger.info('Logout request received', undefined, {
     hasAuthHeader: !!authHeader,
-    requestIP: req.ip 
+    requestIP: req.ip
   });
 
   if (!authHeader || !authHeader.startsWith('Bearer ')) {
@@ -360,9 +298,9 @@ export const sendChangePasswordEmail = async (
   reply: FastifyReply
 ): Promise<{ success: boolean; message: string }> => {
   const { email } = req?.body as any || {};
-  
-  authLogger.info('Send change password email request received', email, { 
-    requestIP: req.ip 
+
+  authLogger.info('Send change password email request received', email, {
+    requestIP: req.ip
   });
 
   try {
@@ -402,12 +340,12 @@ export const changeEmailPassword = async (
     newPassword: string;
   };
 
-  authLogger.info('Change email password request received', undefined, { 
+  authLogger.info('Change email password request received', undefined, {
     hasEmail: !!email,
     hasIv: !!iv,
     oldPasswordLength: oldPassword?.length,
     newPasswordLength: newPassword?.length,
-    requestIP: req.ip 
+    requestIP: req.ip
   });
 
   if (!email || !iv || !oldPassword || !newPassword) {

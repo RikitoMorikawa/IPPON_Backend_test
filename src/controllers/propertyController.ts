@@ -459,6 +459,7 @@ export const propertyBatchStatusHandler = async (
             status: null,
             execution_count: 0,
             last_execution_date: null,
+            weekday: null,
           };
 
           return reply
@@ -476,6 +477,7 @@ export const propertyBatchStatusHandler = async (
           next_execution_date: batchSetting.next_execution_date,
           status: batchSetting.status,
           execution_count: batchSetting.execution_count,
+          weekday: batchSetting.weekday,
           last_execution_date: batchSetting.last_execution_date || null,
         };
 
@@ -491,6 +493,8 @@ export const propertyBatchStatusHandler = async (
           auto_create_period?: string;
           auto_generate?: boolean;
           execution_time?: string;
+          executionTime?: string; // フロントエンド用
+          weekday?: string;
         };
 
         if (!id) {
@@ -523,16 +527,30 @@ export const propertyBatchStatusHandler = async (
         if (updateData.execution_time !== undefined) {
           updates.execution_time = updateData.execution_time;
         }
+        // executionTime（フロントエンド）→ execution_time（サーバー）変換
+        if (updateData.executionTime !== undefined) {
+          updates.execution_time = updateData.executionTime;
+        }
+        if (updateData.weekday !== undefined) {
+          updates.weekday = updateData.weekday;
+        }
 
-        // start_dateまたはexecution_timeが変更された場合、next_execution_dateを再計算
-        if (updateData.start_date || updateData.execution_time) {
+        // start_date, execution_time, weekday のいずれかが変更された場合、next_execution_dateを再計算
+        if (updateData.start_date || updateData.execution_time || updateData.executionTime || updateData.weekday !== undefined) {
           const startDate = new Date(updateData.start_date || existingBatch.start_date);
-          const executionTime = updateData.execution_time || existingBatch.execution_time;
+          const executionTime = updateData.execution_time || updateData.executionTime || existingBatch.execution_time;
           const [hours, minutes] = executionTime.split(':').map(Number);
-          
-          const nextExecutionDate = new Date(startDate);
-          nextExecutionDate.setHours(hours, minutes, 0, 0);
-          updates.next_execution_date = nextExecutionDate.toISOString();
+          const weekday = updateData.weekday !== undefined ? Number(updateData.weekday) : Number(existingBatch.weekday);
+
+          // 新しい曜日に合わせて日付を調整
+          const nextDate = new Date(startDate);
+          const currentWeekday = nextDate.getDay();
+          let daysToAdd = weekday - currentWeekday;
+          if (daysToAdd < 0) daysToAdd += 7;
+          nextDate.setDate(nextDate.getDate() + daysToAdd);
+          nextDate.setHours(hours, minutes, 0, 0);
+
+          updates.next_execution_date = nextDate.toISOString();
         }
 
         // バッチ設定を更新
@@ -553,12 +571,43 @@ export const propertyBatchStatusHandler = async (
           next_execution_date: updatedBatch.next_execution_date,
           status: updatedBatch.status,
           execution_count: updatedBatch.execution_count,
+          weekday: updatedBatch.weekday,
           last_execution_date: updatedBatch.last_execution_date || null,
         };
 
         return reply
           .status(200)
           .send(successResponse(200, 'Batch setting updated successfully', response));
+      }
+
+      case 'DELETE': {
+        const { id } = req.params as { id: string };
+
+        if (!id) {
+          return reply.status(400).send(errorResponse(400, 'Batch ID is required'));
+        }
+
+        // まずバッチ設定を取得してclient_idとcreated_atを確認
+        const existingBatches = await batchReportModel.getBatchReportSettingsByClient(
+          ddbDocClient,
+          clientId
+        );
+
+        const existingBatch = existingBatches.find((batch: BatchReportSetting) => batch.id === id);
+        if (!existingBatch) {
+          return reply.status(404).send(errorResponse(404, 'この報告書自動出力設定は見つかりませんでした。'));
+        }
+
+        // バッチ設定を削除
+        await batchReportModel.deleteBatchReportSetting(
+          ddbDocClient,
+          clientId,
+          existingBatch.created_at
+        );
+
+        return reply
+          .status(200)
+          .send(successResponse(200, '報告書自動出力設定を削除しました。', { id }));
       }
 
       default:
