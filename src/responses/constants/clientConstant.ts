@@ -18,4 +18,5 @@ export const ERROR_MESSAGES = {
     REQUIRE_PARAMETERS: 'Require parameters',
     NEED_TO_BE_MEMBER: 'You need to be a member to access this endpoint',
     INVALID_TIMESTAMP_FORMAT: 'Invalid timestamp format',
+    CLIENT_ID_NOT_REQUIRED: "クライアントIDは必須です。"
 } as const;

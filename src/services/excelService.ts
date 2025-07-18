@@ -230,7 +230,9 @@ async function getReportData(
         })),
 
         // Legacy property report data
-        propertyPrice: reportAny.property?.price || 0,
+        propertyPrice: typeof reportAny.property?.price === 'string' 
+            ? parseFloat(reportAny.property.price) || 0 
+            : (reportAny.property?.price || 0),
         saleStartDate: formatDate(reportAny.property?.sales_start_date || ''),
 
         // Inquiry history (table data) - Legacy format
@@ -359,7 +361,10 @@ function createSalesStatusSection(worksheet: Worksheet, data: any, startRow: num
     let row = startRow;
 
     // Section title - Bold and orange
-    const priceFormatted = `${(data.propertyPrice / 10000).toLocaleString()}万円`;
+    const priceInYen = typeof data.propertyPrice === 'string' 
+        ? parseFloat(data.propertyPrice) || 0 
+        : (data.propertyPrice || 0);
+    const priceFormatted = `${(priceInYen / 10000).toLocaleString('ja-JP')}万円`;
     worksheet.getCell(`A${row}`).value = {
         richText: [
             { text: '（1）販売状況について （当初売出価格：', font: { color: { argb: 'FF000000' }, bold: true } },

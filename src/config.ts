@@ -8,12 +8,12 @@ const environment =
 
 type Environment = 'production' | 'development';
 
-// Table: 個人顧客詳細 (Individual Customer Detail)
-// Manages individual customers (物件購入見込み客)
-const IndividualCustomerDetail: Record<Environment, string> = {
-  production: 'prod-sales-brokerage-customer-individual-dynamodb',
-  development: 'dev-sales-brokerage-customer-individual-dynamodb',
-};
+// Table: 顧客詳細 (Customer Detail)
+// Manages customers (物件購入見込み客)
+const CustomerDetail: Record<Environment, string> = {
+  production: 'prod-sales-brokerage-customer-detail-dynamodb',
+  development: 'dev-sales-brokerage-customer-detail-dynamodb',
+};  
 
 // Table: 問い合わせ情報 (Inquiry Info)
 // Manages inquiries from customers
@@ -71,7 +71,7 @@ export default {
   environment,
 
   tableNames: {
-    customers: IndividualCustomerDetail[environment],
+    customers: CustomerDetail[environment],
     inquiry: Inquiry[environment],
     properties: Property[environment],
     report: AiReport[environment],
@@ -88,7 +88,19 @@ export default {
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
     s3: {
-      bucket: process.env.AWS_S3_BUCKET_NAME,
+      // Base bucket name from environment (e.g., "sales-brokerage")
+      baseBucket: process.env.AWS_S3_BUCKET_NAME,
+      // Always use prod bucket prefix (dev buckets don't exist yet)
+      bucketPrefix: 'prod-',
+      // Bucket suffix mapping for different purposes - always use prod buckets
+      buckets: {
+        property: 'prod-sales-brokerage-s3-bucket-property',
+        client: 'prod-sales-brokerage-s3-bucket-client',
+        company: 'prod-sales-brokerage-s3-bucket-company',
+        document: 'prod-sales-brokerage-s3-bucket-document',
+        contractor: 'prod-sales-brokerage-s3-bucket-contractor',
+        delete: 'prod-sales-brokerage-s3-bucket-delete',
+      },
     },
   },
 

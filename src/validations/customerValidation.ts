@@ -1,5 +1,3 @@
-import { EmployeeUpdateRequest } from '@src/interfaces/customerInterfaces';
-
 export const isDeleteRecordsRequestBody = (
   body: any,
 ): body is {

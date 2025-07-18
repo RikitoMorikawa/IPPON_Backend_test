@@ -155,7 +155,10 @@ export const getAllInquires = async (ddbDocClient: DynamoDBDocumentClient, clien
   }
 };
 
-export const getAllInquiryHistory = async (ddbDocClient: DynamoDBDocumentClient, clientId: string) => {
+export const getAllInquiryHistory = async (
+  ddbDocClient: DynamoDBDocumentClient,
+  clientId: string,
+) => {
   try {
     const individualParams = {
       TableName: config.tableNames.inquiry,
@@ -201,10 +204,6 @@ export const showInquiryDetails = async (
   return result.Items && result.Items.length > 0 ? result.Items[0] : null;
 };
 
-
-
-
-
 export const searchInquiryByProperty = async (
   ddbDocClient: DynamoDBDocumentClient,
   clientId: string,
@@ -228,9 +227,9 @@ export const searchInquiryByProperty = async (
     // 顧客をclient_idでフィルタリング
     const customerFilterExpressions: string[] = ['client_id = :clientId'];
     const customerExprAttrValues: Record<string, string> = {
-      ':clientId': clientId
+      ':clientId': clientId,
     };
-    
+
     console.log('Customer filter:', customerFilterExpressions.join(' AND '));
     console.log('Customer values:', customerExprAttrValues);
 
@@ -240,10 +239,10 @@ export const searchInquiryByProperty = async (
       ExpressionAttributeValues: customerExprAttrValues
     });
     customers = result.Items || [];
-    
+
     console.log('Found customers:', customers.length);
 
-    const customerIds = customers.map(c => c.id);
+    const customerIds = customers.map((c) => c.id);
     console.log('Customer IDs:', customerIds);
 
     if (customerIds.length === 0 && !propertyId) {
@@ -252,13 +251,13 @@ export const searchInquiryByProperty = async (
         total: 0,
         page,
         limit,
-        items: []
+        items: [],
       };
     }
     // ===  Filter Inquiries ===
-    const inquiryFilterExpressions: string[] = ['client_id = :clientId'];  // client_idフィルタを追加
+    const inquiryFilterExpressions: string[] = ['client_id = :clientId']; // client_idフィルタを追加
     const inquiryExprAttrValues: Record<string, any> = {
-      ':clientId': clientId
+      ':clientId': clientId,
     };
     const inquiryExprAttrNames: Record<string, string> = {};
 
@@ -274,13 +273,11 @@ export const searchInquiryByProperty = async (
       inquiryExprAttrValues[':endDate'] = endDate;
     }
 
-
     if (inquiryId) {
       inquiryFilterExpressions.push('#id = :inquiryId');
       inquiryExprAttrValues[':inquiryId'] = inquiryId;
       inquiryExprAttrNames['#id'] = 'id';
     }
-
 
     if (inquiryMethod) {
       inquiryFilterExpressions.push('#method = :method');
@@ -294,22 +291,19 @@ export const searchInquiryByProperty = async (
       inquiryExprAttrNames['#property_id'] = 'property_id';
     }
 
-
-
-
     if (inquiryFilterExpressions.length > 0 && Object.keys(inquiryExprAttrValues).length > 0) {
       const inquiryScanInput: any = {
         TableName: config.tableNames.inquiry,
         FilterExpression: inquiryFilterExpressions.join(' AND '),
-        ExpressionAttributeValues: inquiryExprAttrValues
+        ExpressionAttributeValues: inquiryExprAttrValues,
       };
 
       if (Object.keys(inquiryExprAttrNames).length > 0) {
         inquiryScanInput.ExpressionAttributeNames = inquiryExprAttrNames;
       }
 
-      console.log("Inquiry filters:", inquiryScanInput.FilterExpression);
-      console.log("Inquiry values:", inquiryScanInput.ExpressionAttributeValues);
+      console.log('Inquiry filters:', inquiryScanInput.FilterExpression);
+      console.log('Inquiry values:', inquiryScanInput.ExpressionAttributeValues);
 
       const result = await scanWithoutDeleted(ddbDocClient, inquiryScanInput);
       inquiries = result.Items || [];
@@ -324,16 +318,14 @@ export const searchInquiryByProperty = async (
 
     console.log('Found inquiries:', inquiries.length);
 
-
-
     // === 3. Load Properties ===
-    const propertyIds = [...new Set(inquiries.map(i => i.property_id))];
+    const propertyIds = [...new Set(inquiries.map((i) => i.property_id))];
     console.log('Property IDs:', propertyIds);
 
     if (propertyIds.length > 0) {
       const filterExpr = `client_id = :clientId AND (${propertyIds.map((_, i) => `id = :pid${i}`).join(' OR ')})`;
       const exprValues: Record<string, any> = {
-        ':clientId': clientId  // client_idフィルタを追加
+        ':clientId': clientId, // client_idフィルタを追加
       };
       propertyIds.forEach((id, i) => {
         exprValues[`:pid${i}`] = id;
@@ -350,15 +342,15 @@ export const searchInquiryByProperty = async (
     console.log('Found properties:', properties.length);
 
     // === 4. Join Data ===
-    const combined = inquiries.map(inquiry => {
-      const customer = customers.find(c => c.id === inquiry.customer_id);
-      const property = properties.find(p => p.id === inquiry.property_id);
+    const combined = inquiries.map((inquiry) => {
+      const customer = customers.find((c) => c.id === inquiry.customer_id);
+      const property = properties.find((p) => p.id === inquiry.property_id);
       return {
         inquiry: {
           ...inquiry,
           customer: customer || null,
-          property: property || null
-        }
+          property: property || null,
+        },
       };
     });
 
@@ -373,29 +365,26 @@ export const searchInquiryByProperty = async (
       total,
       page,
       limit,
-      items: pagedItems
+      items: pagedItems,
     };
-
   } catch (error) {
     console.error('Error in searchDashboard:', error);
     throw error;
   }
 };
 
-
-
 export const searchInquiryHistoryDetails = async (
   ddbDocClient: DynamoDBDocumentClient,
   inquiryId: string,
   title: string,
-  clientId: string,  // 必須パラメータに変更
+  clientId: string, // 必須パラメータに変更
 ) => {
   try {
     console.log('🔍 searchInquiryHistoryDetails called with:');
     console.log(`  inquiryId: "${inquiryId}"`);
     console.log(`  title: "${title}"`);
     console.log(`  clientId: "${clientId}"`);
-    
+
     if (title === '') {
       console.log('📝 Empty title - returning all inquiries except "新規問い合わせ"');
     } else if (title && title.trim() !== '') {
@@ -403,7 +392,7 @@ export const searchInquiryHistoryDetails = async (
     } else {
       console.log('📝 No title filter specified - returning all inquiries except "新規問い合わせ"');
     }
-    
+
     let inquiries: any[] = [];
 
     const filterExpressions: string[] = [];
@@ -460,31 +449,32 @@ export const searchInquiryHistoryDetails = async (
     if (inquiries.length > 0) {
       console.log('📄 Found inquiries:');
       inquiries.forEach((inquiry, index) => {
-        console.log(`  ${index + 1}. title: "${inquiry.title}", inquired_at: "${inquiry.inquired_at}"`);
+        console.log(
+          `  ${index + 1}. title: "${inquiry.title}", inquired_at: "${inquiry.inquired_at}"`,
+        );
       });
     } else {
-      console.log('📄 No inquiries found (all inquiries might be "新規問い合わせ" which are excluded from inquiry-history)');
+      console.log(
+        '📄 No inquiries found (all inquiries might be "新規問い合わせ" which are excluded from inquiry-history)',
+      );
     }
 
     return {
       total: inquiries.length,
       inquiries,
     };
-
   } catch (error) {
     console.error('Error in searchInquiryHistoryDetails:', error);
     throw error;
   }
 };
 
-
-
 // Update inquiry history function
 export const updateInquiryHistory = async (
   ddbDocClient: DynamoDBDocumentClient,
   clientId: string,
   inquiredAt: string,
-  updateData: any
+  updateData: any,
 ) => {
   try {
     console.log('=== updateInquiryHistory Debug ===');
@@ -496,26 +486,28 @@ export const updateInquiryHistory = async (
       TableName: config.tableNames.inquiry,
       Key: {
         client_id: clientId,
-        inquired_at: inquiredAt
-      }
+        inquired_at: inquiredAt,
+      },
     });
 
     console.log('GetCommand:', JSON.stringify(getCommand, null, 2));
 
     const existingItem = await ddbDocClient.send(getCommand);
-    
+
     console.log('DynamoDB response:', {
       itemExists: !!existingItem.Item,
-      itemKeys: existingItem.Item ? {
-        client_id: existingItem.Item.client_id,
-        inquired_at: existingItem.Item.inquired_at,
-        title: existingItem.Item.title
-      } : 'No item found'
+      itemKeys: existingItem.Item
+        ? {
+            client_id: existingItem.Item.client_id,
+            inquired_at: existingItem.Item.inquired_at,
+            title: existingItem.Item.title,
+          }
+        : 'No item found',
     });
 
     if (!existingItem.Item) {
       console.log('❌ Inquiry not found in DynamoDB');
-      
+
       // デバッグ: 該当のclient_idで存在するすべてのinquiryを確認
       console.log('🔍 Searching for all inquiries with client_id:', clientId);
       try {
@@ -529,31 +521,35 @@ export const updateInquiryHistory = async (
         
         const scanResult = await scanWithoutDeleted(ddbDocClient, scanParams);
         console.log('Found inquiries for this client:', scanResult.Items?.length || 0);
-        
+
         if (scanResult.Items && scanResult.Items.length > 0) {
           console.log('Existing inquiries:');
           scanResult.Items.forEach((item, index) => {
-            console.log(`  ${index + 1}. inquired_at: "${item.inquired_at}", title: "${item.title}", created_at: "${item.created_at}"`);
+            console.log(
+              `  ${index + 1}. inquired_at: "${item.inquired_at}", title: "${item.title}", created_at: "${item.created_at}"`,
+            );
           });
-          
+
           // 「新規問い合わせ」の中から最新のものを探す
-          const newInquiries = scanResult.Items.filter(item => item.title === '新規問い合わせ');
+          const newInquiries = scanResult.Items.filter((item) => item.title === '新規問い合わせ');
           if (newInquiries.length > 0) {
             // 最新のものを選択（inquired_atで降順ソート）
-            newInquiries.sort((a, b) => new Date(b.inquired_at).getTime() - new Date(a.inquired_at).getTime());
+            newInquiries.sort(
+              (a, b) => new Date(b.inquired_at).getTime() - new Date(a.inquired_at).getTime(),
+            );
             const latestNewInquiry = newInquiries[0];
-            
+
             console.log('🎯 Found latest "新規問い合わせ" inquiry:');
             console.log(`  inquired_at: "${latestNewInquiry.inquired_at}"`);
             console.log(`  title: "${latestNewInquiry.title}"`);
             console.log('💡 Suggestion: Use this inquired_at value for updating');
-            
+
             // 実際にこのレコードを更新対象として使用
             console.log('🔄 Attempting to update the latest new inquiry instead...');
-            
+
             // 再帰的に呼び出すのではなく、正しいinquired_atで直接更新
             const correctInquiredAt = latestNewInquiry.inquired_at;
-            
+
             const updateExpressions: string[] = [];
             const expressionAttributeValues: Record<string, any> = {};
             const expressionAttributeNames: Record<string, string> = {};
@@ -573,19 +569,26 @@ export const updateInquiryHistory = async (
               TableName: config.tableNames.inquiry,
               Key: {
                 client_id: clientId,
-                inquired_at: correctInquiredAt // 正しいinquired_atを使用
+                inquired_at: correctInquiredAt, // 正しいinquired_atを使用
               },
               UpdateExpression: `SET ${updateExpressions.join(', ')}`,
               ExpressionAttributeNames: expressionAttributeNames,
               ExpressionAttributeValues: expressionAttributeValues,
-              ReturnValues: 'ALL_NEW'
+              ReturnValues: 'ALL_NEW',
             });
 
-            console.log('UpdateCommand with corrected inquired_at:', JSON.stringify({
-              TableName: updateCommand.input.TableName,
-              Key: updateCommand.input.Key,
-              UpdateExpression: updateCommand.input.UpdateExpression
-            }, null, 2));
+            console.log(
+              'UpdateCommand with corrected inquired_at:',
+              JSON.stringify(
+                {
+                  TableName: updateCommand.input.TableName,
+                  Key: updateCommand.input.Key,
+                  UpdateExpression: updateCommand.input.UpdateExpression,
+                },
+                null,
+                2,
+              ),
+            );
 
             const result = await ddbDocClient.send(updateCommand);
             console.log('✅ Update successful with corrected inquired_at');
@@ -595,7 +598,7 @@ export const updateInquiryHistory = async (
       } catch (scanError) {
         console.error('Error during debug scan:', scanError);
       }
-      
+
       return null;
     }
 
@@ -620,31 +623,37 @@ export const updateInquiryHistory = async (
       TableName: config.tableNames.inquiry,
       Key: {
         client_id: clientId,
-        inquired_at: inquiredAt
+        inquired_at: inquiredAt,
       },
       UpdateExpression: `SET ${updateExpressions.join(', ')}`,
       ExpressionAttributeNames: expressionAttributeNames,
       ExpressionAttributeValues: expressionAttributeValues,
-      ReturnValues: 'ALL_NEW'
+      ReturnValues: 'ALL_NEW',
     });
 
-    console.log('UpdateCommand:', JSON.stringify({
-      TableName: updateCommand.input.TableName,
-      Key: updateCommand.input.Key,
-      UpdateExpression: updateCommand.input.UpdateExpression
-    }, null, 2));
+    console.log(
+      'UpdateCommand:',
+      JSON.stringify(
+        {
+          TableName: updateCommand.input.TableName,
+          Key: updateCommand.input.Key,
+          UpdateExpression: updateCommand.input.UpdateExpression,
+        },
+        null,
+        2,
+      ),
+    );
 
     const result = await ddbDocClient.send(updateCommand);
     console.log('✅ Update successful');
     return result.Attributes;
-
   } catch (error) {
     console.error('❌ Error in updateInquiryHistory:', error);
     if (error instanceof Error) {
       console.error('Error details:', {
         name: error.name,
         message: error.message,
-        stack: error.stack
+        stack: error.stack,
       });
     }
     throw error;

@@ -1391,3 +1391,459 @@ Stack: Error: Failed to sign in with Cognito: Password attempts exceeded
     "password": "TempPass123!"
   }
 }
+2025-07-14 13:06:11 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-14 13:06:11 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "suzuki@fudosan-life.co.jp",
+    "password": "TempPass123!"
+  }
+}
+2025-07-14 13:06:12 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-14 13:06:12 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "suzuki@fudosan-life.co.jp",
+    "password": "TempPass123!"
+  }
+}
+2025-07-14 13:06:23 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-14 13:06:23 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "suzuki@fudosan-life.co.jp",
+    "password": "TempPass123!"
+  }
+}
+2025-07-14 13:15:31 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-14 13:15:31 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "suzuki@fudosan-life.co.jp",
+    "password": "TempPass123!"
+  }
+}
+2025-07-14 13:15:32 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-14 13:15:32 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "suzuki@fudosan-life.co.jp",
+    "password": "TempPass123!"
+  }
+}
+2025-07-14 13:15:48 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-14 13:15:48 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "suzuki@fudosan-life.co.jp",
+    "password": "TempPass123!"
+  }
+}
+2025-07-14 13:16:07 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-14 13:16:07 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "suzuki@fudosan-life.co.jp",
+    "password": "TempPass123!"
+  }
+}
+2025-07-14 16:29:07 [ERROR]: Error checking email existence
+Stack: ResourceNotFoundException: User pool ap-northeast-1_6dHhdWzbz does not exist.
+    at Request.extractError (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/protocol/json.js:80:27)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:106:20)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:688:12)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:116:18)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "ResourceNotFoundException",
+  "errorMessage": "User pool ap-northeast-1_6dHhdWzbz does not exist.",
+  "awsErrorCode": "ResourceNotFoundException",
+  "statusCode": 400
+}
+2025-07-14 16:29:07 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-14 16:29:07 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "suzuki@fudosan-life.co.jp",
+    "password": "TempPass123!"
+  }
+}
+2025-07-14 16:29:16 [ERROR]: Error checking email existence
+Stack: ResourceNotFoundException: User pool ap-northeast-1_6dHhdWzbz does not exist.
+    at Request.extractError (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/protocol/json.js:80:27)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:106:20)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:688:12)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:116:18)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "ResourceNotFoundException",
+  "errorMessage": "User pool ap-northeast-1_6dHhdWzbz does not exist.",
+  "awsErrorCode": "ResourceNotFoundException",
+  "statusCode": 400
+}
+2025-07-14 16:29:16 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-14 16:29:16 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "suzuki@fudosan-life.co.jp",
+    "password": "TempPass123!"
+  }
+}
+2025-07-14 16:30:09 [ERROR]: Error checking email existence
+Stack: ResourceNotFoundException: User pool ap-northeast-1_6dHhdWzbz does not exist.
+    at Request.extractError (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/protocol/json.js:80:27)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:106:20)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:688:12)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:116:18)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "ResourceNotFoundException",
+  "errorMessage": "User pool ap-northeast-1_6dHhdWzbz does not exist.",
+  "awsErrorCode": "ResourceNotFoundException",
+  "statusCode": 400
+}
+2025-07-14 16:30:09 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-14 16:30:09 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "suzuki@fudosan-life.co.jp",
+    "password": "TempPass123!"
+  }
+}
+2025-07-14 16:30:34 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-14 16:30:34 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "test.startgear@gmail.com",
+    "password": "TempPass123!"
+  }
+}
+2025-07-14 16:30:35 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-14 16:30:35 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "test.startgear@gmail.com",
+    "password": "TempPass123!"
+  }
+}
+2025-07-14 16:33:20 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-14 16:33:20 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "test.startgear@gmail.com",
+    "password": "TempPass123!"
+  }
+}
+2025-07-14 16:33:35 [ERROR]: Error checking email existence
+Stack: ResourceNotFoundException: User pool ap-northeast-1_6dHhdWzbz does not exist.
+    at Request.extractError (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/protocol/json.js:80:27)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:106:20)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:688:12)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:116:18)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9) | {
+  "module": "AUTH",
+  "email": "nak***@osaka-fudosan.com",
+  "errorCode": "ResourceNotFoundException",
+  "errorMessage": "User pool ap-northeast-1_6dHhdWzbz does not exist.",
+  "awsErrorCode": "ResourceNotFoundException",
+  "statusCode": 400
+}
+2025-07-14 16:33:35 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "nak***@osaka-fudosan.com",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-14 16:33:35 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "nakamura@osaka-fudosan.com",
+    "password": "TempPass123!"
+  }
+}
+2025-07-14 16:44:53 [ERROR]: Error checking email existence
+Stack: ResourceNotFoundException: User pool ap-northeast-1_6dHhdWzbz does not exist.
+    at Request.extractError (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/protocol/json.js:80:27)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:106:20)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:688:12)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:116:18)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9) | {
+  "module": "AUTH",
+  "email": "nak***@osaka-fudosan.com",
+  "errorCode": "ResourceNotFoundException",
+  "errorMessage": "User pool ap-northeast-1_6dHhdWzbz does not exist.",
+  "awsErrorCode": "ResourceNotFoundException",
+  "statusCode": 400
+}
+2025-07-14 16:44:53 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "nak***@osaka-fudosan.com",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-14 16:44:53 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "nakamura@osaka-fudosan.com",
+    "password": "TempPass123!"
+  }
+}
+2025-07-14 16:45:08 [ERROR]: Error checking email existence
+Stack: ResourceNotFoundException: User pool ap-northeast-1_6dHhdWzbz does not exist.
+    at Request.extractError (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/protocol/json.js:80:27)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:106:20)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:688:12)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:116:18)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "ResourceNotFoundException",
+  "errorMessage": "User pool ap-northeast-1_6dHhdWzbz does not exist.",
+  "awsErrorCode": "ResourceNotFoundException",
+  "statusCode": 400
+}
+2025-07-14 16:45:08 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-14 16:45:08 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "suzuki@fudosan-life.co.jp",
+    "password": "TempPass123!"
+  }
+}
+2025-07-16 14:50:10 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-16 14:50:10 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "test.startgear@gmail.com",
+    "password": "TempPass123!"
+  }
+}
+2025-07-16 14:50:11 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-16 14:50:11 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "test.startgear@gmail.com",
+    "password": "TempPass123!"
+  }
+}

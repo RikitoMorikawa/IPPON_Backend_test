@@ -1,6 +1,7 @@
 import { FastifyRequest, FastifyReply } from 'fastify';
 import { CustomFastifyInstance } from '@src/interfaces/CustomFastifyInstance';
 import { errorResponse, successResponse } from '@src/responses';
+import { generateSignedUrlsForImages } from '@src/services/s3Service';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@src/responses/constants/propertyConstant';
 import {
   parsePropertyFormData,
@@ -32,7 +33,7 @@ import {
 import { getClientById } from '../services/clientService';
 import { searchInquiryByProperty } from '@src/repositroies/inquiryModel';
 import { getBatchReportSettingByProperty } from '@src/repositroies/batchReportModel';
-import { getPrefectureCodeByName } from '@src/enums/propertyEnums';
+import { getPrefectureByCode, getPrefectureCodeByName, PrefectureCode } from '@src/enums/propertyEnums';
 import * as batchReportModel from '@src/repositroies/batchReportModel';
 import { BatchReportSetting } from '@src/models/batchReportType';
 
@@ -92,6 +93,14 @@ export const propertyHandler = async (
 
       case 'GET': {
         const queryParams = req.query as PropertySearchParams;
+        const originalPrefecture = queryParams.prefecture;
+        const prefectureNum = Number(queryParams.prefecture);
+        if (!isNaN(prefectureNum) && prefectureNum > 0 && prefectureNum <= 41) {
+          queryParams.prefecture = String(prefectureNum);
+        } else {
+          queryParams.prefecture = '';
+        }
+        console.log(`都道府県クエリ受信値:`, originalPrefecture, '→ 検索値:', queryParams.prefecture);
 
         const propId = (req.params as any)?.propId;
         if (propId) {
@@ -117,6 +126,20 @@ export const propertyHandler = async (
             client: clientData
           });
 
+          // Generate signed URLs for image_urls
+          if (propertyWithClient.image_urls && Array.isArray(propertyWithClient.image_urls)) {
+            try {
+              propertyWithClient.image_urls = await generateSignedUrlsForImages(
+                propertyWithClient.image_urls,
+                'property',
+                3600 // 1時間有効
+              );
+            } catch (error) {
+              console.error('Error generating signed URLs for property retrieval:', error);
+              // エラーの場合は元のURLをそのまま使用
+            }
+          }
+
           return reply
             .status(200)
             .send(successResponse(200, SUCCESS_MESSAGES.PROPERTY_RETRIEVED, propertyWithClient));
@@ -137,10 +160,28 @@ export const propertyHandler = async (
         const clientData = await getClientById(clientId);
 
         // Add client data to each property and convert prefecture to code
-        const propertiesWithClient = (result.items || []).map((property: any) => 
-          convertPrefectureToCode({
-            ...property,
-            client: clientData
+        const propertiesWithClient = await Promise.all(
+          (result.items || []).map(async (property: any) => {
+            const propertyWithClient = convertPrefectureToCode({
+              ...property,
+              client: clientData
+            });
+
+            // Generate signed URLs for image_urls
+            if (propertyWithClient.image_urls && Array.isArray(propertyWithClient.image_urls)) {
+              try {
+                propertyWithClient.image_urls = await generateSignedUrlsForImages(
+                  propertyWithClient.image_urls,
+                  'property',
+                  3600 // 1時間有効
+                );
+              } catch (error) {
+                console.error(`Error generating signed URLs for property ${property.id}:`, error);
+                // エラーの場合は元のURLをそのまま使用
+              }
+            }
+
+            return propertyWithClient;
           })
         );
 

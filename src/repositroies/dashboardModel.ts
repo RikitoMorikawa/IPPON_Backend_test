@@ -8,13 +8,16 @@ import { DashboardInquiryData } from '@src/interfaces/dashboardInterfaces';
 import { PaginatedResponse } from '@src/interfaces/responseInterfaces';
 import { getEmployeeById } from '@src/repositroies/clientModel';
 import { scanWithoutDeleted } from '@src/utils/softDelete';
+import { formatCustomerResponse } from '@src/services/customerService';
 
 export const searchDashboard = async (
   ddbDocClient: DynamoDBDocumentClient,
   clientId: string,
+  name: string,
   firstName: string,
   lastName: string,
-  inquiryTimestamp: string,
+  inquiryStartDate: string,
+  inquiryEndDate: string,
   inquiryMethod: string,
   page: number,
   limit: number,
@@ -37,6 +40,15 @@ export const searchDashboard = async (
     customerFilterExpressions.push('client_id = :clientId');
     customerExprAttrValues[':clientId'] = clientId;
 
+    // nameパラメータで4つのフィールドを検索
+    if (name) {
+      customerFilterExpressions.push(
+        '(contains(last_name, :name) OR contains(first_name, :name) OR contains(last_name_kana, :name) OR contains(first_name_kana, :name))'
+      );
+      customerExprAttrValues[':name'] = name;
+    }
+
+    // 既存のfirstName, lastNameパラメータも引き続きサポート（後方互換性のため）
     if (firstName) {
       customerFilterExpressions.push(
         '(contains(first_name, :firstName) OR contains(first_name_kana, :firstName))'
@@ -110,11 +122,31 @@ export const searchDashboard = async (
       inquiryExprAttrNames['#method'] = 'method';
     }
 
-    if (inquiryTimestamp) {
-      const selectedDate = dayjs(inquiryTimestamp);
-      inquiryFilterExpressions.push('created_at BETWEEN :startDate AND :endDate');
-      inquiryExprAttrValues[':startDate'] = selectedDate.startOf('day').toISOString();
-      inquiryExprAttrValues[':endDate'] = selectedDate.endOf('day').toISOString();
+    // 期間指定での日時検索（inquired_atとcreated_atの両方を試す）
+    if (inquiryStartDate && inquiryEndDate) {
+      const fromDate = dayjs(inquiryStartDate);
+      const toDate = dayjs(inquiryEndDate);
+      
+      // まずinquired_atがあるかチェック、なければcreated_atを使用
+      inquiryFilterExpressions.push(
+        '((attribute_exists(inquired_at) AND inquired_at BETWEEN :startDate AND :endDate) OR (attribute_not_exists(inquired_at) AND created_at BETWEEN :startDate AND :endDate))'
+      );
+      inquiryExprAttrValues[':startDate'] = fromDate.startOf('day').toISOString();
+      inquiryExprAttrValues[':endDate'] = toDate.endOf('day').toISOString();
+    } else if (inquiryStartDate) {
+      // Fromのみが指定された場合は、その日以降
+      const fromDate = dayjs(inquiryStartDate);
+      inquiryFilterExpressions.push(
+        '((attribute_exists(inquired_at) AND inquired_at >= :startDate) OR (attribute_not_exists(inquired_at) AND created_at >= :startDate))'
+      );
+      inquiryExprAttrValues[':startDate'] = fromDate.startOf('day').toISOString();
+    } else if (inquiryEndDate) {
+      // Toのみが指定された場合は、その日以前
+      const toDate = dayjs(inquiryEndDate);
+      inquiryFilterExpressions.push(
+        '((attribute_exists(inquired_at) AND inquired_at <= :endDate) OR (attribute_not_exists(inquired_at) AND created_at <= :endDate))'
+      );
+      inquiryExprAttrValues[':endDate'] = toDate.endOf('day').toISOString();
     }
 
     if (customerIds.length > 0) {
@@ -179,20 +211,14 @@ export const searchDashboard = async (
               id: '',
               name: '',
             },
-            customer: customer ? {
-              id: customer.id,
-              first_name: customer.first_name,
-              last_name: customer.last_name,
-              mail_address: customer.mail_address,
-              phone_number: customer.phone_number,
-              employee_id: customer.employee_id || '', // 顧客の担当者IDを正しく設定
-            } : {
+            customer: customer ? formatCustomerResponse(customer) : {
               id: '',
-              first_name: '',
-              last_name: '',
-              mail_address: '',
-              phone_number: '',
-              employee_id: '', // 顧客が見つからない場合は空文字
+              client_id: '',
+              employee_id: '',
+              customer_type: '',
+              created_at: '',
+              updated_at: '',
+              deleted_at: '',
             },
             employee: employee ? {
               id: employee.id,

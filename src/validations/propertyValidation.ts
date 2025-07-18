@@ -3,6 +3,7 @@ import { errorResponse, successResponse } from '@src/responses';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@src/responses/constants/propertyConstant';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { createProperty, isPropertyNameTaken } from '@src/repositroies/propertyModel';
+import { generateSignedUrlsForImages } from '@src/services/s3Service';
 import { v4 as uuidv4 } from 'uuid';
 import { Property } from '@src/interfaces/propertyInterfaces';
 
@@ -138,5 +139,21 @@ export async function validateAndSaveUpdatedProperty(
 
   await createProperty(ddbDocClient, updatedProperty);
 
-  reply.status(200).send(successResponse(200, SUCCESS_MESSAGES.PROPERTY_UPDATED, updatedProperty));
+  // レスポンス用に署名付きURLを生成
+  const responseProperty = { ...updatedProperty };
+  if (responseProperty.image_urls && Array.isArray(responseProperty.image_urls)) {
+    try {
+      responseProperty.image_urls = await generateSignedUrlsForImages(
+        responseProperty.image_urls,
+        'property',
+        3600 // 1時間有効
+      );
+      console.log('✅ Generated signed URLs for response');
+    } catch (error) {
+      console.error('❌ Error generating signed URLs for response:', error);
+      // エラーの場合は元のURLをそのまま使用
+    }
+  }
+
+  reply.status(200).send(successResponse(200, SUCCESS_MESSAGES.PROPERTY_UPDATED, responseProperty));
 }

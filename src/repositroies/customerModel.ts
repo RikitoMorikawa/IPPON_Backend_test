@@ -13,88 +13,98 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 import config from '@src/config';
 import { errorResponse } from '@src/responses';
-import { Customer } from '@src/interfaces/customerInterfaces';
+import { CustomerDetail, IndividualCustomerDetail, CorporateCustomerDetail } from '@src/models/customerType';
+import { CustomerType, CUSTOMER_TYPES } from '@src/enums/customerEnums';
+import { CreateCustomerRequest, UpdateCustomerRequest } from '@src/interfaces/customerInterfaces';
 import { Inquiry } from '@src/models/inquiryType';
 import dayjs from 'dayjs';
 import { ERROR_MESSAGES } from '@src/responses/constants/customerConstants';
 import { scanWithoutDeleted, queryWithoutDeleted, softDeleteDynamo } from '@src/utils/softDelete';
 
-export const saveCustomer = async (
+// ============================================
+// 顧客作成・保存関連
+// ============================================
+
+export const saveCustomerDetail = async (
   ddbDocClient: DynamoDBDocumentClient,
-  customer: Customer,
-): Promise<Customer> => {
+  customerDetail: CustomerDetail,
+): Promise<CustomerDetail> => {
   const timestamp = new Date().toISOString();
   const params = {
     TableName: config.tableNames.customers,
     Item: {
-      ...customer,
-      client_id: customer.client_id,
-      created_at: timestamp,
+      ...customerDetail,
+      created_at: customerDetail.created_at || timestamp,
       updated_at: timestamp,
     },
   };
 
   try {
     await ddbDocClient.send(new PutCommand(params));
-    return params.Item;
+    return params.Item as CustomerDetail;
   } catch (error) {
-    console.error('Error saving customer to DynamoDB:', error);
+    console.error('Error saving customer detail to DynamoDB:', error);
     throw error;
   }
 };
 
-export const createNewCustomer = (data: any): Customer => {
+export const createNewCustomerDetail = (data: CreateCustomerRequest & { client_id: string }): CustomerDetail => {
   const timestamp = new Date().toISOString();
+  const customerId = uuidv4();
 
-  return {
-    id: uuidv4(),
+  const customerDetail: CustomerDetail = {
+    id: customerId,
     client_id: data.client_id,
     employee_id: data.employee_id,
-    first_name: data.first_name,
-    last_name: data.last_name,
-    middle_name: data.middle_name || null,
-    first_name_kana: data.first_name_kana || null,
-    middle_name_kana: data.middle_name_kana || null,
-    last_name_kana: data.last_name_kana || null,
-    birthday: data.birthday,
-    gender: data.gender || null,
-    mail_address: data.mail_address,
-    phone_number: data.phone_number || null,
-    postcode: data.postcode,
-    prefecture: data.prefecture,
-    city: data.city,
-    street_address: data.street_address,
-    building: data.building || null,
-    room_number: data.room_number || null,
-    id_card_front_path: data.id_card_front_path,
-    id_card_back_path: data.id_card_back_path,
+    customer_type: data.customer_type,
+    property_ids: data.property_ids || [],
     created_at: timestamp,
     updated_at: timestamp,
   };
+
+  // 個人顧客の場合
+  if (data.customer_type === CUSTOMER_TYPES.INDIVIDUAL_CUSTOMER && data.individual_customer_details) {
+    customerDetail.individual_customer_details = data.individual_customer_details;
+  }
+
+  // 法人顧客の場合
+  if (data.customer_type === CUSTOMER_TYPES.CORPORATE_CUSTOMER && data.corporate_customer_details) {
+    customerDetail.corporate_customer_details = data.corporate_customer_details;
+  }
+
+  return customerDetail;
 };
 
-export const getCustomers = async (
+// ============================================
+// 顧客取得関連
+// ============================================
+
+export const getCustomerDetails = async (
   ddbDocClient: DynamoDBDocumentClient,
   clientId: string,
-  firstName: string,
-  lastName: string,
-): Promise<Customer[]> => {
+  customerType?: CustomerType,
+  searchName?: string,
+): Promise<CustomerDetail[]> => {
   const filterExpressions: string[] = [];
-  const expressionAttributeValues: Record<string, string> = {};
+  const expressionAttributeValues: Record<string, any> = {};
 
   filterExpressions.push('client_id = :clientId');
   expressionAttributeValues[':clientId'] = clientId;
 
-  if (firstName) {
-    filterExpressions.push('contains(first_name, :firstName)');
-    expressionAttributeValues[':firstName'] = firstName;
+  // 顧客タイプでフィルタリング
+  if (customerType) {
+    filterExpressions.push('customer_type = :customerType');
+    expressionAttributeValues[':customerType'] = customerType;
   }
 
-  if (lastName) {
+  // 名前での検索（個人顧客の場合）
+  if (searchName) {
     filterExpressions.push(
-      '(contains(last_name, :lastName) OR contains(middle_name, :lastName))',
+      '(contains(individual_customer_details.first_name, :searchName) OR ' +
+      'contains(individual_customer_details.last_name, :searchName) OR ' +
+      'contains(corporate_customer_details.corporate_name, :searchName))'
     );
-    expressionAttributeValues[':lastName'] = lastName;
+    expressionAttributeValues[':searchName'] = searchName;
   }
 
   const customerParams = {
@@ -103,386 +113,267 @@ export const getCustomers = async (
     ExpressionAttributeValues: expressionAttributeValues,
   };
 
-  // 論理削除済みを除外してスキャン
-  const result = await scanWithoutDeleted(ddbDocClient, customerParams);
-  return (result.Items as Customer[]) || [];
-};
-
-export const deleteCustomers = async (
-  ddbDocClient: DynamoDBDocumentClient,
-  customerIds: string[],
-  clientId: string,
-): Promise<void> => {
   try {
-    // まず、削除対象の顧客情報を取得してキーを確認
-    const customersToDelete = [];
-    
-    for (const customerId of customerIds) {
-      const scanParams = {
-        TableName: config.tableNames.customers,
-        FilterExpression: 'id = :customer_id AND client_id = :client_id',
-        ExpressionAttributeValues: {
-          ':customer_id': customerId,
-          ':client_id': clientId,
-        },
-      };
-
-      const result = await scanWithoutDeleted(ddbDocClient, scanParams);
-      if (result.Items && result.Items.length > 0) {
-        customersToDelete.push(result.Items[0]);
-      }
-    }
-
-    // 論理削除を実行
-    const deletePromises = customersToDelete.map(customer => 
-      softDeleteDynamo(ddbDocClient, config.tableNames.customers, {
-        client_id: customer.client_id,
-        created_at: customer.created_at
-      })
-    );
-
-    await Promise.all(deletePromises);
-    console.log(`Successfully soft deleted ${customersToDelete.length} customers`);
+    const customerResult = await scanWithoutDeleted(ddbDocClient, customerParams);
+    return (customerResult.Items as CustomerDetail[]) || [];
   } catch (error) {
-    console.error('Error soft deleting customers:', error);
+    console.error('Error fetching customer details:', error);
     throw error;
   }
 };
 
-/**
- * Verify that the customer exists in the database
- */
-export async function verifyCustomerExists(
-  ddbDocClient: any,
-  client_id: string,
-  created_at: string,
-  customer_id: string,
-  reply: FastifyReply,
-): Promise<boolean> {
-  try {
-    // First, try to get the customer using the provided keys
-    const getCommand = new GetCommand({
-      TableName: config.tableNames.customers,
-      Key: {
-        client_id,
-        created_at,
-      },
-    });
-
-    const existingItem = await ddbDocClient.send(getCommand);
-
-    if (existingItem.Item && existingItem.Item.id === customer_id) {
-      return true;
-    }
-
-    // If not found with provided keys, try to find by customer_id and client_id
-    const scanParams = {
-      TableName: config.tableNames.customers,
-      FilterExpression: 'id = :customer_id AND client_id = :client_id',
-      ExpressionAttributeValues: {
-        ':customer_id': customer_id,
-        ':client_id': client_id,
-      },
-    };
-
-    const scanResult = await scanWithoutDeleted(ddbDocClient, scanParams);
-    
-    if (scanResult.Items && scanResult.Items.length > 0) {
-      return true;
-    }
-
-    return false;
-  } catch (error) {
-    console.error('Error verifying customer existence:', error);
-    return false;
-  }
-}
-
-/**
- * Execute the DynamoDB update for a customer
- */
-export async function executeCustomerUpdate(
-  ddbDocClient: any,
-  client_id: string,
-  created_at: string,
-  customer_id: string,
-  updates: Record<string, any>,
-): Promise<any> {
-  try {
-    // First, find the actual customer record to get the correct created_at
-    let actualCreatedAt = created_at;
-    
-    // Try to get customer with provided created_at first
-    const getCommand = new GetCommand({
-      TableName: config.tableNames.customers,
-      Key: {
-        client_id,
-        created_at,
-      },
-    });
-
-    const existingItem = await ddbDocClient.send(getCommand);
-    
-    if (!existingItem.Item || existingItem.Item.id !== customer_id) {
-      // If not found, scan for the customer by ID and client_id
-      const scanParams = {
-        TableName: config.tableNames.customers,
-        FilterExpression: 'id = :customer_id AND client_id = :client_id',
-        ExpressionAttributeValues: {
-          ':customer_id': customer_id,
-          ':client_id': client_id,
-        },
-      };
-
-      const scanResult = await scanWithoutDeleted(ddbDocClient, scanParams);
-
-      if (!scanResult.Items || scanResult.Items.length === 0) {
-        throw new Error(ERROR_MESSAGES.RECORD_NOT_FOUND_ERROR);
-      }
-      
-      actualCreatedAt = scanResult.Items[0].created_at;
-    }
-
-    const updateExpressions: string[] = [];
-    const expressionAttributeValues: Record<string, any> = {
-      ':customer_id': customer_id,
-    };
-    const expressionAttributeNames: Record<string, string> = {
-      '#id': 'id',
-    };
-
-    Object.entries(updates).forEach(([key, value]) => {
-      const attributeKey = `#${key}`;
-      const valueKey = `:${key}`;
-
-      updateExpressions.push(`${attributeKey} = ${valueKey}`);
-      expressionAttributeValues[valueKey] = value;
-      expressionAttributeNames[attributeKey] = key;
-    });
-
-    if (updateExpressions.length === 0) {
-      throw new Error(ERROR_MESSAGES.NO_VALID_FIELD_ERROR);
-    }
-
-    const updateParams: UpdateCommandInput = {
-      TableName: config.tableNames.customers,
-      Key: {
-        client_id,
-        created_at: actualCreatedAt,
-      },
-      ConditionExpression: '#id = :customer_id',
-      UpdateExpression: `SET ${updateExpressions.join(', ')}`,
-      ExpressionAttributeValues: expressionAttributeValues,
-      ExpressionAttributeNames: expressionAttributeNames,
-      ReturnValues: 'ALL_NEW',
-    };
-
-    const result = await ddbDocClient.send(new UpdateCommand(updateParams));
-
-    return result;
-  } catch (error) {
-    console.error('Error updating customer:', error);
-    throw error;
-  }
-}
-
-export const searchCustomerAndInquiry = async (
+export const getCustomerDetailById = async (
   ddbDocClient: DynamoDBDocumentClient,
   clientId: string,
-  firstName: string,
-  lastName: string,
-  inquiryTimestamp?: string,
-  inquiryMethod?: string,
-  employeeName?: string,
-) => {
-  let customers: any[] = [];
-  let inquiries: any[] = [];
-
-  const customerFilterExpressions: string[] = [];
-  const customerExprAttrValues: Record<string, string> = {};
-
-  customerFilterExpressions.push('client_id = :clientId');
-  customerExprAttrValues[':clientId'] = clientId;
-
-  if (firstName) {
-    customerFilterExpressions.push('contains(first_name, :firstName)');
-    customerExprAttrValues[':firstName'] = firstName;
-  }
-
-  if (lastName) {
-    customerFilterExpressions.push(
-      '(contains(last_name, :lastName) OR contains(middle_name, :lastName))',
-    );
-    customerExprAttrValues[':lastName'] = lastName;
-  }
-
-  const customerParams = {
-    TableName: config.tableNames.customers,
-    FilterExpression: customerFilterExpressions.join(' AND '),
-    ExpressionAttributeValues: customerExprAttrValues,
-  };
-  const customerResult = await scanWithoutDeleted(ddbDocClient, customerParams);
-  customers = customerResult.Items || [];
-
-  const customerIds = customers.map((c) => c.id);
-
-  const inquiryFilterExpressions: string[] = [];
-  const inquiryExprAttrValues: Record<string, any> = {};
-
-  inquiryFilterExpressions.push('client_id = :clientId');
-  inquiryExprAttrValues[':clientId'] = clientId;
-
-  if (inquiryMethod) {
-    inquiryFilterExpressions.push('method = :method');
-    inquiryExprAttrValues[':method'] = inquiryMethod;
-  }
-
-  if (inquiryTimestamp) {
-    const now = dayjs();
-    let startDate: string;
-    let endDate: string;
-
-    switch (inquiryTimestamp) {
-      case '1':
-        endDate = now.endOf('day').toISOString();
-        startDate = now.subtract(1, 'month').startOf('day').toISOString();
-        break;
-      case '2':
-        endDate = now.endOf('day').toISOString();
-        startDate = now.subtract(2, 'months').startOf('day').toISOString();
-        break;
-      case '3':
-        endDate = now.endOf('day').toISOString();
-        startDate = now.subtract(3, 'months').startOf('day').toISOString();
-        break;
-      case '4':
-        endDate = now.endOf('day').toISOString();
-        startDate = now.subtract(6, 'months').startOf('day').toISOString();
-        break;
-      case '5':
-        endDate = now.endOf('day').toISOString();
-        startDate = now.subtract(1, 'year').startOf('day').toISOString();
-        break;
-      default:
-        endDate = now.endOf('day').toISOString();
-        startDate = now.subtract(1, 'year').startOf('day').toISOString();
-    }
-
-    inquiryFilterExpressions.push('inquired_at BETWEEN :startDate AND :endDate');
-    inquiryExprAttrValues[':startDate'] = startDate;
-    inquiryExprAttrValues[':endDate'] = endDate;
-  }
-
-  if (customerIds.length > 0) {
-    inquiryFilterExpressions.push(
-      `(${customerIds.map((_, i) => `customer_id = :id${i}`).join(' OR ')})`,
-    );
-    customerIds.forEach((id, i) => {
-      inquiryExprAttrValues[`:id${i}`] = id;
-    });
-  }
-
-  const inquiryParams = {
-    TableName: config.tableNames.inquiry,
-    FilterExpression: inquiryFilterExpressions.join(' AND '),
-    ExpressionAttributeValues: inquiryExprAttrValues,
-  };
-  const inquiryResult = await scanWithoutDeleted(ddbDocClient, inquiryParams);
-  inquiries = inquiryResult.Items || [];
-
-  const result = customers.map((customer) => {
-    const inquiry = inquiries.find((i) => i.customer_id === customer.id);
-    return {
-      customer,
-      inquiry: inquiry || null,
-    };
-  });
-
-  return {
-    customers: result.map((r) => r.customer),
-    inquiries: result.map((r) => r.inquiry),
-  };
-};
-
-export const fetchIndividualCustomer = async (
-  ddbDocClient: DynamoDBDocumentClient,
-  id: string,
-  clientId: string,
-) => {
+  customerId: string,
+): Promise<CustomerDetail | null> => {
   const params = {
     TableName: config.tableNames.customers,
-    FilterExpression: 'id = :id AND client_id = :clientId',
+    FilterExpression: 'client_id = :clientId AND id = :customerId',
     ExpressionAttributeValues: {
-      ':id': id,
+      ':clientId': clientId,
+      ':customerId': customerId,
+    },
+  };
+
+  try {
+    const result = await scanWithoutDeleted(ddbDocClient, params);
+    return result.Items?.[0] as CustomerDetail || null;
+  } catch (error) {
+    console.error('Error fetching customer detail by ID:', error);
+    throw error;
+  }
+};
+
+export const getAllCustomerDetails = async (
+  ddbDocClient: DynamoDBDocumentClient,
+  clientId: string,
+): Promise<{ customers: CustomerDetail[] }> => {
+  const params = {
+    TableName: config.tableNames.customers,
+    KeyConditionExpression: 'client_id = :clientId',
+    ExpressionAttributeValues: {
       ':clientId': clientId,
     },
   };
 
-  const result = await scanWithoutDeleted(ddbDocClient, params);
-  return result.Items && result.Items.length > 0 ? result.Items[0] : null;
-};
-
-export const getAllCustomers = async (ddbDocClient: DynamoDBDocumentClient, clientId: string) => {
   try {
-    const individualParams = {
-      TableName: config.tableNames.customers,
-      FilterExpression: 'client_id = :clientId',
-      ExpressionAttributeValues: {
-        ':clientId': clientId,
-      },
-    };
-
-    const [individualResult] = await Promise.all([
-      scanWithoutDeleted(ddbDocClient, individualParams),
-    ]);
-
-    const customers = {
-      customers: individualResult.Items || [],
-    };
-
-    return customers;
+    const result = await queryWithoutDeleted(ddbDocClient, params);
+    return { customers: (result.Items as CustomerDetail[]) || [] };
   } catch (error) {
-    console.error('Error fetching customers:', error);
-    throw new Error('Could not retrieve customers');
+    console.error('Error fetching all customer details:', error);
+    throw error;
   }
 };
 
-export const saveCustomerAndInquiry = async (
+export const fetchIndividualCustomerDetail = async (
   ddbDocClient: DynamoDBDocumentClient,
-  customer: Customer,
-  inquiry: Inquiry,
-): Promise<void> => {
-  const timestamp = new Date().toISOString();
- // const test_timestamp = '2025-05-25T09:19:38.744Z';
+  customerId: string,
+  clientId: string,
+): Promise<CustomerDetail | null> => {
+  const params = {
+    TableName: config.tableNames.customers,
+    FilterExpression: 'client_id = :clientId AND id = :customerId AND customer_type = :customerType',
+    ExpressionAttributeValues: {
+      ':clientId': clientId,
+      ':customerId': customerId,
+      ':customerType': CUSTOMER_TYPES.INDIVIDUAL_CUSTOMER,
+    },
+  };
 
-  const command = new TransactWriteCommand({
-    TransactItems: [
-      {
-        Put: {
-          TableName: config.tableNames.customers,
-          Item: {
-            ...customer,
-            created_at: timestamp,
-            updated_at: timestamp,
-          },
-        },
-      },
-      {
-        Put: {
-          TableName: config.tableNames.inquiry,
-          Item: {
-            ...inquiry,
-            created_at: timestamp,
-            updated_at: timestamp,
-          },
-        },
-      },
-    ],
-  });
-
-  await ddbDocClient.send(command);
+  try {
+    const result = await scanWithoutDeleted(ddbDocClient, params);
+    return result.Items?.[0] as CustomerDetail || null;
+  } catch (error) {
+    console.error('Error fetching individual customer detail:', error);
+    throw error;
+  }
 };
 
+export const fetchCorporateCustomerDetail = async (
+  ddbDocClient: DynamoDBDocumentClient,
+  customerId: string,
+  clientId: string,
+): Promise<CustomerDetail | null> => {
+  const params = {
+    TableName: config.tableNames.customers,
+    FilterExpression: 'client_id = :clientId AND id = :customerId AND customer_type = :customerType',
+    ExpressionAttributeValues: {
+      ':clientId': clientId,
+      ':customerId': customerId,
+      ':customerType': CUSTOMER_TYPES.CORPORATE_CUSTOMER,
+    },
+  };
+
+  try {
+    const result = await scanWithoutDeleted(ddbDocClient, params);
+    return result.Items?.[0] as CustomerDetail || null;
+  } catch (error) {
+    console.error('Error fetching corporate customer detail:', error);
+    throw error;
+  }
+};
+
+// ============================================
+// 顧客更新関連
+// ============================================
+
+export const verifyCustomerDetailExists = async (
+  ddbDocClient: DynamoDBDocumentClient,
+  clientId: string,
+  createdAt: string,
+  customerId: string,
+  reply: FastifyReply,
+): Promise<CustomerDetail | null> => {
+  const params = {
+    TableName: config.tableNames.customers,
+    Key: {
+      client_id: clientId,
+      created_at: createdAt,
+    },
+  };
+
+  try {
+    const result = await ddbDocClient.send(new GetCommand(params));
+    const item = result.Item as CustomerDetail;
+    
+    if (!item || item.id !== customerId) {
+      return null;
+    }
+    
+    return item;
+  } catch (error) {
+    console.error('Error verifying customer detail exists:', error);
+    reply.status(500).send(errorResponse(500, ERROR_MESSAGES.SERVER_ERROR));
+    return null;
+  }
+};
+
+export const executeCustomerDetailUpdate = async (
+  ddbDocClient: DynamoDBDocumentClient,
+  clientId: string,
+  createdAt: string,
+  customerId: string,
+  updates: Partial<CustomerDetail>,
+): Promise<any> => {
+  const updateExpressions: string[] = [];
+  const expressionAttributeValues: Record<string, any> = {};
+  const expressionAttributeNames: Record<string, string> = {};
+
+  Object.keys(updates).forEach((key, index) => {
+    if (key === 'updated_at') {
+      updateExpressions.push(`#${key} = :val${index}`);
+      expressionAttributeNames[`#${key}`] = key;
+      expressionAttributeValues[`:val${index}`] = updates[key as keyof CustomerDetail];
+    } else if (key === 'individual_customer_details' && updates.individual_customer_details) {
+      updateExpressions.push(`#${key} = :val${index}`);
+      expressionAttributeNames[`#${key}`] = key;
+      expressionAttributeValues[`:val${index}`] = updates.individual_customer_details;
+    } else if (key === 'corporate_customer_details' && updates.corporate_customer_details) {
+      updateExpressions.push(`#${key} = :val${index}`);
+      expressionAttributeNames[`#${key}`] = key;
+      expressionAttributeValues[`:val${index}`] = updates.corporate_customer_details;
+    } else if (key === 'employee_id' || key === 'property_ids') {
+      updateExpressions.push(`#${key} = :val${index}`);
+      expressionAttributeNames[`#${key}`] = key;
+      expressionAttributeValues[`:val${index}`] = updates[key as keyof CustomerDetail];
+    }
+  });
+
+  if (updateExpressions.length === 0) {
+    throw new Error('No valid fields to update');
+  }
+
+  const params: UpdateCommandInput = {
+    TableName: config.tableNames.customers,
+    Key: {
+      client_id: clientId,
+      created_at: createdAt,
+    },
+    UpdateExpression: 'SET ' + updateExpressions.join(', '),
+    ExpressionAttributeNames: expressionAttributeNames,
+    ExpressionAttributeValues: expressionAttributeValues,
+    ReturnValues: 'ALL_NEW',
+  };
+
+  try {
+    const result = await ddbDocClient.send(new UpdateCommand(params));
+    return result;
+  } catch (error) {
+    console.error('Error updating customer detail:', error);
+    throw error;
+  }
+};
+
+// ============================================
+// 顧客削除関連
+// ============================================
+
+export const deleteCustomerDetails = async (
+  ddbDocClient: DynamoDBDocumentClient,
+  ids: string[],
+  clientId: string,
+): Promise<void> => {
+  const params = {
+    TableName: config.tableNames.customers,
+    FilterExpression: 'client_id = :clientId',
+    ExpressionAttributeValues: {
+      ':clientId': clientId,
+    },
+  };
+
+  try {
+    const result = await scanWithoutDeleted(ddbDocClient, params);
+    const customersToDelete = result.Items?.filter((item) => ids.includes(item.id));
+
+    if (customersToDelete && customersToDelete.length > 0) {
+      await Promise.all(
+                 customersToDelete.map(async (customer) => {
+           await softDeleteDynamo(
+             ddbDocClient,
+             config.tableNames.customers,
+             { client_id: customer.client_id, created_at: customer.created_at }
+           );
+         })
+      );
+    }
+  } catch (error) {
+    console.error('Error deleting customer details:', error);
+    throw error;
+  }
+};
+
+// ============================================
+// 顧客・問い合わせ同時操作関連
+// ============================================
+
+export const saveCustomerDetailAndInquiry = async (
+  ddbDocClient: DynamoDBDocumentClient,
+  customerDetail: CustomerDetail,
+  inquiry: Inquiry,
+): Promise<void> => {
+  const transactItems = [
+    {
+      Put: {
+        TableName: config.tableNames.customers,
+        Item: customerDetail,
+      },
+    },
+    {
+      Put: {
+        TableName: config.tableNames.inquiry,
+        Item: inquiry,
+      },
+    },
+  ];
+
+  try {
+    await ddbDocClient.send(new TransactWriteCommand({ TransactItems: transactItems }));
+  } catch (error) {
+    console.error('Error saving customer detail and inquiry:', error);
+    throw error;
+  }
+};
 
 interface DeleteMultipleCustomersInput {
   ddbDocClient: DynamoDBDocumentClient;
@@ -490,19 +381,19 @@ interface DeleteMultipleCustomersInput {
   customerIds: string[];
 }
 
-interface DeleteResult {
+interface DeleteMultipleCustomersResult {
   customersDeleted: number;
   inquiriesDeleted: number;
   notFoundCustomerIds: string[];
   errors: string[];
 }
 
-export const deleteMultipleCustomersAndInquiries = async ({
+export const deleteMultipleCustomerDetailsAndInquiries = async ({
   ddbDocClient,
   clientId,
   customerIds,
-}: DeleteMultipleCustomersInput): Promise<DeleteResult> => {
-  const results: DeleteResult = {
+}: DeleteMultipleCustomersInput): Promise<DeleteMultipleCustomersResult> => {
+  const results: DeleteMultipleCustomersResult = {
     customersDeleted: 0,
     inquiriesDeleted: 0,
     notFoundCustomerIds: [],
@@ -510,92 +401,63 @@ export const deleteMultipleCustomersAndInquiries = async ({
   };
 
   try {
-    const [customerRes, inquiryRes] = await Promise.all([
-      queryWithoutDeleted(ddbDocClient, {
-          TableName: config.tableNames.customers,
-          KeyConditionExpression: 'client_id = :cid',
-          ExpressionAttributeValues: { ':cid': clientId },
-        }),
-      queryWithoutDeleted(ddbDocClient, {
-          TableName: config.tableNames.inquiry,
-          KeyConditionExpression: 'client_id = :cid',
-          ExpressionAttributeValues: { ':cid': clientId },
-        }),
-    ]);
+    // 顧客の存在確認
+    const customerRes = await queryWithoutDeleted(ddbDocClient, {
+      TableName: config.tableNames.customers,
+      KeyConditionExpression: 'client_id = :cid',
+      ExpressionAttributeValues: { ':cid': clientId },
+    });
 
-    const customersToDelete = (customerRes.Items ?? []).filter((item) =>
-      customerIds.includes(item.id),
-    );
+    const existingCustomers = (customerRes.Items as CustomerDetail[]) ?? [];
+    const existingCustomerIds = existingCustomers.map((customer) => customer.id);
+
+    // 存在しない顧客IDを特定
+    customerIds.forEach((id) => {
+      if (!existingCustomerIds.includes(id)) {
+        results.notFoundCustomerIds.push(id);
+      }
+    });
+
+    const customersToDelete = existingCustomers.filter((item) => customerIds.includes(item.id));
+
+    // 関連する問い合わせの取得
+    const inquiryRes = await queryWithoutDeleted(ddbDocClient, {
+      TableName: config.tableNames.inquiry,
+      KeyConditionExpression: 'client_id = :cid',
+      ExpressionAttributeValues: { ':cid': clientId },
+    });
 
     const inquiriesToDelete = (inquiryRes.Items ?? []).filter((item) =>
       customerIds.includes(item.customer_id),
     );
 
-    const foundCustomerIds = customersToDelete.map((customer) => customer.id);
-    results.notFoundCustomerIds = customerIds.filter((id) => !foundCustomerIds.includes(id));
+         // 顧客の削除
+     for (const customer of customersToDelete) {
+       try {
+         await softDeleteDynamo(
+           ddbDocClient,
+           config.tableNames.customers,
+           { client_id: customer.client_id, created_at: customer.created_at }
+         );
+         results.customersDeleted++;
+       } catch (error) {
+         results.errors.push(`Failed to delete customer ${customer.id}: ${error}`);
+       }
+     }
 
-    if (results.notFoundCustomerIds.length > 0) {
-      console.warn(`Customer IDs not found: ${results.notFoundCustomerIds.join(', ')}`);
-    }
-
-    if (customersToDelete.length === 0) {
-      console.log('No customers found to delete');
-      return results;
-    }
-
-    const batchDelete = async (tableName: string, items: any[]) => {
-      if (items.length === 0) return 0;
-
-      let deletedCount = 0;
-
-      for (let i = 0; i < items.length; i += 25) {
-        const batch = items.slice(i, i + 25);
-
-        try {
-          const response = await ddbDocClient.send(
-            new BatchWriteCommand({
-              RequestItems: {
-                [tableName]: batch.map((item) => ({
-                  DeleteRequest: {
-                    Key: {
-                      client_id: clientId,
-                      created_at: item.created_at,
-                    },
-                  },
-                })),
-              },
-            }),
-          );
-
-          deletedCount += batch.length;
-
-          if (response.UnprocessedItems && response.UnprocessedItems[tableName]) {
-            const unprocessedCount = response.UnprocessedItems[tableName].length;
-            results.errors.push(`${unprocessedCount} items from ${tableName} were not processed`);
-          }
-        } catch (error) {
-          results.errors.push(`Failed to delete batch from ${tableName}: ${error}`);
-        }
-      }
-
-      return deletedCount;
-    };
-
-    const [customersDeleted, inquiriesDeleted] = await Promise.all([
-      batchDelete(config.tableNames.customers, customersToDelete),
-      batchDelete(config.tableNames.inquiry, inquiriesToDelete),
-    ]);
-
-    results.customersDeleted = customersDeleted;
-    results.inquiriesDeleted = inquiriesDeleted;
-
-    console.log(
-      `Successfully deleted ${customersDeleted} customers and ${inquiriesDeleted} inquiries`,
-    );
-
-    if (results.errors.length > 0) {
-      console.warn('Some errors occurred during deletion:', results.errors);
-    }
+     // 問い合わせの削除
+     for (const inquiry of inquiriesToDelete) {
+       try {
+         await softDeleteDynamo(
+           ddbDocClient,
+           config.tableNames.inquiry,
+           { client_id: inquiry.client_id, created_at: inquiry.created_at }
+         );
+         results.inquiriesDeleted++;
+       } catch (error) {
+         results.errors.push(`Failed to delete inquiry ${inquiry.id}: ${error}`);
+       }
+     }
 
     return results;
   } catch (error) {
@@ -604,43 +466,9 @@ export const deleteMultipleCustomersAndInquiries = async ({
   }
 };
 
-export const deleteMultipleCustomersAndInquiriesStrict = async ({
-  ddbDocClient,
-  clientId,
-  customerIds,
-}: DeleteMultipleCustomersInput) => {
-  try {
-    const customerRes = await queryWithoutDeleted(ddbDocClient, {
-        TableName: config.tableNames.customers,
-        KeyConditionExpression: 'client_id = :cid',
-        ExpressionAttributeValues: { ':cid': clientId },
-      });
-
-    const existingCustomers = customerRes.Items ?? [];
-    const existingCustomerIds = existingCustomers.map((customer) => customer.id);
-    const notFoundIds = customerIds.filter((id) => !existingCustomerIds.includes(id));
-
-    if (notFoundIds.length > 0) {
-      throw new Error(`Customer IDs not found: ${notFoundIds.join(', ')}`);
-    }
-
-    const customersToDelete = existingCustomers.filter((item) => customerIds.includes(item.id));
-
-    const inquiryRes = await queryWithoutDeleted(ddbDocClient, {
-        TableName: config.tableNames.inquiry,
-        KeyConditionExpression: 'client_id = :cid',
-        ExpressionAttributeValues: { ':cid': clientId },
-      });
-
-    const inquiriesToDelete = (inquiryRes.Items ?? []).filter((item) =>
-      customerIds.includes(item.customer_id),
-    );
-  } catch (error) {
-    throw error;
-  }
-};
-
-
+// ============================================
+// 物件問い合わせ数更新
+// ============================================
 
 export const incrementPropertyInquiryCount = async (
   ddbDocClient: DynamoDBDocumentClient,
@@ -685,5 +513,54 @@ export const incrementPropertyInquiryCount = async (
   } catch (error) {
     console.error('Error incrementing property inquiry count:', error);
     throw new Error('Failed to update property inquiry count');
+  }
+};
+
+// ============================================
+// 検索・フィルタリング関連
+// ============================================
+
+export const searchCustomerDetailAndInquiry = async (
+  ddbDocClient: DynamoDBDocumentClient,
+  clientId: string,
+  searchParams: {
+    customerType?: CustomerType;
+    employeeId?: string;
+    searchName?: string;
+    propertyId?: string;
+  },
+): Promise<{
+  customers: CustomerDetail[];
+  inquiries: Inquiry[];
+}> => {
+  try {
+    const customers = await getCustomerDetails(
+      ddbDocClient,
+      clientId,
+      searchParams.customerType,
+      searchParams.searchName,
+    );
+
+    // 従業員IDでフィルタリング
+    const filteredCustomers = searchParams.employeeId
+      ? customers.filter((customer) => customer.employee_id === searchParams.employeeId)
+      : customers;
+
+    // 関連する問い合わせを取得
+    const inquiryRes = await queryWithoutDeleted(ddbDocClient, {
+      TableName: config.tableNames.inquiry,
+      KeyConditionExpression: 'client_id = :cid',
+      ExpressionAttributeValues: { ':cid': clientId },
+    });
+
+    const inquiries = (inquiryRes.Items as Inquiry[]) || [];
+
+    return {
+      customers: filteredCustomers,
+      inquiries,
+    };
+  } catch (error) {
+    console.error('Error searching customer details and inquiries:', error);
+    throw error;
   }
 };

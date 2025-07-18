@@ -1,18 +1,13 @@
 import {
   DynamoDBDocumentClient,
   PutCommand,
-  ScanCommand,
-  BatchWriteCommand,
   ScanCommandOutput,
-  ScanCommandInput,
-  QueryCommand,
-  GetCommand,
 } from '@aws-sdk/lib-dynamodb';
 import config from '@src/config';
 import dayjs from 'dayjs';
-import { deleteFileFromS3 } from '@src/services/s3Service';
 import { Property, PropertySearchParams } from '@src/interfaces/propertyInterfaces';
-import { scanWithoutDeleted, queryWithoutDeleted, softDeleteDynamo } from '@src/utils/softDelete';
+import { queryWithoutDeleted, scanWithoutDeleted, softDeleteDynamo } from '@src/utils/softDelete';
+import { PREFECTURE_MAPPING, PrefectureCode } from '@src/enums/propertyEnums';
 
 export const createProperty = async (ddbDocClient: DynamoDBDocumentClient, property: Property) => {
   const params = {
@@ -248,136 +243,10 @@ export const searchProperties = async (
     params.ExpressionAttributeValues[':endDate'] = endDate;
   }
 
-  let prefectureLabel;
-
-  switch (prefecture) {
-    case '1':
-      prefectureLabel = '北海道';
-      break;
-    case '2':
-      prefectureLabel = '青森県';
-      break;
-    case '3':
-      prefectureLabel = '岩手県';
-      break;
-    case '4':
-      prefectureLabel = '宮城県';
-      break;
-    case '5':
-      prefectureLabel = '秋田県';
-      break;
-    case '6':
-      prefectureLabel = '山形県';
-      break;
-    case '7':
-      prefectureLabel = '福島県';
-      break;
-    case '8':
-      prefectureLabel = '茨城県';
-      break;
-    case '9':
-      prefectureLabel = '栃木県';
-      break;
-    case '10':
-      prefectureLabel = '群馬県';
-      break;
-    case '11':
-      prefectureLabel = '埼玉県';
-      break;
-    case '12':
-      prefectureLabel = '千葉県';
-      break;
-    case '13':
-      prefectureLabel = '東京都';
-      break;
-    case '14':
-      prefectureLabel = '神奈川県';
-      break;
-    case '15':
-      prefectureLabel = '新潟県';
-      break;
-    case '16':
-      prefectureLabel = '富山県';
-      break;
-    case '17':
-      prefectureLabel = '石川県';
-      break;
-    case '18':
-      prefectureLabel = '福井県';
-      break;
-    case '19':
-      prefectureLabel = '山梨県';
-      break;
-    case '20':
-      prefectureLabel = '長野県';
-      break;
-    case '21':
-      prefectureLabel = '兵庫県';
-      break;
-    case '22':
-      prefectureLabel = '奈良県';
-      break;
-    case '23':
-      prefectureLabel = '和歌山県';
-      break;
-    case '24':
-      prefectureLabel = '鳥取県';
-      break;
-    case '25':
-      prefectureLabel = '島根県';
-      break;
-    case '26':
-      prefectureLabel = '岡山県';
-      break;
-    case '27':
-      prefectureLabel = '広島県';
-      break;
-    case '28':
-      prefectureLabel = '山口県';
-      break;
-    case '29':
-      prefectureLabel = '徳島県';
-      break;
-    case '30':
-      prefectureLabel = '香川県';
-      break;
-    case '31':
-      prefectureLabel = '愛媛県';
-      break;
-    case '32':
-      prefectureLabel = '高知県';
-      break;
-    case '33':
-      prefectureLabel = '福岡県';
-      break;
-    case '34':
-      prefectureLabel = '佐賀県';
-      break;
-    case '35':
-      prefectureLabel = '長崎県';
-      break;
-    case '36':
-      prefectureLabel = '熊本県';
-      break;
-    case '37':
-      prefectureLabel = '大分県';
-      break;
-    case '38':
-      prefectureLabel = '宮崎県';
-      break;
-    case '39':
-      prefectureLabel = '鹿児島県';
-      break;
-    case '40':
-      prefectureLabel = '沖縄県';
-      break;
-    default:
-      break;
-  }
-
-  if (prefectureLabel) {
-    filterExpressions.push('address_prefecture = :prefecture');
-    params.ExpressionAttributeValues[':prefecture'] = prefectureLabel;
+  // 都道府県の変換処理を削除し、そのまま数字の文字列で検索
+  if (prefecture) {
+    filterExpressions.push('prefecture = :prefecture');
+    params.ExpressionAttributeValues[':prefecture'] = prefecture;
   }
 
   let propertyType;
@@ -387,10 +256,10 @@ export const searchProperties = async (
       property_type = '土地';
       break;
     case '2':
-      property_type = '分譲';
+      property_type = 'マンション';
       break;
     case '3':
-      property_type = 'オフィスビル';
+      property_type = '新築';
       break;
     case '4':
       property_type = '指定なし';
@@ -728,58 +597,26 @@ export const searchPropertiesWithPageNumber = async (
     params.ExpressionAttributeValues[':endDate'] = endDate;
   }
 
-  const prefectureMap: Record<string, string> = {
-    '1': '北海道',
-    '2': '青森県',
-    '3': '岩手県',
-    '4': '宮城県',
-    '5': '秋田県',
-    '6': '山形県',
-    '7': '福島県',
-    '8': '茨城県',
-    '9': '栃木県',
-    '10': '群馬県',
-    '11': '埼玉県',
-    '12': '千葉県',
-    '13': '東京都',
-    '14': '神奈川県',
-    '15': '新潟県',
-    '16': '富山県',
-    '17': '石川県',
-    '18': '福井県',
-    '19': '山梨県',
-    '20': '長野県',
-    '21': '兵庫県',
-    '22': '奈良県',
-    '23': '和歌山県',
-    '24': '鳥取県',
-    '25': '島根県',
-    '26': '岡山県',
-    '27': '広島県',
-    '28': '山口県',
-    '29': '徳島県',
-    '30': '香川県',
-    '31': '愛媛県',
-    '32': '高知県',
-    '33': '福岡県',
-    '34': '佐賀県',
-    '35': '長崎県',
-    '36': '熊本県',
-    '37': '大分県',
-    '38': '宮崎県',
-    '39': '鹿児島県',
-    '40': '沖縄県',
-    '41': '指定なし',
-  };
-  if (prefecture && prefectureMap[prefecture]) {
-    filterExpressions.push('prefecture = :prefecture');
-    params.ExpressionAttributeValues[':prefecture'] = prefectureMap[prefecture];
+  // prefectureが数字の文字列の場合は都道府県名も含めてOR検索
+  if (prefecture) {
+    const values = [prefecture];
+    if (PREFECTURE_MAPPING[prefecture as PrefectureCode]) {
+      values.push(PREFECTURE_MAPPING[prefecture as PrefectureCode]);
+    }
+    if (values.length === 2) {
+      filterExpressions.push('(prefecture = :prefectureNum OR prefecture = :prefectureName)');
+      params.ExpressionAttributeValues[':prefectureNum'] = values[0];
+      params.ExpressionAttributeValues[':prefectureName'] = values[1];
+    } else {
+      filterExpressions.push('prefecture = :prefecture');
+      params.ExpressionAttributeValues[':prefecture'] = values[0];
+    }
   }
 
   const typeMap: Record<string, string> = {
     '1': '土地',
-    '2': '分譲',
-    '3': 'オフィスビル',
+    '2': 'マンション',
+    '3': '新築',
     '4': '指定なし',
   };
 
@@ -845,6 +682,20 @@ export const searchPropertiesWithPageNumber = async (
   if (filterExpressions.length > 0) {
     params.FilterExpression += ' AND ' + filterExpressions.join(' AND ');
   }
+
+  // --- デバッグログ追加 ---
+  console.log('=== Debug Info (searchPropertiesWithPageNumber) ===');
+  console.log('objectName:', objectName);
+  console.log('prefecture:', prefecture);
+  console.log('price:', price);
+  console.log('property_type:', property_type);
+  console.log('registrationRange:', registrationRange);
+  console.log('FilterExpression:', params.FilterExpression);
+  console.log('ExpressionAttributeValues:', params.ExpressionAttributeValues);
+  if (params.ExpressionAttributeNames) {
+    console.log('ExpressionAttributeNames:', params.ExpressionAttributeNames);
+  }
+  console.log('===============================================');
 
   // Scan all matching results (page size set to 1000)
   const allData = await scanWithoutDeleted(ddbDocClient, params);

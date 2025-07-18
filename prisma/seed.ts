@@ -13,43 +13,13 @@ async function main() {
       data: {
         registring_member_id: 'system-generated-id-1',
         is_admin: true,
-        last_name: '田中',
-        first_name: '太郎',
+        last_name: 'テスト',
+        first_name: '太朗',
         middle_name: null,
-        last_name_kana: 'タナカ',
+        last_name_kana: 'テスト',
         first_name_kana: 'タロウ',
         middle_name_kana: null,
-        mail_address: 'tanaka@admin.com',
-        icon_image_path: '/images/admin/tanaka.jpg',
-        is_active: true,
-      },
-    }),
-    prisma.mstAdminMembers.create({
-      data: {
-        registring_member_id: 'system-generated-id-2',
-        is_admin: true,
-        last_name: '佐藤',
-        first_name: '花子',
-        middle_name: null,
-        last_name_kana: 'サトウ',
-        first_name_kana: 'ハナコ',
-        middle_name_kana: null,
-        mail_address: 'sato@admin.com',
-        icon_image_path: '/images/admin/sato.jpg',
-        is_active: true,
-      },
-    }),
-    prisma.mstAdminMembers.create({
-      data: {
-        registring_member_id: 'system-generated-id-3',
-        is_admin: false,
-        last_name: '山田',
-        first_name: '次郎',
-        middle_name: null,
-        last_name_kana: 'ヤマダ',
-        first_name_kana: 'ジロウ',
-        middle_name_kana: null,
-        mail_address: 'yamada@admin.com',
+        mail_address: 'test.startgear@gmail.com',
         icon_image_path: null,
         is_active: true,
       },
@@ -139,7 +109,7 @@ async function main() {
     prisma.mstClients.create({
       data: {
         id: 'a95c7f8f-1e99-4f42-9c21-0f8d3397d3d9', // Cognitoのcustom:clientIdに合わせる
-        created_by_member_id: adminMembers[1].id,
+        created_by_member_id: adminMembers[0].id,
         updated_by_member_id: null,
         name: '大阪不動産株式会社',
         name_kana: 'オオサカフドウサンカブシキガイシャ',
@@ -159,7 +129,7 @@ async function main() {
       data: {
         id: 'd80d3d06-d610-4ec2-bee3-faf946ef64e2', // Cognitoのcustom:clientIdに合わせる
         created_by_member_id: adminMembers[0].id,
-        updated_by_member_id: adminMembers[1].id,
+        updated_by_member_id: adminMembers[0].id,
         name: '名古屋ホーム販売',
         name_kana: 'ナゴヤホームハンバイ',
         real_estate_number: '愛知県知事(3)第11111号',
@@ -216,7 +186,7 @@ async function main() {
       data: {
         client_id: clients[1].id,
         registring_admin_employee_id: null,
-        registring_admin_member_id: adminMembers[1].id,
+        registring_admin_member_id: adminMembers[0].id,
         payment_user_id: null,
         is_active: true,
         last_name: '中村',

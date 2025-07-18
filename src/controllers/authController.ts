@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { FastifyReply, FastifyRequest } from 'fastify';
 import dotenv from 'dotenv';
 import { checkEmailExists } from '@src/repositroies/authModel';
-import { changePasswordSeriveInCognito, changeUserPasswordSeriveInCognito, LogoutService, ResetPasswordService, sendOtpService, signInService, verifyOtpService } from '../services/authService';
+import { changePasswordSeriveInCognito, changeUserPasswordSeriveInCognito, LogoutService, ResetPasswordService, sendOtpService, signInService } from '../services/authService';
 import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '../responses/constants/authConstant';
 import { changePasswordBodySchema} from '@src/schemas/authSchema';
 import { BadRequestError, NotFoundError } from '@src/errors/httpErrors';
@@ -97,22 +97,9 @@ export const verifyOtpController = async (
   });
 
   try {
-    authLogger.info('Email exists, verifying OTP', email);
-    const isOtpValid = await verifyOtpService(email, otp);
-
-    if (!isOtpValid) {
-      authLogger.warn('Invalid OTP provided', email, { otpLength: otp.length });
-      throw {
-        statusCode: 400,
-        message: ERROR_MESSAGES.INVALID_OTP
-      };
-    }
-
-    authLogger.info('Verify OTP controller completed successfully', email);
-
     reply.code(200).send({
       status: 200,
-      message: SUCCESS_MESSAGES.OTP_VERIFIED_SUCCESS
+      message: 'OTP received. Please proceed to reset password with the same OTP code.'
     });
   } catch (error: any) {
     authLogger.error('Verify OTP controller failed', error, email, {

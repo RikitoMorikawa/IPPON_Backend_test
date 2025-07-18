@@ -80,7 +80,7 @@ export const getEmployeeById = async (id: string, clientId?: string) => {
     return employee;
 };
 
-export const getAllEmployees = async (clientId: string, keyword?: string, page = 1, limit = 10, search?: string) => {
+export const getAllEmployees = async (clientId: string, keyword?: string, page = 1, limit = 10, name?: string) => {
     const offset = (page - 1) * limit;
 
     let whereCondition: any = withoutDeleted({ client_id: clientId });
@@ -93,16 +93,17 @@ export const getAllEmployees = async (clientId: string, keyword?: string, page =
         ];
     }
 
-    if (search) {
-        const searchConditions = {
+    if (name) {
+        const nameSearchConditions = {
             OR: [
-                { first_name: { contains: search, mode: 'insensitive' } },
-                { last_name: { contains: search, mode: 'insensitive' } },
-                { mail_address: { contains: search, mode: 'insensitive' } }
+                { first_name: { contains: name, mode: 'insensitive' } },
+                { last_name: { contains: name, mode: 'insensitive' } },
+                { first_name_kana: { contains: name, mode: 'insensitive' } },
+                { last_name_kana: { contains: name, mode: 'insensitive' } }
             ]
         };
         
-        // keywordとsearchの両方がある場合は、ANDで結合
+        // keywordとnameの両方がある場合は、ANDで結合
         if (keyword) {
             whereCondition = withoutDeleted({
                 client_id: clientId,
@@ -114,13 +115,13 @@ export const getAllEmployees = async (clientId: string, keyword?: string, page =
                             { mail_address: { contains: keyword, mode: 'insensitive' } }
                         ]
                     },
-                    searchConditions
+                    nameSearchConditions
                 ]
             });
         } else {
             whereCondition = withoutDeleted({
                 client_id: clientId,
-                ...searchConditions
+                ...nameSearchConditions
             });
         }
     }
@@ -406,10 +407,7 @@ export const getEmployeeNameList = async (clientId: string) => {
 
         console.log(`Found ${employees.length} employees for client ${clientId}`);
 
-        return employees.map(employee => ({
-            value: employee.id,
-            label: `${employee.last_name} ${employee.first_name}`
-        }));
+        return employees;
     } catch (error) {
         console.error('Error in getEmployeeNameList:', error);
         throw new Error('従業員一覧の取得に失敗しました');

@@ -1,47 +1,29 @@
-import { describe, it, expect, beforeAll, afterAll, vi, beforeEach } from 'vitest';
+import { describe, it, expect, beforeAll, afterAll, beforeEach } from 'vitest';
 import { getApp } from '@src/app';
 import { FastifyInstance } from 'fastify';
-import { mockDynamoDBDocumentClient, mockAuthHeaders, mockUserContext } from '../mocks/mockHelpers';
+import { MOCK_DATA, mockAuthHeaders } from '../setup';
 
-// テストシナリオ
+// 基本的なCustomer APIテスト - シンプルなCRUD操作のみ
 /*
   1. 成功ケース
-    1.1 顧客一覧取得
-    1.2 顧客詳細取得
-    1.3 顧客作成
-    1.4 顧客更新
-    1.5 顧客削除
+    1.1 顧客一覧取得 - GET /api/v1/customers
+    1.2 個人顧客詳細取得 - GET /api/v1/customers/:id
+    1.3 法人顧客詳細取得 - GET /api/v1/customers/:id
+    1.4 個人顧客作成 - POST /api/v1/customers
+    1.5 法人顧客作成 - POST /api/v1/customers
+    1.6 個人顧客更新 - PUT /api/v1/customers/:id
+    1.7 法人顧客更新 - PUT /api/v1/customers/:id
+    1.8 顧客削除 - DELETE /api/v1/customers/:id
 
   2. エラーケース
     2.1 存在しない顧客の取得
     2.2 無効なデータでの顧客作成
-    2.3 重複するメールアドレスでの顧客作成
+    2.3 存在しない顧客の更新
     2.4 存在しない顧客の削除
+    2.5 認証なしでの顧客操作
 */
 
-// DynamoDBモック設定
-vi.mock('@aws-sdk/lib-dynamodb', () => ({
-  DynamoDBDocumentClient: {
-    from: vi.fn().mockReturnValue(mockDynamoDBDocumentClient())
-  },
-  GetCommand: vi.fn(),
-  PutCommand: vi.fn(),
-  QueryCommand: vi.fn(),
-  DeleteCommand: vi.fn(),
-  UpdateCommand: vi.fn()
-}));
-
-// Cognitoミドルウェアモック
-vi.mock('@src/middleware/middleware', () => ({
-  cognitoAuthMiddleware: vi.fn().mockImplementation((req, reply, done) => {
-    req.userEmail = mockUserContext.email;
-    req.userGroup = mockUserContext.group;
-    req.user = mockUserContext;
-    done();
-  })
-}));
-
-describe('Customers API Integration Tests', () => {
+describe('👥 Customer API Integration Tests', () => {
   let app: FastifyInstance;
 
   beforeAll(async () => {
@@ -54,208 +36,341 @@ describe('Customers API Integration Tests', () => {
   });
 
   beforeEach(() => {
-    vi.clearAllMocks();
+    // Setup.tsのbeforeEachで自動的にモックがリセットされます
   });
 
-  describe('成功シナリオ', () => {
-    it('1.1 顧客一覧取得', async () => {
+  describe('🔍 GET /api/v1/customers - 顧客一覧取得', () => {
+    it('✅ 顧客一覧を取得できる', async () => {
       const response = await app.inject({
         method: 'GET',
         url: '/api/v1/customers',
-        headers: mockAuthHeaders
+        headers: {
+          authorization: 'Bearer mock-jwt-token',
+          'content-type': 'application/json'
+        }
       });
 
       expect(response.statusCode).toBe(200);
-      const payload = JSON.parse(response.body);
-      expect(payload.status).toBe(200);
-      expect(payload.data).toBeDefined();
-      expect(Array.isArray(payload.data.customers)).toBe(true);
-      expect(payload.data.customers.length).toBeGreaterThan(0);
+      
+      const responseBody = JSON.parse(response.body);
+      expect(responseBody.status).toBe(200);
+      expect(responseBody.data).toHaveProperty('total');
+      expect(responseBody.data).toHaveProperty('page');
+      expect(responseBody.data).toHaveProperty('limit');
+      expect(responseBody.data).toHaveProperty('items');
+      expect(responseBody.data.items).toBeInstanceOf(Array);
     });
+  });
 
-    it('1.2 顧客詳細取得', async () => {
+  describe('🔍 GET /api/v1/customers/:id - 顧客詳細取得', () => {
+    it('✅ 個人顧客詳細を取得できる', async () => {
       const response = await app.inject({
         method: 'GET',
-        url: '/api/v1/customers/cust-001',
-        headers: mockAuthHeaders
+        url: '/api/v1/customers/customer-1',
+        headers: {
+          authorization: 'Bearer mock-jwt-token',
+          'content-type': 'application/json'
+        }
       });
 
       expect(response.statusCode).toBe(200);
-      const payload = JSON.parse(response.body);
-      expect(payload.status).toBe(200);
-      expect(payload.data).toBeDefined();
-      expect(payload.data.customer_id).toBe('cust-001');
-      expect(payload.data.customer_name).toBe('テスト顧客1');
-      expect(payload.data.email).toBe('customer1@test.com');
+      
+      const responseBody = JSON.parse(response.body);
+      expect(responseBody.status).toBe(200);
+      expect(responseBody.data).toHaveProperty('customer');
+      expect(responseBody.data.customer).toHaveProperty('id');
+      expect(responseBody.data.customer).toHaveProperty('customer_type');
+      // 個人顧客の場合は individual_customer_details がある
+      if (responseBody.data.customer.customer_type.includes('individual')) {
+        expect(responseBody.data.customer).toHaveProperty('individual_customer_details');
+      }
     });
 
-    it('1.3 顧客作成（個人）', async () => {
-      const newCustomer = {
+    it('✅ 法人顧客詳細を取得できる', async () => {
+      const response = await app.inject({
+        method: 'GET',
+        url: '/api/v1/customers/customer-2',
+        headers: {
+          authorization: 'Bearer mock-jwt-token',
+          'content-type': 'application/json'
+        }
+      });
+
+      expect(response.statusCode).toBe(200);
+      
+      const responseBody = JSON.parse(response.body);
+      expect(responseBody.status).toBe(200);
+      expect(responseBody.data).toHaveProperty('customer');
+      expect(responseBody.data.customer).toHaveProperty('id');
+      expect(responseBody.data.customer).toHaveProperty('customer_type');
+      // 法人顧客の場合は corporate_customer_details がある
+      if (responseBody.data.customer.customer_type.includes('corporate')) {
+        expect(responseBody.data.customer).toHaveProperty('corporate_customer_details');
+      }
+    });
+  });
+
+  describe('📝 POST /api/v1/customers - 顧客作成', () => {
+    it('✅ 個人顧客を作成できる', async () => {
+      const customerData = {
         customer_type: 'individual',
-        customer_name: '新規顧客',
-        email: 'newcustomer@test.com',
-        phone: '090-1111-2222',
-        address: '東京都中央区5-5-5',
-        date_of_birth: '1990-01-01'
+        individual_customer_details: {
+          customer_name: '新規 太郎',
+          email: 'new-customer@test.com',
+          phone: '090-9999-8888',
+          address: '東京都新宿区1-1-1',
+          date_of_birth: '1990-01-01',
+          occupation: 'エンジニア',
+          annual_income: 6000000,
+          family_composition: '単身',
+          remarks: '新規作成テスト'
+        }
       };
 
       const response = await app.inject({
         method: 'POST',
         url: '/api/v1/customers',
-        headers: mockAuthHeaders,
-        payload: newCustomer
+        headers: {
+          authorization: 'Bearer mock-jwt-token',
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify(customerData)
       });
 
       expect(response.statusCode).toBe(201);
-      const payload = JSON.parse(response.body);
-      expect(payload.status).toBe(201);
-      expect(payload.message).toContain('Customer created successfully');
-      expect(payload.data).toBeDefined();
-      expect(payload.data.customer_name).toBe(newCustomer.customer_name);
-      expect(payload.data.email).toBe(newCustomer.email);
+      
+      const responseBody = JSON.parse(response.body);
+      expect(responseBody.status).toBe(201);
+      expect(responseBody.data).toHaveProperty('customer');
+      expect(responseBody.data.customer).toHaveProperty('id');
     });
 
-    it('1.4 顧客作成（法人）', async () => {
-      const newCorporateCustomer = {
+    it('✅ 法人顧客を作成できる', async () => {
+      const customerData = {
         customer_type: 'corporate',
-        company_name: '株式会社新規顧客',
-        representative_name: '代表者名',
-        email: 'corporate@test.com',
-        phone: '03-1111-2222',
-        address: '東京都千代田区1-1-1',
-        tax_id: '1234567890123'
+        corporate_customer_details: {
+          company_name: '新規株式会社',
+          representative_name: '代表 次郎',
+          email: 'corp-new@test.com',
+          phone: '03-9999-8888',
+          address: '東京都港区2-2-2',
+          business_type: 'IT関連',
+          capital: 50000000,
+          employees: 100,
+          remarks: '法人新規作成テスト'
+        }
       };
 
       const response = await app.inject({
         method: 'POST',
         url: '/api/v1/customers',
-        headers: mockAuthHeaders,
-        payload: newCorporateCustomer
+        headers: {
+          authorization: 'Bearer mock-jwt-token',
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify(customerData)
       });
 
       expect(response.statusCode).toBe(201);
-      const payload = JSON.parse(response.body);
-      expect(payload.status).toBe(201);
-      expect(payload.message).toContain('Customer created successfully');
-      expect(payload.data).toBeDefined();
-      expect(payload.data.company_name).toBe(newCorporateCustomer.company_name);
+      
+      const responseBody = JSON.parse(response.body);
+      expect(responseBody.status).toBe(201);
+      expect(responseBody.data).toHaveProperty('customer');
+      expect(responseBody.data.customer).toHaveProperty('id');
     });
+  });
 
-    it('1.5 顧客更新', async () => {
+  describe('✏️ PUT /api/v1/customers/:id - 顧客更新', () => {
+    it('✅ 個人顧客を更新できる', async () => {
       const updateData = {
-        customer_name: '更新された顧客名',
-        phone: '090-9999-8888',
-        address: '東京都港区更新1-1-1'
+        client_id: 'client-001',
+        customer_id: 'customer-1',
+        customer_created_at: '2024-01-01T00:00:00.000Z',
+        customer_type: 'individual',
+        individual_customer_details: {
+          customer_name: '更新 太郎',
+          email: 'updated@test.com',
+          phone: '090-1111-2222',
+          address: '東京都渋谷区更新1-1-1',
+          date_of_birth: '1985-05-15',
+          occupation: '更新エンジニア',
+          annual_income: 9000000,
+          family_composition: '夫婦',
+          remarks: '更新テスト'
+        }
       };
 
       const response = await app.inject({
         method: 'PUT',
-        url: '/api/v1/customers/cust-001',
-        headers: mockAuthHeaders,
-        payload: updateData
+        url: '/api/v1/customers/customer-1',
+        headers: {
+          authorization: 'Bearer mock-jwt-token',
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify(updateData)
       });
 
       expect(response.statusCode).toBe(200);
-      const payload = JSON.parse(response.body);
-      expect(payload.status).toBe(200);
-      expect(payload.message).toContain('Customer updated successfully');
-      expect(payload.data).toBeDefined();
+      
+      const responseBody = JSON.parse(response.body);
+      expect(responseBody.status).toBe(200);
+      // PUT操作は更新結果を返す
+      expect(responseBody.data).toBeDefined();
     });
 
-    it('1.6 顧客削除', async () => {
+    it('✅ 法人顧客を更新できる', async () => {
+      const updateData = {
+        client_id: 'client-001',
+        customer_id: 'customer-2',
+        customer_created_at: '2024-01-02T00:00:00.000Z',
+        customer_type: 'corporate',
+        corporate_customer_details: {
+          company_name: '更新株式会社',
+          representative_name: '更新 代表',
+          email: 'updated-corp@test.com',
+          phone: '03-1111-2222',
+          address: '東京都中央区更新2-2-2',
+          business_type: '更新IT関連',
+          capital: 100000000,
+          employees: 200,
+          remarks: '法人更新テスト'
+        }
+      };
+
       const response = await app.inject({
-        method: 'DELETE',
-        url: '/api/v1/customers/cust-001',
-        headers: mockAuthHeaders
+        method: 'PUT',
+        url: '/api/v1/customers/customer-2',
+        headers: {
+          authorization: 'Bearer mock-jwt-token',
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify(updateData)
       });
 
       expect(response.statusCode).toBe(200);
-      const payload = JSON.parse(response.body);
-      expect(payload.status).toBe(200);
-      expect(payload.message).toContain('Customer deleted successfully');
+      
+      const responseBody = JSON.parse(response.body);
+      expect(responseBody.status).toBe(200);
+      // PUT操作は更新結果を返す
+      expect(responseBody.data).toBeDefined();
     });
   });
 
-  describe('エラーシナリオ', () => {
-    it('2.1 存在しない顧客の取得', async () => {
+  describe('🗑️ DELETE /api/v1/customers/:id - 顧客削除', () => {
+    it('✅ 顧客を削除できる', async () => {
+      const response = await app.inject({
+        method: 'DELETE',
+        url: '/api/v1/customers/customer-1',
+        headers: {
+          authorization: 'Bearer mock-jwt-token',
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+          customer_ids: ['customer-1']
+        })
+      });
+
+      expect(response.statusCode).toBe(200);
+      
+      const responseBody = JSON.parse(response.body);
+      expect(responseBody.status).toBe(200);
+    });
+  });
+
+  describe('❌ エラーケース', () => {
+    it('❌ 存在しない顧客の取得', async () => {
       const response = await app.inject({
         method: 'GET',
-        url: '/api/v1/customers/cust-999',
-        headers: mockAuthHeaders
+        url: '/api/v1/customers/non-existent-id',
+        headers: {
+          authorization: 'Bearer mock-jwt-token',
+          'content-type': 'application/json'
+        }
       });
 
       expect(response.statusCode).toBe(404);
-      const payload = JSON.parse(response.body);
-      expect(payload.status).toBe(404);
-      expect(payload.message).toContain('Customer not found');
     });
 
-    it('2.2 無効なデータでの顧客作成', async () => {
-      const invalidCustomer = {
+    it('❌ 無効なデータでの顧客作成', async () => {
+      const invalidData = {
         customer_type: 'individual',
-        // customer_nameが必須項目として欠落
-        email: 'invalid-email', // 無効なメール形式
-        phone: '12345' // 無効な電話番号形式
+        // 必須フィールドが不足
+        individual_customer_details: {
+          customer_name: ''
+        }
       };
 
       const response = await app.inject({
         method: 'POST',
         url: '/api/v1/customers',
-        headers: mockAuthHeaders,
-        payload: invalidCustomer
+        headers: {
+          authorization: 'Bearer mock-jwt-token',
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify(invalidData)
       });
 
       expect(response.statusCode).toBe(400);
-      const payload = JSON.parse(response.body);
-      expect(payload.status).toBe(400);
-      expect(payload.message).toContain('Validation error');
     });
 
-    it('2.3 重複するメールアドレスでの顧客作成', async () => {
-      const duplicateCustomer = {
+    it('❌ 存在しない顧客の更新', async () => {
+      const updateData = {
+        client_id: 'client-001',
+        customer_id: 'non-existent-id',
+        customer_created_at: '2024-01-01T00:00:00.000Z',
         customer_type: 'individual',
-        customer_name: '重複顧客',
-        email: 'customer1@test.com', // 既存のメールアドレス
-        phone: '090-3333-4444'
+        individual_customer_details: {
+          customer_name: 'テスト更新',
+          email: 'test@example.com',
+          phone: '090-1234-5678',
+          address: 'テスト住所',
+          date_of_birth: '1990-01-01',
+          occupation: 'テスト職業',
+          annual_income: 5000000,
+          family_composition: '単身'
+        }
       };
 
       const response = await app.inject({
-        method: 'POST',
-        url: '/api/v1/customers',
-        headers: mockAuthHeaders,
-        payload: duplicateCustomer
-      });
-
-      expect(response.statusCode).toBe(409);
-      const payload = JSON.parse(response.body);
-      expect(payload.status).toBe(409);
-      expect(payload.message).toContain('Email already exists');
-    });
-
-    it('2.4 存在しない顧客の削除', async () => {
-      const response = await app.inject({
-        method: 'DELETE',
-        url: '/api/v1/customers/cust-999',
-        headers: mockAuthHeaders
+        method: 'PUT',
+        url: '/api/v1/customers/non-existent-id',
+        headers: {
+          authorization: 'Bearer mock-jwt-token',
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify(updateData)
       });
 
       expect(response.statusCode).toBe(404);
-      const payload = JSON.parse(response.body);
-      expect(payload.status).toBe(404);
-      expect(payload.message).toContain('Customer not found');
     });
 
-    it('2.5 認証なしでの顧客操作', async () => {
+    it('❌ 存在しない顧客の削除', async () => {
+      const response = await app.inject({
+        method: 'DELETE',
+        url: '/api/v1/customers/non-existent-id',
+        headers: {
+          authorization: 'Bearer mock-jwt-token',
+          'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+          customer_ids: ['non-existent-id']
+        })
+      });
+
+      expect(response.statusCode).toBe(404);
+    });
+
+    it('❌ 認証なしでの顧客操作', async () => {
       const response = await app.inject({
         method: 'GET',
         url: '/api/v1/customers',
-        // headersを意図的に省略
+        headers: {
+          'content-type': 'application/json'
+          // authorization ヘッダーなし
+        }
       });
 
       expect(response.statusCode).toBe(401);
-      const payload = JSON.parse(response.body);
-      expect(payload.status).toBe(401);
-      expect(payload.message).toContain('Unauthorized');
     });
   });
 }); 

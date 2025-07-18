@@ -501,7 +501,7 @@ export const saveReport = async (request: FastifyRequest, reply: FastifyReply) =
         report_date: reportData.report_date || reportDate,
         current_status: reportData.current_status || 'recruiting',
         summary: reportData.summary || '',
-        price: property.price || '0',
+        price: property.price ? property.price.toString() : '0',
         sales_start_date: property.sales_start_date || property.created_at?.split('T')[0] || new Date().toISOString().split('T')[0],
         is_suumo_published: reportData.suumo || false,
         views_count: reportData.views_count || 0,

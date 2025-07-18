@@ -4,12 +4,12 @@ import { errorResponse, successResponse } from '@src/responses';
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from '@src/responses/constants/customerConstants';
 import { getClientId, getEmployeeId } from '@src/middleware/userContext';
 import { checkDynamoDBClient, getDynamoDBClient } from '@src/interfaces/checkDynamoDBClient';
-import { getAllCustomers, incrementPropertyInquiryCount } from '@src/repositroies/customerModel';
+import { getAllCustomerDetails, incrementPropertyInquiryCount } from '@src/repositroies/customerModel';
 import { getAllInquires, searchInquiryByProperty } from '@src/repositroies/inquiryModel';
 import { getAllProperties, getPropertyById } from '@src/repositroies/propertyModel';
 import { InquiryListByPropertyParams } from '@src/interfaces/inquiryInterfaces';
 import { getClientById, getEmployeeById } from '../repositroies/clientModel';
-import { processFormData } from '@src/services/customerService';
+import { processCustomerFormData, formatCustomerResponse } from '@src/services/customerService';
 import { inquirySchema } from '@src/validations/inquiryValidation';
 import { v4 as uuidv4 } from 'uuid';
 import { createNewInquiry, saveInquiry } from '@src/repositroies/inquiryModel';
@@ -29,7 +29,7 @@ export const inquiryController = async (
         switch (req.method) {
             case 'POST': {
                 try {
-                    const { formData } = await processFormData(req);
+                    const { formData } = await processCustomerFormData(req);
 
                     await inquirySchema.validate(formData, { abortEarly: false });
 
@@ -102,15 +102,15 @@ export const inquiryController = async (
 
                 if (!hasQueryParams) {
                     const [customers, inquiries, properties] = await Promise.all([
-                        getAllCustomers(ddbDocClient, clientId),
+                        getAllCustomerDetails(ddbDocClient, clientId),
                         getAllInquires(ddbDocClient, clientId),
                         getAllProperties(ddbDocClient, clientId),
                     ]);
 
                     const formattedData = await Promise.all(
-                        inquiries.inquires.map(async (inquiry) => {
-                            const customer = customers.customers.find((c) => c.id === inquiry.customer_id);
-                            const property = properties.properties.find((p) => p.id === inquiry.property_id);
+                        inquiries.inquires.map(async (inquiry: any) => {
+                            const customer = customers.customers.find((c: any) => c.id === inquiry.customer_id);
+                            const property = properties.properties.find((p: any) => p.id === inquiry.property_id);
 
                             // Fetch client and employee data
                             const [clientData, employeeData] = await Promise.all([
@@ -123,7 +123,7 @@ export const inquiryController = async (
                                     ...inquiry,
                                     client: clientData,
                                     employee: employeeData,
-                                    customer,
+                                    customer: customer ? formatCustomerResponse(customer) : null,
                                     property,
                                 },
                             };
@@ -180,7 +180,8 @@ export const inquiryController = async (
                             inquiry: {
                                 ...item.inquiry,
                                 client: clientData,
-                                employee: employeeData
+                                employee: employeeData,
+                                customer: item.inquiry.customer ? formatCustomerResponse(item.inquiry.customer) : null
                             }
                         };
                     })

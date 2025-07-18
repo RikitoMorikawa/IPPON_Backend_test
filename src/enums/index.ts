@@ -5,6 +5,14 @@
 // Customer Enums
 export {
   GENDERS,
+  CUSTOMER_TYPES,
+  LISTING_STATUS,
+  type ListingStatus,
+  getListingStatus,
+  isValidListingStatus,
+  type CustomerType,
+  getCustomerTypes,
+  isValidCustomerType,
   type Gender,
   getGenders,
   isValidGender,
@@ -70,6 +78,8 @@ export {
 import {
   getGenders,
   getPrefectures as getCustomerPrefectures,
+  getCustomerTypes,
+  getListingStatus,
 } from './customerEnums';
 
 import {
@@ -97,6 +107,8 @@ export const getAllEnums = () => {
     customers: {
       genders: getGenders(),
       prefectures: getCustomerPrefectures(),
+      customerTypes: getCustomerTypes(),
+      listingStatuses: getListingStatus(),
     },
     inquiries: {
       titles: getInquiryTitles(),

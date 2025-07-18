@@ -9,11 +9,11 @@
  */
 
 // ==================================================
-// 1. IndividualCustomerDetail（個人顧客詳細テーブル）
+// 1. CustomerDetail（顧客詳細テーブル）
 // ==================================================
-export const IndividualCustomerDetailSchema = {
-  tableName: 'IndividualCustomerDetail',
-  description: '個人顧客詳細 - 物件購入見込み客の管理',
+export const CustomerDetailSchema = {
+  tableName: 'CustomerDetail',
+  description: '顧客詳細 - 物件購入見込み客の管理',
   
   // DynamoDB構造
   keys: {
@@ -26,29 +26,15 @@ export const IndividualCustomerDetailSchema = {
     'id',                    // RDB PK (UUID)
     'client_id',             // DynamoDB PK
     'employee_id',           // 担当従業員ID
-    'first_name',            // 名
-    'last_name',             // 姓
-    'birthday',              // 生年月日
-    'mail_address',          // メールアドレス
-    'postcode',              // 郵便番号
-    'prefecture',            // 都道府県
-    'city',                  // 市区町村
-    'street_address',        // 番地
-    'building',              // 建物名
-    'id_card_front_path',    // 身分証明書表面パス 
-    'id_card_back_path',     // 身分証明書裏面パス
+    'customer_type',         // 顧客種別 (individual_customer, corporate_customer)
+    'property_ids',          // 物件ID (配列)
     'created_at',            // 作成日時 (DynamoDB SK)
   ],
   
   // オプションフィールド
   optionalFields: [
-    'middle_name',           // ミドルネーム
-    'first_name_kana',       // 名（カナ）
-    'middle_name_kana',      // ミドルネーム（カナ）
-    'last_name_kana',        // 姓（カナ）
-    'gender',                // 性別
-    'phone_number',          // 電話番号
-    'room_number',           // 部屋番号
+    'individual_customer_details', // 個人顧客詳細 (オブジェクト)
+    'corporate_customer_details', // 法人顧客詳細 (オブジェクト)
     'updated_at',            // 更新日時
     'deleted_at',            // 削除日時
   ],
@@ -58,24 +44,10 @@ export const IndividualCustomerDetailSchema = {
     id: 'string',
     client_id: 'string',
     employee_id: 'string',
-    first_name: 'string',
-    last_name: 'string',
-    middle_name: 'string',
-    first_name_kana: 'string',
-    middle_name_kana: 'string',
-    last_name_kana: 'string',
-    birthday: 'string',      // ISO 8601 形式
-    gender: 'string',
-    mail_address: 'string',
-    phone_number: 'string',
-    postcode: 'string',
-    prefecture: 'string',
-    city: 'string',
-    street_address: 'string',
-    building: 'string',
-    room_number: 'string',
-    id_card_front_path: 'string',
-    id_card_back_path: 'string',
+    customer_type: 'string',
+    property_ids: 'array',
+    individual_customer_details: 'object',
+    corporate_customer_details: 'object',
     created_at: 'string',    // ISO 8601 形式
     updated_at: 'string',
     deleted_at: 'string',
@@ -181,31 +153,10 @@ export const PropertySchema = {
     'image_urls',            // 画像URL (配列)
     'remarks',               // 備考
     'details',               // 物件詳細 (オブジェクト)
-    // 土地情報
-    'land_area',             // 土地面積
-    'land_rights',           // 土地権利
-    'land_category',         // 土地カテゴリ
-    'usage_zone',            // 用途地域
-    'building_coverage',     // 建ぺい率
-    'floor_area_ratio',      // 容積率
-    'road_situation',        // 道路状況
-    // マンション情報
-    'private_area',          // 専有面積
-    'balcony_area',          // バルコニー面積
-    'layout',                // 間取り
-    'total_units',           // 総戸数
-    'management_fee',        // 管理費
-    'repair_fund',           // 修繕積立金
-    'community_fee',         // 共益費
-    'parking',               // 駐車場
-    'management_type',       // 管理形態
-    'structure',             // 構造
-    'built_year',            // 築年
-    // 新築情報
-    'floor_area',            // 床面積
-    'topography',            // 地形
-    'facilities',            // 設備
-    'school_area',           // 学区
+    // 物件種別別詳細情報
+    'land_details',          // 土地詳細 (オブジェクト)
+    'apartment_details',     // マンション詳細 (オブジェクト)
+    'new_house_details',     // 新築詳細 (オブジェクト)
     'updated_at',            // 更新日時
     'deleted_at',            // 削除日時
   ],
@@ -236,6 +187,10 @@ export const PropertySchema = {
     image_urls: 'array',
     remarks: 'string',
     details: 'object',
+    // 物件種別別詳細情報
+    land_details: 'object',     // { land_area, land_rights, land_category, usage_zone, building_coverage, floor_area_ratio, road_situation }
+    apartment_details: 'object', // { private_area, balcony_area, layout, total_units, management_fee, repair_fund, community_fee, parking, management_type, structure, built_year }
+    new_house_details: 'object', // { floor_area, topography, facilities, school_area }
     created_at: 'string',    // ISO 8601 形式
     updated_at: 'string',
     deleted_at: 'string',
@@ -379,7 +334,7 @@ export const BatchReportSettingSchema = {
 // 統合定義
 // ==================================================
 export const DynamoDBSchemas = {
-  IndividualCustomerDetail: IndividualCustomerDetailSchema,
+  CustomerDetail: CustomerDetailSchema,
   Inquiry: InquirySchema,
   Property: PropertySchema,
   AiReport: AiReportSchema,
@@ -389,7 +344,7 @@ export const DynamoDBSchemas = {
 // テーブル名とスキーマのマッピング
 export const getSchemaByTableName = (tableName: string) => {
   const schemaMap: Record<string, any> = {
-    'customers': IndividualCustomerDetailSchema,
+    'customers': CustomerDetailSchema,
     'inquiry': InquirySchema,
     'properties': PropertySchema,
     'report': AiReportSchema,

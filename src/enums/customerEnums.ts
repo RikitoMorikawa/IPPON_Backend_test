@@ -9,11 +9,30 @@ export const GENDERS = {
   NOT_SET: '設定しない',
 } as const;
 
+// 上場区分
+export const LISTING_STATUS = {
+  LISTED: '上場',
+  UNLISTED: '未上場',
+} as const;
+
+// 顧客種別
+export const CUSTOMER_TYPES = {
+  INDIVIDUAL_CUSTOMER: 'individual_customer',
+  CORPORATE_CUSTOMER: 'corporate_customer',
+} as const;
+
 // TypeScript型定義
 export type Gender = typeof GENDERS[keyof typeof GENDERS];
+export type ListingStatus = typeof LISTING_STATUS[keyof typeof LISTING_STATUS];
 
 // 配列として取得するヘルパー関数
 export const getGenders = (): string[] => Object.values(GENDERS);
+
+export const getListingStatus = (): string[] => Object.values(LISTING_STATUS);
+
+export const isValidListingStatus = (value: string): value is ListingStatus => {
+  return Object.values(LISTING_STATUS).includes(value as ListingStatus);
+};  
 
 // バリデーション用関数
 export const isValidGender = (value: string): value is Gender => {
@@ -99,3 +118,12 @@ export const getPrefectureCodeByName = (name: PrefectureName): PrefectureCode | 
     key => CUSTOMER_PREFECTURE_MAPPING[key as PrefectureCode] === name
   ) as PrefectureCode | undefined;
 }; 
+
+export type CustomerType = typeof CUSTOMER_TYPES[keyof typeof CUSTOMER_TYPES];
+
+export const getCustomerTypes = (): string[] => Object.values(CUSTOMER_TYPES);
+
+export const isValidCustomerType = (value: string): value is CustomerType => {
+  return Object.values(CUSTOMER_TYPES).includes(value as CustomerType);
+};
+

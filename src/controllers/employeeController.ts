@@ -96,11 +96,11 @@ export const employeeHandler = async (
 
             case 'GET': {
                 const { id } = req.params as { id?: string };
-                const { keyword = '', page = '1', limit = '10', search = '' } = req.query as {
+                const { keyword = '', page = '1', limit = '10', name = '' } = req.query as {
                     keyword?: string;
                     page?: string;
                     limit?: string;
-                    search?: string;
+                    name?: string;
                 };
 
                 if (id) {
@@ -117,7 +117,7 @@ export const employeeHandler = async (
                     const safeLimit = isNaN(limitNumber) || limitNumber < 1 ? 10 : limitNumber;
 
                     const clientId = getClientId(req);
-                    const result = await getAllEmployees(clientId, keyword, safePage, safeLimit, search);
+                    const result = await getAllEmployees(clientId, keyword, safePage, safeLimit, name);
                     return reply.status(200).send(
                         successResponse(200, SUCCESS_MESSAGES.FETCH_ALL_EMPLOYEES, result)
                     );

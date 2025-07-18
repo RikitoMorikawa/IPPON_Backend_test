@@ -3706,3 +3706,1772 @@ Stack: Error: Failed to sign in with Cognito: Password attempts exceeded
   "email": "suz***@fudosan-life.co.jp",
   "hasToken": true
 }
+2025-07-14 13:06:11 [INFO]: Sign-in request received | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "requestIP": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+}
+2025-07-14 13:06:11 [INFO]: Checking email exists in database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 13:06:11 [WARN]: Email not found in database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 13:06:11 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-14 13:06:11 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "suzuki@fudosan-life.co.jp",
+    "password": "TempPass123!"
+  }
+}
+2025-07-14 13:06:12 [INFO]: Sign-in request received | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "requestIP": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+}
+2025-07-14 13:06:12 [INFO]: Checking email exists in database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 13:06:12 [WARN]: Email not found in database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 13:06:12 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-14 13:06:12 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "suzuki@fudosan-life.co.jp",
+    "password": "TempPass123!"
+  }
+}
+2025-07-14 13:06:23 [INFO]: Sign-in request received | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "requestIP": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+}
+2025-07-14 13:06:23 [INFO]: Checking email exists in database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 13:06:23 [WARN]: Email not found in database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 13:06:23 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-14 13:06:23 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "suzuki@fudosan-life.co.jp",
+    "password": "TempPass123!"
+  }
+}
+2025-07-14 13:15:31 [INFO]: Sign-in request received | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "requestIP": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+}
+2025-07-14 13:15:31 [INFO]: Checking email exists in database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 13:15:31 [WARN]: Email not found in database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 13:15:31 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-14 13:15:31 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "suzuki@fudosan-life.co.jp",
+    "password": "TempPass123!"
+  }
+}
+2025-07-14 13:15:32 [INFO]: Sign-in request received | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "requestIP": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+}
+2025-07-14 13:15:32 [INFO]: Checking email exists in database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 13:15:32 [WARN]: Email not found in database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 13:15:32 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-14 13:15:32 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "suzuki@fudosan-life.co.jp",
+    "password": "TempPass123!"
+  }
+}
+2025-07-14 13:15:48 [INFO]: Sign-in request received | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "requestIP": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+}
+2025-07-14 13:15:48 [INFO]: Checking email exists in database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 13:15:48 [WARN]: Email not found in database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 13:15:48 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-14 13:15:48 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "suzuki@fudosan-life.co.jp",
+    "password": "TempPass123!"
+  }
+}
+2025-07-14 13:16:07 [INFO]: Sign-in request received | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "requestIP": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+}
+2025-07-14 13:16:07 [INFO]: Checking email exists in database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 13:16:07 [WARN]: Email not found in database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 13:16:07 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-14 13:16:07 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "suzuki@fudosan-life.co.jp",
+    "password": "TempPass123!"
+  }
+}
+2025-07-14 16:29:06 [INFO]: Sign-in request received | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "requestIP": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+}
+2025-07-14 16:29:06 [INFO]: Checking email exists in database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 16:29:06 [INFO]: Checking email existence in both Cognito and PostgreSQL | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 16:29:06 [INFO]: Checking email in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 16:29:06 [INFO]: Checking email in Cognito | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 16:29:07 [ERROR]: Error checking email existence
+Stack: ResourceNotFoundException: User pool ap-northeast-1_6dHhdWzbz does not exist.
+    at Request.extractError (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/protocol/json.js:80:27)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:106:20)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:688:12)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:116:18)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "ResourceNotFoundException",
+  "errorMessage": "User pool ap-northeast-1_6dHhdWzbz does not exist.",
+  "awsErrorCode": "ResourceNotFoundException",
+  "statusCode": 400
+}
+2025-07-14 16:29:07 [WARN]: Email not found in database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 16:29:07 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-14 16:29:07 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "suzuki@fudosan-life.co.jp",
+    "password": "TempPass123!"
+  }
+}
+2025-07-14 16:29:16 [INFO]: Sign-in request received | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "requestIP": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+}
+2025-07-14 16:29:16 [INFO]: Checking email exists in database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 16:29:16 [INFO]: Checking email existence in both Cognito and PostgreSQL | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 16:29:16 [INFO]: Checking email in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 16:29:16 [INFO]: Checking email in Cognito | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 16:29:16 [ERROR]: Error checking email existence
+Stack: ResourceNotFoundException: User pool ap-northeast-1_6dHhdWzbz does not exist.
+    at Request.extractError (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/protocol/json.js:80:27)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:106:20)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:688:12)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:116:18)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "ResourceNotFoundException",
+  "errorMessage": "User pool ap-northeast-1_6dHhdWzbz does not exist.",
+  "awsErrorCode": "ResourceNotFoundException",
+  "statusCode": 400
+}
+2025-07-14 16:29:16 [WARN]: Email not found in database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 16:29:16 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-14 16:29:16 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "suzuki@fudosan-life.co.jp",
+    "password": "TempPass123!"
+  }
+}
+2025-07-14 16:30:09 [INFO]: Sign-in request received | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "requestIP": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+}
+2025-07-14 16:30:09 [INFO]: Checking email exists in database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 16:30:09 [INFO]: Checking email existence in both Cognito and PostgreSQL | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 16:30:09 [INFO]: Checking email in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 16:30:09 [INFO]: Checking email in Cognito | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 16:30:09 [ERROR]: Error checking email existence
+Stack: ResourceNotFoundException: User pool ap-northeast-1_6dHhdWzbz does not exist.
+    at Request.extractError (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/protocol/json.js:80:27)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:106:20)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:688:12)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:116:18)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "ResourceNotFoundException",
+  "errorMessage": "User pool ap-northeast-1_6dHhdWzbz does not exist.",
+  "awsErrorCode": "ResourceNotFoundException",
+  "statusCode": 400
+}
+2025-07-14 16:30:09 [WARN]: Email not found in database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 16:30:09 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-14 16:30:09 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "suzuki@fudosan-life.co.jp",
+    "password": "TempPass123!"
+  }
+}
+2025-07-14 16:30:34 [INFO]: Sign-in request received | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com",
+  "requestIP": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+}
+2025-07-14 16:30:34 [INFO]: Checking email exists in database | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com"
+}
+2025-07-14 16:30:34 [INFO]: Checking email existence in both Cognito and PostgreSQL | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com"
+}
+2025-07-14 16:30:34 [INFO]: Checking email in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com"
+}
+2025-07-14 16:30:34 [WARN]: Email not found in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com"
+}
+2025-07-14 16:30:34 [WARN]: Email not found in database | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com"
+}
+2025-07-14 16:30:34 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-14 16:30:34 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "test.startgear@gmail.com",
+    "password": "TempPass123!"
+  }
+}
+2025-07-14 16:30:35 [INFO]: Sign-in request received | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com",
+  "requestIP": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+}
+2025-07-14 16:30:35 [INFO]: Checking email exists in database | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com"
+}
+2025-07-14 16:30:35 [INFO]: Checking email existence in both Cognito and PostgreSQL | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com"
+}
+2025-07-14 16:30:35 [INFO]: Checking email in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com"
+}
+2025-07-14 16:30:35 [WARN]: Email not found in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com"
+}
+2025-07-14 16:30:35 [WARN]: Email not found in database | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com"
+}
+2025-07-14 16:30:35 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-14 16:30:35 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "test.startgear@gmail.com",
+    "password": "TempPass123!"
+  }
+}
+2025-07-14 16:33:20 [INFO]: Sign-in request received | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com",
+  "requestIP": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+}
+2025-07-14 16:33:20 [INFO]: Checking email exists in database | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com"
+}
+2025-07-14 16:33:20 [INFO]: Checking email existence in both Cognito and PostgreSQL | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com"
+}
+2025-07-14 16:33:20 [INFO]: Checking email in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com"
+}
+2025-07-14 16:33:20 [WARN]: Email not found in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com"
+}
+2025-07-14 16:33:20 [WARN]: Email not found in database | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com"
+}
+2025-07-14 16:33:20 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-14 16:33:20 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "test.startgear@gmail.com",
+    "password": "TempPass123!"
+  }
+}
+2025-07-14 16:33:35 [INFO]: Sign-in request received | {
+  "module": "AUTH",
+  "email": "nak***@osaka-fudosan.com",
+  "requestIP": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+}
+2025-07-14 16:33:35 [INFO]: Checking email exists in database | {
+  "module": "AUTH",
+  "email": "nak***@osaka-fudosan.com"
+}
+2025-07-14 16:33:35 [INFO]: Checking email existence in both Cognito and PostgreSQL | {
+  "module": "AUTH",
+  "email": "nak***@osaka-fudosan.com"
+}
+2025-07-14 16:33:35 [INFO]: Checking email in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "nak***@osaka-fudosan.com"
+}
+2025-07-14 16:33:35 [INFO]: Checking email in Cognito | {
+  "module": "AUTH",
+  "email": "nak***@osaka-fudosan.com"
+}
+2025-07-14 16:33:35 [ERROR]: Error checking email existence
+Stack: ResourceNotFoundException: User pool ap-northeast-1_6dHhdWzbz does not exist.
+    at Request.extractError (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/protocol/json.js:80:27)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:106:20)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:688:12)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:116:18)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9) | {
+  "module": "AUTH",
+  "email": "nak***@osaka-fudosan.com",
+  "errorCode": "ResourceNotFoundException",
+  "errorMessage": "User pool ap-northeast-1_6dHhdWzbz does not exist.",
+  "awsErrorCode": "ResourceNotFoundException",
+  "statusCode": 400
+}
+2025-07-14 16:33:35 [WARN]: Email not found in database | {
+  "module": "AUTH",
+  "email": "nak***@osaka-fudosan.com"
+}
+2025-07-14 16:33:35 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "nak***@osaka-fudosan.com",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-14 16:33:35 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "nakamura@osaka-fudosan.com",
+    "password": "TempPass123!"
+  }
+}
+2025-07-14 16:44:53 [INFO]: Sign-in request received | {
+  "module": "AUTH",
+  "email": "nak***@osaka-fudosan.com",
+  "requestIP": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+}
+2025-07-14 16:44:53 [INFO]: Checking email exists in database | {
+  "module": "AUTH",
+  "email": "nak***@osaka-fudosan.com"
+}
+2025-07-14 16:44:53 [INFO]: Checking email existence in both Cognito and PostgreSQL | {
+  "module": "AUTH",
+  "email": "nak***@osaka-fudosan.com"
+}
+2025-07-14 16:44:53 [INFO]: Checking email in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "nak***@osaka-fudosan.com"
+}
+2025-07-14 16:44:53 [INFO]: Checking email in Cognito | {
+  "module": "AUTH",
+  "email": "nak***@osaka-fudosan.com"
+}
+2025-07-14 16:44:53 [ERROR]: Error checking email existence
+Stack: ResourceNotFoundException: User pool ap-northeast-1_6dHhdWzbz does not exist.
+    at Request.extractError (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/protocol/json.js:80:27)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:106:20)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:688:12)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:116:18)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9) | {
+  "module": "AUTH",
+  "email": "nak***@osaka-fudosan.com",
+  "errorCode": "ResourceNotFoundException",
+  "errorMessage": "User pool ap-northeast-1_6dHhdWzbz does not exist.",
+  "awsErrorCode": "ResourceNotFoundException",
+  "statusCode": 400
+}
+2025-07-14 16:44:53 [WARN]: Email not found in database | {
+  "module": "AUTH",
+  "email": "nak***@osaka-fudosan.com"
+}
+2025-07-14 16:44:53 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "nak***@osaka-fudosan.com",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-14 16:44:53 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "nakamura@osaka-fudosan.com",
+    "password": "TempPass123!"
+  }
+}
+2025-07-14 16:45:07 [INFO]: Sign-in request received | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "requestIP": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+}
+2025-07-14 16:45:07 [INFO]: Checking email exists in database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 16:45:07 [INFO]: Checking email existence in both Cognito and PostgreSQL | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 16:45:07 [INFO]: Checking email in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 16:45:07 [INFO]: Checking email in Cognito | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 16:45:08 [ERROR]: Error checking email existence
+Stack: ResourceNotFoundException: User pool ap-northeast-1_6dHhdWzbz does not exist.
+    at Request.extractError (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/protocol/json.js:80:27)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:106:20)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:688:12)
+    at Request.callListeners (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:116:18)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/Users/apple/Desktop/開発案件/IPPON/ippon-sales-brokerage-backend/node_modules/aws-sdk/lib/request.js:38:9) | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorCode": "ResourceNotFoundException",
+  "errorMessage": "User pool ap-northeast-1_6dHhdWzbz does not exist.",
+  "awsErrorCode": "ResourceNotFoundException",
+  "statusCode": 400
+}
+2025-07-14 16:45:08 [WARN]: Email not found in database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 16:45:08 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-14 16:45:08 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "suzuki@fudosan-life.co.jp",
+    "password": "TempPass123!"
+  }
+}
+2025-07-14 16:45:34 [INFO]: Sign-in request received | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "requestIP": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+}
+2025-07-14 16:45:34 [INFO]: Checking email exists in database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 16:45:34 [INFO]: Checking email existence in both Cognito and PostgreSQL | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 16:45:34 [INFO]: Checking email in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 16:45:34 [INFO]: Checking email in Cognito | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 16:45:34 [INFO]: Email verified in both PostgreSQL and Cognito | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "postgresEmployeeId": "de2f4de1-017d-4f06-a628-6f9389a0dfa2",
+  "postgresClientId": "0423994e-0c0e-4906-b80b-b098b1527a83",
+  "cognitoUserCount": 1
+}
+2025-07-14 16:45:34 [INFO]: Email exists, proceeding with sign-in service | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 16:45:34 [INFO]: Sign-in service started | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 16:45:34 [INFO]: Cognito SIGN_IN - START | {
+  "module": "COGNITO",
+  "operation": "SIGN_IN",
+  "email": "suz***@fudosan-life.co.jp",
+  "status": "START"
+}
+2025-07-14 16:45:34 [INFO]: Checking USER_PASSWORD_AUTH configuration | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 16:45:34 [WARN]: USER_PASSWORD_AUTH not enabled, enabling it now | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 16:45:35 [INFO]: USER_PASSWORD_AUTH has been enabled successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 16:45:36 [INFO]: Looking up user by email | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 16:45:36 [INFO]: User found in Cognito, proceeding with authentication | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "username": "c7c45af8-4001-705e-cf15-08787b15ed05",
+  "userStatus": "CONFIRMED",
+  "enabled": true
+}
+2025-07-14 16:45:36 [INFO]: Initiating Cognito authentication | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "authFlow": "USER_PASSWORD_AUTH",
+  "clientId": "20u378l9knh5af9rqjjfdf5jt8"
+}
+2025-07-14 16:45:36 [INFO]: Cognito SIGN_IN - SUCCESS | {
+  "module": "COGNITO",
+  "operation": "SIGN_IN",
+  "email": "suz***@fudosan-life.co.jp",
+  "status": "SUCCESS",
+  "accessTokenExists": true,
+  "idTokenExists": true,
+  "refreshTokenExists": true,
+  "tokenType": "Bearer"
+}
+2025-07-14 16:45:36 [INFO]: Cognito authentication successful, decoding token | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 16:45:36 [INFO]: JWT token decoded successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "sub": "c7c45af8-4001-705e-cf15-08787b15ed05",
+  "hasClientId": true,
+  "hasGivenName": true,
+  "hasFamilyName": true,
+  "hasType": true,
+  "hasRole": true
+}
+2025-07-14 16:45:36 [INFO]: Verifying employee existence in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 16:45:36 [INFO]: Searching for employee in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 16:45:36 [INFO]: Employee verified in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "employeeId": "de2f4de1-017d-4f06-a628-6f9389a0dfa2",
+  "clientId": "0423994e-0c0e-4906-b80b-b098b1527a83"
+}
+2025-07-14 16:45:36 [INFO]: Sign-in service completed successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "clientId": "0423994e-0c0e-4906-b80b-b098b1527a83",
+  "employeeId": "c7c45af8-4001-705e-cf15-08787b15ed05",
+  "type": "employee",
+  "role": "admin",
+  "hasAccessToken": true,
+  "hasIdToken": true
+}
+2025-07-14 16:45:36 [INFO]: Sign-in controller completed successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "hasToken": true
+}
+2025-07-14 18:17:53 [INFO]: Logout request received | {
+  "module": "AUTH",
+  "hasAuthHeader": true,
+  "requestIP": "::1"
+}
+2025-07-14 18:17:53 [INFO]: Proceeding with logout service | {
+  "module": "AUTH"
+}
+2025-07-14 18:17:53 [INFO]: Logout service started | {
+  "module": "AUTH"
+}
+2025-07-14 18:17:53 [WARN]: Cognito global sign out failed, but treating logout as successful | {
+  "module": "AUTH",
+  "email": "Inv***@undefined"
+}
+2025-07-14 18:17:53 [INFO]: Logout controller completed successfully | {
+  "module": "AUTH"
+}
+2025-07-14 18:41:12 [INFO]: Sign-in request received | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "requestIP": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+}
+2025-07-14 18:41:12 [INFO]: Checking email exists in database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 18:41:12 [INFO]: Checking email existence in both Cognito and PostgreSQL | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 18:41:12 [INFO]: Checking email in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 18:41:12 [INFO]: Checking email in Cognito | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 18:41:12 [INFO]: Email verified in both PostgreSQL and Cognito | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "postgresEmployeeId": "de2f4de1-017d-4f06-a628-6f9389a0dfa2",
+  "postgresClientId": "0423994e-0c0e-4906-b80b-b098b1527a83",
+  "cognitoUserCount": 1
+}
+2025-07-14 18:41:12 [INFO]: Email exists, proceeding with sign-in service | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 18:41:12 [INFO]: Sign-in service started | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 18:41:12 [INFO]: Cognito SIGN_IN - START | {
+  "module": "COGNITO",
+  "operation": "SIGN_IN",
+  "email": "suz***@fudosan-life.co.jp",
+  "status": "START"
+}
+2025-07-14 18:41:12 [INFO]: Checking USER_PASSWORD_AUTH configuration | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 18:41:12 [WARN]: USER_PASSWORD_AUTH not enabled, enabling it now | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 18:41:12 [INFO]: USER_PASSWORD_AUTH has been enabled successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 18:41:13 [INFO]: Looking up user by email | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 18:41:13 [INFO]: User found in Cognito, proceeding with authentication | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "username": "c7c45af8-4001-705e-cf15-08787b15ed05",
+  "userStatus": "CONFIRMED",
+  "enabled": true
+}
+2025-07-14 18:41:13 [INFO]: Initiating Cognito authentication | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "authFlow": "USER_PASSWORD_AUTH",
+  "clientId": "20u378l9knh5af9rqjjfdf5jt8"
+}
+2025-07-14 18:41:14 [INFO]: Cognito SIGN_IN - SUCCESS | {
+  "module": "COGNITO",
+  "operation": "SIGN_IN",
+  "email": "suz***@fudosan-life.co.jp",
+  "status": "SUCCESS",
+  "accessTokenExists": true,
+  "idTokenExists": true,
+  "refreshTokenExists": true,
+  "tokenType": "Bearer"
+}
+2025-07-14 18:41:14 [INFO]: Cognito authentication successful, decoding token | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 18:41:14 [INFO]: JWT token decoded successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "sub": "c7c45af8-4001-705e-cf15-08787b15ed05",
+  "hasClientId": true,
+  "hasGivenName": true,
+  "hasFamilyName": true,
+  "hasType": true,
+  "hasRole": true
+}
+2025-07-14 18:41:14 [INFO]: Verifying employee existence in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 18:41:14 [INFO]: Searching for employee in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-14 18:41:14 [INFO]: Employee verified in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "employeeId": "de2f4de1-017d-4f06-a628-6f9389a0dfa2",
+  "clientId": "0423994e-0c0e-4906-b80b-b098b1527a83"
+}
+2025-07-14 18:41:14 [INFO]: Sign-in service completed successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "clientId": "0423994e-0c0e-4906-b80b-b098b1527a83",
+  "employeeId": "c7c45af8-4001-705e-cf15-08787b15ed05",
+  "type": "employee",
+  "role": "admin",
+  "hasAccessToken": true,
+  "hasIdToken": true
+}
+2025-07-14 18:41:14 [INFO]: Sign-in controller completed successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "hasToken": true
+}
+2025-07-14 18:45:00 [INFO]: Logout request received | {
+  "module": "AUTH",
+  "hasAuthHeader": true,
+  "requestIP": "::1"
+}
+2025-07-14 18:45:00 [INFO]: Proceeding with logout service | {
+  "module": "AUTH"
+}
+2025-07-14 18:45:00 [INFO]: Logout service started | {
+  "module": "AUTH"
+}
+2025-07-14 18:45:00 [WARN]: Cognito global sign out failed, but treating logout as successful | {
+  "module": "AUTH",
+  "email": "Inv***@undefined"
+}
+2025-07-14 18:45:00 [INFO]: Logout controller completed successfully | {
+  "module": "AUTH"
+}
+2025-07-15 22:59:33 [INFO]: Sign-in request received | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "requestIP": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+}
+2025-07-15 22:59:33 [INFO]: Checking email exists in database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-15 22:59:33 [INFO]: Checking email existence in both Cognito and PostgreSQL | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-15 22:59:33 [INFO]: Checking email in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-15 22:59:33 [INFO]: Checking email in Cognito | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-15 22:59:33 [INFO]: Email verified in both PostgreSQL and Cognito | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "postgresEmployeeId": "de2f4de1-017d-4f06-a628-6f9389a0dfa2",
+  "postgresClientId": "0423994e-0c0e-4906-b80b-b098b1527a83",
+  "cognitoUserCount": 1
+}
+2025-07-15 22:59:33 [INFO]: Email exists, proceeding with sign-in service | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-15 22:59:33 [INFO]: Sign-in service started | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-15 22:59:33 [INFO]: Cognito SIGN_IN - START | {
+  "module": "COGNITO",
+  "operation": "SIGN_IN",
+  "email": "suz***@fudosan-life.co.jp",
+  "status": "START"
+}
+2025-07-15 22:59:33 [INFO]: Checking USER_PASSWORD_AUTH configuration | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-15 22:59:33 [WARN]: USER_PASSWORD_AUTH not enabled, enabling it now | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-15 22:59:33 [INFO]: USER_PASSWORD_AUTH has been enabled successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-15 22:59:34 [INFO]: Looking up user by email | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-15 22:59:35 [INFO]: User found in Cognito, proceeding with authentication | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "username": "c7c45af8-4001-705e-cf15-08787b15ed05",
+  "userStatus": "CONFIRMED",
+  "enabled": true
+}
+2025-07-15 22:59:35 [INFO]: Initiating Cognito authentication | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "authFlow": "USER_PASSWORD_AUTH",
+  "clientId": "20u378l9knh5af9rqjjfdf5jt8"
+}
+2025-07-15 22:59:35 [INFO]: Cognito SIGN_IN - SUCCESS | {
+  "module": "COGNITO",
+  "operation": "SIGN_IN",
+  "email": "suz***@fudosan-life.co.jp",
+  "status": "SUCCESS",
+  "accessTokenExists": true,
+  "idTokenExists": true,
+  "refreshTokenExists": true,
+  "tokenType": "Bearer"
+}
+2025-07-15 22:59:35 [INFO]: Cognito authentication successful, decoding token | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-15 22:59:35 [INFO]: JWT token decoded successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "sub": "c7c45af8-4001-705e-cf15-08787b15ed05",
+  "hasClientId": true,
+  "hasGivenName": true,
+  "hasFamilyName": true,
+  "hasType": true,
+  "hasRole": true
+}
+2025-07-15 22:59:35 [INFO]: Verifying employee existence in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-15 22:59:35 [INFO]: Searching for employee in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-15 22:59:35 [INFO]: Employee verified in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "employeeId": "de2f4de1-017d-4f06-a628-6f9389a0dfa2",
+  "clientId": "0423994e-0c0e-4906-b80b-b098b1527a83"
+}
+2025-07-15 22:59:35 [INFO]: Sign-in service completed successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "clientId": "0423994e-0c0e-4906-b80b-b098b1527a83",
+  "employeeId": "c7c45af8-4001-705e-cf15-08787b15ed05",
+  "type": "employee",
+  "role": "admin",
+  "hasAccessToken": true,
+  "hasIdToken": true
+}
+2025-07-15 22:59:35 [INFO]: Sign-in controller completed successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "hasToken": true
+}
+2025-07-16 12:21:54 [INFO]: Sign-in request received | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "requestIP": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+}
+2025-07-16 12:21:54 [INFO]: Checking email exists in database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 12:21:54 [INFO]: Checking email existence in both Cognito and PostgreSQL | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 12:21:54 [INFO]: Checking email in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 12:21:54 [INFO]: Checking email in Cognito | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 12:21:55 [INFO]: Email verified in both PostgreSQL and Cognito | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "postgresEmployeeId": "de2f4de1-017d-4f06-a628-6f9389a0dfa2",
+  "postgresClientId": "0423994e-0c0e-4906-b80b-b098b1527a83",
+  "cognitoUserCount": 1
+}
+2025-07-16 12:21:55 [INFO]: Email exists, proceeding with sign-in service | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 12:21:55 [INFO]: Sign-in service started | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 12:21:55 [INFO]: Cognito SIGN_IN - START | {
+  "module": "COGNITO",
+  "operation": "SIGN_IN",
+  "email": "suz***@fudosan-life.co.jp",
+  "status": "START"
+}
+2025-07-16 12:21:55 [INFO]: Checking USER_PASSWORD_AUTH configuration | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 12:21:55 [WARN]: USER_PASSWORD_AUTH not enabled, enabling it now | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 12:21:55 [INFO]: USER_PASSWORD_AUTH has been enabled successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 12:21:56 [INFO]: Looking up user by email | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 12:21:57 [INFO]: User found in Cognito, proceeding with authentication | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "username": "c7c45af8-4001-705e-cf15-08787b15ed05",
+  "userStatus": "CONFIRMED",
+  "enabled": true
+}
+2025-07-16 12:21:57 [INFO]: Initiating Cognito authentication | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "authFlow": "USER_PASSWORD_AUTH",
+  "clientId": "20u378l9knh5af9rqjjfdf5jt8"
+}
+2025-07-16 12:21:57 [INFO]: Cognito SIGN_IN - SUCCESS | {
+  "module": "COGNITO",
+  "operation": "SIGN_IN",
+  "email": "suz***@fudosan-life.co.jp",
+  "status": "SUCCESS",
+  "accessTokenExists": true,
+  "idTokenExists": true,
+  "refreshTokenExists": true,
+  "tokenType": "Bearer"
+}
+2025-07-16 12:21:57 [INFO]: Cognito authentication successful, decoding token | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 12:21:57 [INFO]: JWT token decoded successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "sub": "c7c45af8-4001-705e-cf15-08787b15ed05",
+  "hasClientId": true,
+  "hasGivenName": true,
+  "hasFamilyName": true,
+  "hasType": true,
+  "hasRole": true
+}
+2025-07-16 12:21:57 [INFO]: Verifying employee existence in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 12:21:57 [INFO]: Searching for employee in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 12:21:57 [INFO]: Employee verified in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "employeeId": "de2f4de1-017d-4f06-a628-6f9389a0dfa2",
+  "clientId": "0423994e-0c0e-4906-b80b-b098b1527a83"
+}
+2025-07-16 12:21:57 [INFO]: Sign-in service completed successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "clientId": "0423994e-0c0e-4906-b80b-b098b1527a83",
+  "employeeId": "c7c45af8-4001-705e-cf15-08787b15ed05",
+  "type": "employee",
+  "role": "admin",
+  "hasAccessToken": true,
+  "hasIdToken": true
+}
+2025-07-16 12:21:57 [INFO]: Sign-in controller completed successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "hasToken": true
+}
+2025-07-16 14:21:16 [INFO]: Sign-in request received | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "requestIP": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+}
+2025-07-16 14:21:16 [INFO]: Checking email exists in database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 14:21:16 [INFO]: Checking email existence in both Cognito and PostgreSQL | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 14:21:16 [INFO]: Checking email in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 14:21:16 [INFO]: Checking email in Cognito | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 14:21:16 [INFO]: Email verified in both PostgreSQL and Cognito | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "postgresEmployeeId": "de2f4de1-017d-4f06-a628-6f9389a0dfa2",
+  "postgresClientId": "0423994e-0c0e-4906-b80b-b098b1527a83",
+  "cognitoUserCount": 1
+}
+2025-07-16 14:21:16 [INFO]: Email exists, proceeding with sign-in service | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 14:21:16 [INFO]: Sign-in service started | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 14:21:16 [INFO]: Cognito SIGN_IN - START | {
+  "module": "COGNITO",
+  "operation": "SIGN_IN",
+  "email": "suz***@fudosan-life.co.jp",
+  "status": "START"
+}
+2025-07-16 14:21:16 [INFO]: Checking USER_PASSWORD_AUTH configuration | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 14:21:16 [WARN]: USER_PASSWORD_AUTH not enabled, enabling it now | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 14:21:16 [INFO]: USER_PASSWORD_AUTH has been enabled successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 14:21:17 [INFO]: Looking up user by email | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 14:21:18 [INFO]: User found in Cognito, proceeding with authentication | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "username": "c7c45af8-4001-705e-cf15-08787b15ed05",
+  "userStatus": "CONFIRMED",
+  "enabled": true
+}
+2025-07-16 14:21:18 [INFO]: Initiating Cognito authentication | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "authFlow": "USER_PASSWORD_AUTH",
+  "clientId": "20u378l9knh5af9rqjjfdf5jt8"
+}
+2025-07-16 14:21:18 [INFO]: Cognito SIGN_IN - SUCCESS | {
+  "module": "COGNITO",
+  "operation": "SIGN_IN",
+  "email": "suz***@fudosan-life.co.jp",
+  "status": "SUCCESS",
+  "accessTokenExists": true,
+  "idTokenExists": true,
+  "refreshTokenExists": true,
+  "tokenType": "Bearer"
+}
+2025-07-16 14:21:18 [INFO]: Cognito authentication successful, decoding token | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 14:21:18 [INFO]: JWT token decoded successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "sub": "c7c45af8-4001-705e-cf15-08787b15ed05",
+  "hasClientId": true,
+  "hasGivenName": true,
+  "hasFamilyName": true,
+  "hasType": true,
+  "hasRole": true
+}
+2025-07-16 14:21:18 [INFO]: Verifying employee existence in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 14:21:18 [INFO]: Searching for employee in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 14:21:18 [INFO]: Employee verified in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "employeeId": "de2f4de1-017d-4f06-a628-6f9389a0dfa2",
+  "clientId": "0423994e-0c0e-4906-b80b-b098b1527a83"
+}
+2025-07-16 14:21:18 [INFO]: Sign-in service completed successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "clientId": "0423994e-0c0e-4906-b80b-b098b1527a83",
+  "employeeId": "c7c45af8-4001-705e-cf15-08787b15ed05",
+  "type": "employee",
+  "role": "general",
+  "hasAccessToken": true,
+  "hasIdToken": true
+}
+2025-07-16 14:21:18 [INFO]: Sign-in controller completed successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "hasToken": true
+}
+2025-07-16 14:50:03 [INFO]: Logout request received | {
+  "module": "AUTH",
+  "hasAuthHeader": true,
+  "requestIP": "::1"
+}
+2025-07-16 14:50:03 [INFO]: Proceeding with logout service | {
+  "module": "AUTH"
+}
+2025-07-16 14:50:03 [INFO]: Logout service started | {
+  "module": "AUTH"
+}
+2025-07-16 14:50:03 [WARN]: Cognito global sign out failed, but treating logout as successful | {
+  "module": "AUTH",
+  "email": "Inv***@undefined"
+}
+2025-07-16 14:50:03 [INFO]: Logout controller completed successfully | {
+  "module": "AUTH"
+}
+2025-07-16 14:50:10 [INFO]: Sign-in request received | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com",
+  "requestIP": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+}
+2025-07-16 14:50:10 [INFO]: Checking email exists in database | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com"
+}
+2025-07-16 14:50:10 [INFO]: Checking email existence in both Cognito and PostgreSQL | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com"
+}
+2025-07-16 14:50:10 [INFO]: Checking email in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com"
+}
+2025-07-16 14:50:10 [WARN]: Email not found in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com"
+}
+2025-07-16 14:50:10 [WARN]: Email not found in database | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com"
+}
+2025-07-16 14:50:10 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-16 14:50:10 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "test.startgear@gmail.com",
+    "password": "TempPass123!"
+  }
+}
+2025-07-16 14:50:11 [INFO]: Sign-in request received | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com",
+  "requestIP": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+}
+2025-07-16 14:50:11 [INFO]: Checking email exists in database | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com"
+}
+2025-07-16 14:50:11 [INFO]: Checking email existence in both Cognito and PostgreSQL | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com"
+}
+2025-07-16 14:50:11 [INFO]: Checking email in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com"
+}
+2025-07-16 14:50:11 [WARN]: Email not found in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com"
+}
+2025-07-16 14:50:11 [WARN]: Email not found in database | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com"
+}
+2025-07-16 14:50:11 [ERROR]: Sign-in controller failed | {
+  "module": "AUTH",
+  "email": "tes***@gmail.com",
+  "errorMessage": "Email not found",
+  "statusCode": 404,
+  "requestIP": "::1"
+}
+2025-07-16 14:50:11 [ERROR]: Email not found | {
+  "path": "/api/v1/auth/signin",
+  "method": "POST",
+  "params": {},
+  "query": {},
+  "body": {
+    "email": "test.startgear@gmail.com",
+    "password": "TempPass123!"
+  }
+}
+2025-07-16 14:50:21 [INFO]: Sign-in request received | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "requestIP": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+}
+2025-07-16 14:50:21 [INFO]: Checking email exists in database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 14:50:21 [INFO]: Checking email existence in both Cognito and PostgreSQL | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 14:50:21 [INFO]: Checking email in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 14:50:21 [INFO]: Checking email in Cognito | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 14:50:22 [INFO]: Email verified in both PostgreSQL and Cognito | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "postgresEmployeeId": "de2f4de1-017d-4f06-a628-6f9389a0dfa2",
+  "postgresClientId": "0423994e-0c0e-4906-b80b-b098b1527a83",
+  "cognitoUserCount": 1
+}
+2025-07-16 14:50:22 [INFO]: Email exists, proceeding with sign-in service | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 14:50:22 [INFO]: Sign-in service started | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 14:50:22 [INFO]: Cognito SIGN_IN - START | {
+  "module": "COGNITO",
+  "operation": "SIGN_IN",
+  "email": "suz***@fudosan-life.co.jp",
+  "status": "START"
+}
+2025-07-16 14:50:22 [INFO]: Checking USER_PASSWORD_AUTH configuration | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 14:50:22 [WARN]: USER_PASSWORD_AUTH not enabled, enabling it now | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 14:50:22 [INFO]: USER_PASSWORD_AUTH has been enabled successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 14:50:23 [INFO]: Looking up user by email | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 14:50:23 [INFO]: User found in Cognito, proceeding with authentication | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "username": "c7c45af8-4001-705e-cf15-08787b15ed05",
+  "userStatus": "CONFIRMED",
+  "enabled": true
+}
+2025-07-16 14:50:23 [INFO]: Initiating Cognito authentication | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "authFlow": "USER_PASSWORD_AUTH",
+  "clientId": "20u378l9knh5af9rqjjfdf5jt8"
+}
+2025-07-16 14:50:24 [INFO]: Cognito SIGN_IN - SUCCESS | {
+  "module": "COGNITO",
+  "operation": "SIGN_IN",
+  "email": "suz***@fudosan-life.co.jp",
+  "status": "SUCCESS",
+  "accessTokenExists": true,
+  "idTokenExists": true,
+  "refreshTokenExists": true,
+  "tokenType": "Bearer"
+}
+2025-07-16 14:50:24 [INFO]: Cognito authentication successful, decoding token | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 14:50:24 [INFO]: JWT token decoded successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "sub": "c7c45af8-4001-705e-cf15-08787b15ed05",
+  "hasClientId": true,
+  "hasGivenName": true,
+  "hasFamilyName": true,
+  "hasType": true,
+  "hasRole": true
+}
+2025-07-16 14:50:24 [INFO]: Verifying employee existence in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 14:50:24 [INFO]: Searching for employee in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-16 14:50:24 [INFO]: Employee verified in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "employeeId": "de2f4de1-017d-4f06-a628-6f9389a0dfa2",
+  "clientId": "0423994e-0c0e-4906-b80b-b098b1527a83"
+}
+2025-07-16 14:50:24 [INFO]: Sign-in service completed successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "clientId": "0423994e-0c0e-4906-b80b-b098b1527a83",
+  "employeeId": "c7c45af8-4001-705e-cf15-08787b15ed05",
+  "type": "employee",
+  "role": "general",
+  "hasAccessToken": true,
+  "hasIdToken": true
+}
+2025-07-16 14:50:24 [INFO]: Sign-in controller completed successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "hasToken": true
+}
+2025-07-17 22:35:19 [INFO]: Sign-in request received | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "requestIP": "::1",
+  "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36"
+}
+2025-07-17 22:35:19 [INFO]: Checking email exists in database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-17 22:35:19 [INFO]: Checking email existence in both Cognito and PostgreSQL | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-17 22:35:19 [INFO]: Checking email in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-17 22:35:19 [INFO]: Checking email in Cognito | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-17 22:35:19 [INFO]: Email verified in both PostgreSQL and Cognito | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "postgresEmployeeId": "de2f4de1-017d-4f06-a628-6f9389a0dfa2",
+  "postgresClientId": "0423994e-0c0e-4906-b80b-b098b1527a83",
+  "cognitoUserCount": 1
+}
+2025-07-17 22:35:19 [INFO]: Email exists, proceeding with sign-in service | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-17 22:35:19 [INFO]: Sign-in service started | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-17 22:35:19 [INFO]: Cognito SIGN_IN - START | {
+  "module": "COGNITO",
+  "operation": "SIGN_IN",
+  "email": "suz***@fudosan-life.co.jp",
+  "status": "START"
+}
+2025-07-17 22:35:19 [INFO]: Checking USER_PASSWORD_AUTH configuration | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-17 22:35:19 [WARN]: USER_PASSWORD_AUTH not enabled, enabling it now | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-17 22:35:19 [INFO]: USER_PASSWORD_AUTH has been enabled successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-17 22:35:20 [INFO]: Looking up user by email | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-17 22:35:21 [INFO]: User found in Cognito, proceeding with authentication | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "username": "c7c45af8-4001-705e-cf15-08787b15ed05",
+  "userStatus": "CONFIRMED",
+  "enabled": true
+}
+2025-07-17 22:35:21 [INFO]: Initiating Cognito authentication | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "authFlow": "USER_PASSWORD_AUTH",
+  "clientId": "20u378l9knh5af9rqjjfdf5jt8"
+}
+2025-07-17 22:35:21 [INFO]: Cognito SIGN_IN - SUCCESS | {
+  "module": "COGNITO",
+  "operation": "SIGN_IN",
+  "email": "suz***@fudosan-life.co.jp",
+  "status": "SUCCESS",
+  "accessTokenExists": true,
+  "idTokenExists": true,
+  "refreshTokenExists": true,
+  "tokenType": "Bearer"
+}
+2025-07-17 22:35:21 [INFO]: Cognito authentication successful, decoding token | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-17 22:35:21 [INFO]: JWT token decoded successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "sub": "c7c45af8-4001-705e-cf15-08787b15ed05",
+  "hasClientId": true,
+  "hasGivenName": true,
+  "hasFamilyName": true,
+  "hasType": true,
+  "hasRole": true
+}
+2025-07-17 22:35:21 [INFO]: Verifying employee existence in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-17 22:35:21 [INFO]: Searching for employee in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp"
+}
+2025-07-17 22:35:21 [INFO]: Employee verified in PostgreSQL master database | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "employeeId": "de2f4de1-017d-4f06-a628-6f9389a0dfa2",
+  "clientId": "0423994e-0c0e-4906-b80b-b098b1527a83"
+}
+2025-07-17 22:35:21 [INFO]: Sign-in service completed successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "clientId": "0423994e-0c0e-4906-b80b-b098b1527a83",
+  "employeeId": "c7c45af8-4001-705e-cf15-08787b15ed05",
+  "type": "employee",
+  "role": "admin",
+  "hasAccessToken": true,
+  "hasIdToken": true
+}
+2025-07-17 22:35:21 [INFO]: Sign-in controller completed successfully | {
+  "module": "AUTH",
+  "email": "suz***@fudosan-life.co.jp",
+  "hasToken": true
+}

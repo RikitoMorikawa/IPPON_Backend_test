@@ -11,7 +11,7 @@ interface EmployeeParams {
 interface EmployeeQuery {
   limit?: string;
   page?: string;
-  search?: string;
+  name?: string;
   role?: string;
 }
 

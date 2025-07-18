@@ -4,14 +4,13 @@ export interface InquiryListByPropertyParams {
   page?: string;
   propertyId?: string;
   startDate?: string;
-  endDate?:string;
+  endDate?: string;
   inquiryId?: string;
 }
 
-export interface InquiryHistoryList{
+export interface InquiryHistoryList {
   inquiryId?: string;
   page?: string;
   limit?: string;
   title?: string;
-
 }

@@ -44,62 +44,73 @@ export const signInService = async (email: string, password: string) => {
       hasRole: !!decoded["custom:role"]
     });
     
-    // PostgreSQLとCognitoの同期処理
-    let clientId = decoded["custom:clientId"] || '';
+    // PostgreSQL必須チェック：Cognitoとマスターデータベースの整合性を保証
+    authLogger.info('Verifying employee existence in PostgreSQL master database', email);
     
-    // custom:clientIdが空の場合、PostgreSQLから取得してCognitoに設定
-    if (!clientId) {
-      authLogger.warn('custom:clientId is empty, attempting to sync from PostgreSQL', email);
+    let clientId = decoded["custom:clientId"] || '';
+    let employee;
+
+    try {
+      // PostgreSQLでメールアドレスに対応するemployeeを検索（必須チェック）
+      authLogger.info('Searching for employee in PostgreSQL master database', email);
       
-      try {
-        // PostgreSQLでメールアドレスに対応するemployeeを検索
-        authLogger.info('Searching for employee in PostgreSQL', email);
-        
-        const employee = await prisma.mstClientEmployees.findFirst({
-          where: withoutDeleted({
-            mail_address: email,
-            is_active: true
-          }),
-          include: {
-            client: true
-          }
-        });
-
-        if (employee) {
-          clientId = employee.client_id;
-          
-          authLogger.info('Employee found in PostgreSQL, updating Cognito', email, {
-            clientId: clientId,
-            employeeId: employee.id,
-            clientName: (employee.client as any)?.client_name
-          });
-          
-          // Cognitoユーザーのcustom:clientId属性を更新
-          const updateParams = {
-            UserPoolId: process.env.IPPON_CLIENT_EMPLOYEE_AWS_USER_POOL_ID as string,
-            Username: decoded.sub, // subを使用してユーザーを特定
-            UserAttributes: [
-              {
-                Name: 'custom:clientId',
-                Value: clientId
-              }
-            ]
-          };
-
-          await cognito.adminUpdateUserAttributes(updateParams).promise();
-          authLogger.info('Cognito user attributes updated successfully', email, { clientId });
-          
-        } else {
-          authLogger.error('No active client employee found for email', null, email);
-          throw new Error(`No client employee found for email: ${email}`);
+      employee = await prisma.mstClientEmployees.findFirst({
+        where: withoutDeleted({
+          mail_address: email,
+          is_active: true
+        }),
+        include: {
+          client: true
         }
-        
-      } catch (error) {
-        authLogger.error('Error syncing PostgreSQL and Cognito', error, email);
-        throw new Error(`Failed to sync user data: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      });
+
+      if (!employee) {
+        authLogger.error('Employee not found in PostgreSQL master database - authentication denied', null, email);
+        throw new Error(`Employee not found in master database for email: ${email}. Access denied for data integrity.`);
       }
-    } else {
-      authLogger.info('custom:clientId found in token', email, { clientId });
+
+      authLogger.info('Employee verified in PostgreSQL master database', email, {
+        employeeId: employee.id,
+        clientId: employee.client_id,
+        clientName: (employee.client as any)?.client_name
+      });
+
+      // CognitoのclientIdとPostgreSQLのclientIdの整合性をチェック
+      if (clientId && clientId !== employee.client_id) {
+        authLogger.warn('clientId mismatch between Cognito and PostgreSQL, syncing from PostgreSQL', email, {
+          cognitoClientId: clientId,
+          postgresqlClientId: employee.client_id
+        });
+      }
+
+      // PostgreSQLの値を正として使用
+      clientId = employee.client_id;
+
+      // Cognitoのcustom:clientIdを更新（整合性保持）
+      if (decoded["custom:clientId"] !== clientId) {
+        authLogger.info('Updating Cognito custom:clientId to match PostgreSQL', email, { 
+          oldClientId: decoded["custom:clientId"],
+          newClientId: clientId 
+        });
+        
+        const updateParams = {
+          UserPoolId: process.env.IPPON_CLIENT_EMPLOYEE_AWS_USER_POOL_ID as string,
+          Username: decoded.sub, // subを使用してユーザーを特定
+          UserAttributes: [
+            {
+              Name: 'custom:clientId',
+              Value: clientId
+            }
+          ]
+        };
+
+        await cognito.adminUpdateUserAttributes(updateParams).promise();
+        authLogger.info('Cognito user attributes updated successfully', email, { clientId });
+      }
+        
+    } catch (error) {
+      authLogger.error('PostgreSQL employee verification failed - authentication denied', error, email);
+      throw new Error(`Authentication failed: ${error instanceof Error ? error.message : 'Master database verification failed'}`);
     }
 
     const userData = {
@@ -154,31 +165,6 @@ export const sendOtpService = async (email: string) => {
   }
 }
 
-export const verifyOtpService = async (email: string, otp: string) => {
-  authLogger.info('Verify OTP service started', email, { otpLength: otp.length });
-  
-  try {
-    const tempPassword = `Temp${Math.random().toString(36).slice(2)}!1A`;
-
-    const params = {
-      ClientId: process.env.IPPON_CLIENT_EMPLOYEE_AWS_CLIENT_ID as string,
-      Username: email,
-      ConfirmationCode: otp,
-      Password: tempPassword,
-      SecretHash: calculateSecretHash(email)
-    };
-
-    authLogger.info('Verifying OTP with Cognito', email);
-    await cognito.confirmForgotPassword(params).promise();
-    
-    authLogger.info('OTP verified successfully', email);
-    return true;
-  } catch (error) {
-    authLogger.error('OTP verification failed', error, email, { otpLength: otp.length });
-    return false;
-  }
-};
-
 export const ResetPasswordService = async (email: string, verificationCode: string, newPassword: string) => {
   authLogger.info('Reset password service started', email, { 
     verificationCodeLength: verificationCode.length,
@@ -201,7 +187,7 @@ export const ResetPasswordService = async (email: string, verificationCode: stri
     authLogger.error('Password reset failed', error, email);
     throw error;
   }
-}
+};
 
 
 

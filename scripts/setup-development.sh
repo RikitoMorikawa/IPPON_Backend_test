@@ -2,7 +2,6 @@
 
 # 開発環境セットアップスクリプト
 # このスクリプトは、売買仲介プロジェクトの開発環境（DynamoDB Local）を設定します
-# アプリケーションはローカルで手動起動してください
 
 set -e  # エラーが発生したら停止
 
@@ -27,27 +26,19 @@ fi
 
 # 3. DynamoDB Localの起動
 echo "🚀 Starting DynamoDB Local..."
-if docker ps | grep -q ippon_sales_brokerage_dynamodb; then
-    echo "✅ DynamoDB Local already running"
-else
-    docker-compose -f docker/docker-compose.yml up -d dynamodb
-    echo "✅ DynamoDB Local started"
-fi
+docker-compose -f docker/docker-compose.yml up -d dynamodb
+echo "✅ DynamoDB Local container started"
 
-# 4. DynamoDBの起動を待つ
+# 4. 起動待ち（シンプル版）
 echo "⏳ Waiting for DynamoDB Local to be ready..."
-sleep 5
+sleep 3
 
-# 5. DynamoDB動作確認
-DYNAMO_STATUS="⚠️  Still starting"
-
-# Check DynamoDB (port check only)
+# 5. 起動確認
 if nc -z localhost 8080 2>/dev/null; then
-    DYNAMO_STATUS="✅ Running"
+    echo "✅ DynamoDB Local is ready on localhost:8080"
+else
+    echo "⚠️  DynamoDB Local may still be starting. Please wait a few more seconds."
 fi
-
-echo "🔍 Services Status Check:"
-echo "   - DynamoDB Local: $DYNAMO_STATUS"
 
 echo ""
 echo "🎉 Development environment setup completed!"
@@ -60,6 +51,4 @@ echo ""
 echo "🚀 To start the application locally:"
 echo "   npm run dev"
 echo ""
-echo "📚 API Documentation: http://localhost:3000/documentation (after starting app locally)"
-echo ""
-echo "📚 For more information, see README.md" 
+echo "📚 API Documentation: http://localhost:3000/documentation (after starting app locally)" 

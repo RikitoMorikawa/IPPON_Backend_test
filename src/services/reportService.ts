@@ -328,7 +328,7 @@ export const createReport = async (
       current_status: REPORT_STATUSES.RECRUITING,
       summary: summaryReport,
       // 物件テーブルから必須フィールドを取得
-      price: property.price || '0',
+      price: property.price ? property.price.toString() : '0',
       sales_start_date: property.sales_start_date || property.created_at?.split('T')[0] || new Date().toISOString().split('T')[0],
       is_suumo_published: property.is_suumo_published || false,
       views_count: property.views_count || 0,

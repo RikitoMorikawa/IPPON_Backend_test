@@ -1,4 +1,4 @@
-import { uploadFileToS3 } from '@src/services/s3Service';
+import { uploadFileToS3, S3BucketType } from '@src/services/s3Service';
 
 export const parseArrayData = (value: string | string[]): string[] => {
   if (Array.isArray(value)) {
@@ -24,6 +24,7 @@ export const processBase64Image = async (
   imageData: string,
   folderName: string,
   clientId: string,
+  bucketType: S3BucketType = 'property',
 ): Promise<string> => {
   try {
     if (imageData.startsWith('http')) {
@@ -58,14 +59,7 @@ export const processBase64Image = async (
     const uniqueFilename = `${Date.now()}-${Math.random().toString(36).substring(7)}.${extension}`;
     const s3Key = `${folderName}/${clientId}/${uniqueFilename}`;
 
-    console.log('Uploading image:', {
-      contentType,
-      size: buffer.length,
-      s3Key,
-      extension,
-    });
-
-    const s3Url = await uploadFileToS3(buffer, s3Key, contentType);
+    const s3Url = await uploadFileToS3(buffer, s3Key, contentType, bucketType);
 
     return s3Url;
   } catch (error) {

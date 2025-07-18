@@ -79,7 +79,7 @@ async function processPropertyFiles(
         continue;
       }
 
-      const s3Url = await processBase64Image(base64Data, 'image_urls', clientId);
+      const s3Url = await processBase64Image(base64Data, 'image_urls', clientId, 'property');
       propertyFileUrls.push(s3Url);
     }
   } catch (error) {
@@ -145,17 +145,25 @@ async function processPropertyFileForUpdate(
   clientId: string,
 ): Promise<void> {
   try {
+    console.log('🔍 [DEBUG] processPropertyFileForUpdate called with fieldValue length:', fieldValue.length);
     const base64Array = parseArrayData(fieldValue);
+    console.log('🔍 [DEBUG] base64Array length:', base64Array.length);
 
-    for (const base64Data of base64Array) {
+    for (let i = 0; i < base64Array.length; i++) {
+      const base64Data = base64Array[i];
       if (!base64Data || typeof base64Data !== 'string') {
+        console.log(`🔍 [DEBUG] Skipping invalid base64Data at index ${i}`);
         continue;
       }
 
-      const s3Url = await processBase64Image(base64Data, 'image_urls', clientId);
+      console.log(`🔍 [DEBUG] Processing image ${i + 1}/${base64Array.length}`);
+      const s3Url = await processBase64Image(base64Data, 'image_urls', clientId, 'property');
+      console.log('🔍 [DEBUG] S3 upload successful, URL:', s3Url);
       propertyFileUrls.push(s3Url);
     }
+    console.log('🔍 [DEBUG] Total uploaded images:', propertyFileUrls.length);
   } catch (error) {
+    console.error('❌ [ERROR] processPropertyFileForUpdate failed:', error);
     throw new Error(`Error processing image_urls: ${(error as Error).message}`);
   }
 }
@@ -164,23 +172,34 @@ export function processPropertyFileUploads(
   formData: Partial<Property>,
   propertyFileUrls: string[],
 ): void {
+  console.log('🔍 [DEBUG] processPropertyFileUploads called');
+  console.log('🔍 [DEBUG] propertyFileUrls length:', propertyFileUrls.length);
+  console.log('🔍 [DEBUG] propertyFileUrls:', propertyFileUrls);
+  console.log('🔍 [DEBUG] formData.image_urls before processing:', formData.image_urls);
+
   if (propertyFileUrls.length > 0) {
+    console.log('🔍 [DEBUG] Adding new files to existing image_urls');
     if (formData.image_urls) {
       const existingFiles = Array.isArray(formData.image_urls)
         ? formData.image_urls
         : [formData.image_urls];
+      console.log('🔍 [DEBUG] existingFiles:', existingFiles);
 
       formData.image_urls = [...existingFiles, ...propertyFileUrls];
+      console.log('🔍 [DEBUG] Combined image_urls:', formData.image_urls);
     } else {
+      console.log('🔍 [DEBUG] No existing files, setting new files only');
       formData.image_urls = propertyFileUrls;
     }
   } else if (formData.image_urls) {
+    console.log('🔍 [DEBUG] No new files, preserving existing files');
     formData.image_urls = Array.isArray(formData.image_urls)
       ? formData.image_urls
       : [formData.image_urls];
   }
 
   formData.image_urls = formData.image_urls || [];
+  console.log('🔍 [DEBUG] Final image_urls:', formData.image_urls);
 }
 
 export async function parseUpdateFormData(
@@ -195,12 +214,23 @@ export async function parseUpdateFormData(
     formData.client_id = clientId;
   }
 
+  console.log('🔍 [DEBUG] parseUpdateFormData started');
+
   for await (const part of parts) {
     if (part.type === 'field') {
+      console.log(`🔍 [DEBUG] Processing field: ${part.fieldname}, value type: ${typeof part.value}`);
       await processUpdateFormField(part, formData, propertyFileUrls, booleanFields);
     }
   }
+
+  console.log('🔍 [DEBUG] Before processPropertyFileUploads:');
+  console.log('🔍 [DEBUG] propertyFileUrls:', propertyFileUrls);
+  console.log('🔍 [DEBUG] formData.image_urls:', formData.image_urls);
+
   processPropertyFileUploads(formData, propertyFileUrls);
+
+  console.log('🔍 [DEBUG] After processPropertyFileUploads:');
+  console.log('🔍 [DEBUG] Final formData.image_urls:', formData.image_urls);
   
   return formData;
 }
@@ -229,16 +259,39 @@ export function createUpdatedPropertyObject(
   existingProperty: Property,
   formData: Partial<Property>,
 ): Property {
-  return {
+  const now = new Date().toISOString();
+  
+  console.log('🔍 [DEBUG] createUpdatedPropertyObject called');
+  console.log('🔍 [DEBUG] formData.image_urls:', formData.image_urls);
+  console.log('🔍 [DEBUG] existingProperty.image_urls:', existingProperty.image_urls);
+
+  // 既存の画像URLと新しい画像URLをマージ
+  let mergedImageUrls: string[] = [];
+  
+  if (existingProperty.image_urls && Array.isArray(existingProperty.image_urls)) {
+    mergedImageUrls = [...existingProperty.image_urls];
+  }
+  
+  if (formData.image_urls && Array.isArray(formData.image_urls)) {
+    mergedImageUrls = [...mergedImageUrls, ...formData.image_urls];
+  }
+
+  console.log('🔍 [DEBUG] Merged image_urls:', mergedImageUrls);
+
+  const updatedProperty = {
     ...existingProperty,
     ...formData,
+    image_urls: mergedImageUrls, // マージした画像URLを使用
 
     id: existingProperty.id,
     client_id: existingProperty.client_id,
     created_at: existingProperty.created_at,
-
-    updated_at: existingProperty.updated_at,
+    updated_at: now, // 更新時に新しいタイムスタンプを設定
   };
+
+  console.log('🔍 [DEBUG] Final updatedProperty.image_urls:', updatedProperty.image_urls);
+  
+  return updatedProperty;
 }
 
 export const searchPropertiesWithFilters = async (
